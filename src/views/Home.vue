@@ -1,14 +1,19 @@
 <template>
-  <div class="home">
+  <div>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
+<script>
+export default {
+  name: 'home',
+  data() {
+    return {
 
-export default Vue.extend({
-  name: 'Home',
-  components: {
-  },
-});
+    }
+  }
+}
 </script>
+
+<style>
+
+</style>
