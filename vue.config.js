@@ -7,5 +7,6 @@ module.exports = {
     config.resolve.alias.set('@layout', path.join(__dirname, 'src/components/layout'))
     config.resolve.alias.set('@lib', path.join(__dirname, 'src/lib'))
     config.resolve.alias.set('@mixins', path.join(__dirname, 'src/mixins'))
+    config.resolve.alias.set('@atoms', path.join(__dirname, 'src/components/atoms'))
   },
 }

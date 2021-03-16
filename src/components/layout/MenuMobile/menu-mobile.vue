@@ -1,6 +1,6 @@
 <template>
   <section>
-    <b-sidebar
+    <BSidebar
       :type="theme"
       :fullheight="fullheight"
       :fullwidth="fullwidth"
@@ -10,36 +10,36 @@
       @close="$emit('close')"
     >
       <div class="p-1">
-        <b-image
+        <BImage
           v-if="includeLogo"
           v-bind="logo"
         />
 
-        <b-menu>
-          <b-menu-list label="Menu">
-            <b-menu-item
+        <BMenu>
+          <BMenuList label="Menu">
+            <BMenuItem
               label="Home"
               icon="home"
               tag="router-link"
               to="/"
-            ></b-menu-item>
+            ></BMenuItem>
 
-            <b-menu-item
+            <BMenuItem
               label="Blogs"
               icon="feed"
               tag="router-link"
               to="/blogs"
             >
-            </b-menu-item>
-          </b-menu-list>
-        </b-menu>
+            </BMenuItem>
+          </BMenuList>
+        </BMenu>
       </div>
-    </b-sidebar>
+    </BSidebar>
   </section>
 </template>
 
 <script lang="ts">
-import { Image } from '@lib/types'
+import { IImage } from '@lib/types'
 
 export default {
   name: 'menu-mobile',
@@ -106,11 +106,11 @@ export default {
     * Image object that contains the logo data.
     */
     logo: {
-      type: Object as () => Image,
+      type: Object as () => IImage,
       default: () => ({
         src: 'https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png',
         alt: 'Lightweight UI components for Vue.js based on Bulma'
-      } as Image)
+      } as IImage)
     }
   }
 }

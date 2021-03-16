@@ -25,6 +25,9 @@
       "@components/*": [
         "src/components/*"
       ],
+      "@atoms/*": [
+        "src/components/atoms/*"
+      ],
       "@layout/*": [
         "src/components/layout/*"
       ],

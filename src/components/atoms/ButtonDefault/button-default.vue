@@ -1,0 +1,20 @@
+<template>
+  <b-button
+    class="button-default"
+    v-bind="$attrs"
+  >
+    <slot></slot>
+  </b-button>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  name: 'button-default'
+})
+</script>
+
+<style lang="scss" scoped>
+
+</style>
