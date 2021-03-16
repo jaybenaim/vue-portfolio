@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import MenuMobile from '@layout/MenuMobile/MenuMobile'
+import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 
 export default {
   name: 'App',

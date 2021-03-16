@@ -42,6 +42,7 @@
 import { Image } from '@/types'
 
 export default {
+  name: 'menu-mobile',
   props: {
     open: {
       type: Boolean,

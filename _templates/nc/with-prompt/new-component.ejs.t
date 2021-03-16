@@ -1,9 +1,9 @@
 ---
-to: "src/components/<%= filepath || 'general' %>/<%= Name %>/<%= filepath ? Name : Name %>.vue"
+to: "src/components/<%= filepath || 'general' %>/<%= Name %>/<%= h.changeCase.kebab(name) %>.vue"
 ---
 
 <template>
-  <div class="<%= name %>">
+  <div class="<%= h.changeCase.kebab(name) %>">
   </div>
 </template>
 
@@ -11,7 +11,7 @@ to: "src/components/<%= filepath || 'general' %>/<%= Name %>/<%= filepath ? Name
 import Vue from 'vue'
 
 export default Vue.extend({
-
+  name: '<%= h.changeCase.kebab(name) %>'
 })
 </script>
 

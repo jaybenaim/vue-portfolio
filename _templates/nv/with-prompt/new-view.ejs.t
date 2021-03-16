@@ -1,9 +1,9 @@
 ---
-to: "src/views/<%= Name %>/<%= Name %>.vue"
+to: "src/views/<%= Name %>/<%= h.changeCase.kebab(name) %>.vue"
 ---
 
 <template>
-  <div class="<%= name %>">
+  <div class="<%= h.changeCase.kebab(name) %>">
   </div>
 </template>
 
@@ -11,7 +11,7 @@ to: "src/views/<%= Name %>/<%= Name %>.vue"
 import Vue from 'vue'
 
 export default Vue.extend({
-
+  name: '<%= h.changeCase.kebab(name) %>'
 })
 </script>
 
