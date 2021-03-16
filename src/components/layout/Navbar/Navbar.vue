@@ -1,5 +1,8 @@
 <template>
-  <BNavbar class="navbar">
+  <BNavbar
+    class="navbar"
+    v-bind="$attrs"
+  >
     <template #brand>
       <b-navbar-item
         tag="router-link"
@@ -42,25 +45,45 @@
     </template>
 
     <template #end>
-      <b-navbar-item tag="div">
-        <div class="buttons">
-          <ButtonDefault
-            tag="router-link"
-            to="sign-up"
-            type="is-primary"
-          >
-            Sign Up
-          </ButtonDefault>
+      <div>
+        <b-navbar-item tag="div">
+          <div class="buttons">
+            <ButtonDefault
+              tag="router-link"
+              to="sign-up"
+              type="is-primary"
+            >
+              Sign Up
+            </ButtonDefault>
 
-          <ButtonDefault
-            tag="router-link"
-            to="login"
-            type="is-light"
-          >
-            Log In
-          </ButtonDefault>
-        </div>
-      </b-navbar-item>
+            <ButtonDefault
+              tag="router-link"
+              to="login"
+              type="is-light"
+            >
+              Log In
+            </ButtonDefault>
+          </div>
+        </b-navbar-item>
+      </div>
+    </template>
+
+    <template
+      #burger
+      v-if="useCustomToggle"
+    >
+      <!-- Toggler -->
+      <slot v-if="isMobile">
+        <ButtonDefault
+          @clicked="$emit('open')"
+          class="navbar__toggle m-4"
+        >
+          <b-icon
+            icon="menu"
+            size="is-big"
+          />
+        </ButtonDefault>
+      </slot>
     </template>
   </BNavbar>
 </template>
@@ -68,11 +91,15 @@
 <script lang="ts">
 import Vue from 'vue'
 
+import Responsive from '@mixins/Responsive'
+
 import { IImage } from '@/lib/types'
+
 import ButtonDefault from '@atoms/ButtonDefault/button-default.vue'
 
 export default Vue.extend({
   name: 'navbar',
+  mixins: [ Responsive ],
   props: {
     /**
     * Image object that contains the logo data.
@@ -84,6 +111,14 @@ export default Vue.extend({
         alt: 'Brand Logo',
         ratio: '1by1'
       } as IImage)
+    },
+    showLinks: {
+      type: Boolean,
+      default: true
+    },
+    useCustomToggle: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -93,5 +128,17 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.navbar {
+  .navbar-brand {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__toggle {
+    display: flex;
+    align-self: center;
+  }
+}
 
 </style>

@@ -2,6 +2,7 @@
   <b-button
     class="button-default"
     v-bind="$attrs"
+    @click="$emit('clicked')"
   >
     <slot></slot>
   </b-button>

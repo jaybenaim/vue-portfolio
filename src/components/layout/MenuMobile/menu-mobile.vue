@@ -22,15 +22,26 @@
               icon="home"
               tag="router-link"
               to="/"
-            ></BMenuItem>
+            />
 
             <BMenuItem
               label="Blogs"
-              icon="feed"
               tag="router-link"
               to="/blogs"
-            >
-            </BMenuItem>
+            />
+
+            <BMenuItem
+              label="About"
+              tag="router-link"
+              to="/about"
+            />
+
+            <BMenuItem
+              label="Contact"
+              icon="phone"
+              tag="router-link"
+              to="/contact"
+            />
           </BMenuList>
         </BMenu>
       </div>

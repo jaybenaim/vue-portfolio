@@ -6,19 +6,17 @@
     />
 
     <div id="nav">
-      <Navbar />
+      <Navbar
+        v-if="!isMobile"
+        fixed-top
+      />
 
-      <!-- Open Toggler -->
-      <slot v-if="isMobile">
-        <b-button
-          @click="open = !open"
-        >
-          <b-icon
-            icon="menu"
-            size="is-big"
-          />
-        </b-button>
-      </slot>
+      <Navbar
+        v-if="isMobile"
+        fixed-top
+        useCustomToggle
+        @open="open = !open"
+      />
     </div>
 
     <!-- Routes -->
@@ -28,17 +26,13 @@
 
 <script lang="ts">
 import Responsive from '@mixins/Responsive'
+
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@layout/Navbar/navbar.vue'
 
 export default {
   name: 'App',
   mixins: [ Responsive ],
-  data() {
-    return {
-      open: false
-    }
-  },
   components: {
     MenuMobile,
     Navbar
