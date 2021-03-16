@@ -18,7 +18,16 @@
     "paths": {
       "@/*": [
         "src/*"
-      ]
+      ],
+      "@types/*": [
+        "src/types/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@layout/*": [
+        "src/components/layout/*"
+      ],
     },
     "lib": [
       "esnext",

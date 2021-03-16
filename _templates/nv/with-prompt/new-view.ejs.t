@@ -1,5 +1,5 @@
 ---
-to: "src/components/<%= filepath || 'general' %>/<%= Name %>/<%= filepath ? Name : Name %>.vue"
+to: "src/views/<%= Name %>/<%= Name %>.vue"
 ---
 
 <template>

@@ -1,9 +1,5 @@
----
-to: "src/components/<%= filepath || 'general' %>/<%= Name %>/<%= filepath ? Name : Name %>.vue"
----
-
 <template>
-  <div class="<%= name %>">
+  <div class="blogs">assds
   </div>
 </template>
 
