@@ -26,14 +26,10 @@
 
             <b-menu-item
               label="Blogs"
-              icon="rate_review"
+              icon="feed"
               tag="router-link"
               to="/blogs"
             >
-              <span class="material-icons">
-                rate_review
-              </span>
-
             </b-menu-item>
           </b-menu-list>
         </b-menu>
@@ -115,6 +111,19 @@ export default {
         alt: 'Lightweight UI components for Vue.js based on Bulma'
       } as Image)
     }
+  },
+  data() {
+    return {
+      screen: undefined as any
+    }
+  },
+  watch: {
+    '$store.state.getScreenSize': function watcher() {
+      this.screen = this.$store.getters.getScreenSize
+    }
+  },
+  created() {
+    this.screen = this.$store.getters.getScreenSize
   }
 }
 </script>
