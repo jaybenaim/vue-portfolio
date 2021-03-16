@@ -6,15 +6,10 @@
     />
 
     <div id="nav">
-      <router-link to="/">
-        Home
-      </router-link> |
-      <router-link to="/about">
-        About
-      </router-link>
+      <Navbar />
 
       <!-- Open Toggler -->
-      <slot v-if="screen === 'tablet' || screen === 'mobile'">
+      <slot v-if="isMobile">
         <b-button
           @click="open = !open"
         >
@@ -33,13 +28,14 @@
 
 <script lang="ts">
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
+import Navbar from '@layout/Navbar/Navbar'
 
 export default {
   name: 'App',
   data() {
     return {
       open: false,
-      screen: undefined as any,
+      isMobile: undefined as any,
       windowWidth: window.innerWidth
     }
   },
@@ -48,12 +44,12 @@ export default {
       this.windowWidth = this.$store.getters.getWindowSize
     },
     '$store.state.getScreenSize': function watcher() {
-      this.screen = this.$store.getters.getScreenSize
+      this.isMobile = this.$store.getters.isMobile
     }
   },
   created() {
     window.addEventListener('resize', this.handleResize)
-    this.screen = this.$store.getters.getScreenSize
+    this.isMobile = this.$store.getters.isMobile
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize)
@@ -62,11 +58,12 @@ export default {
     handleResize() {
       this.$store.commit('setWindowWidth')
       this.windowWidth = this.$store.getters.getWindowSize
-      this.screen = this.$store.getters.getScreenSize
+      this.isMobile = this.$store.getters.isMobile
     }
   },
   components: {
-    MenuMobile
+    MenuMobile,
+    Navbar
   }
 }
 </script>
