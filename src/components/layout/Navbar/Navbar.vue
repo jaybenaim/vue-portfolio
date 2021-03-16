@@ -127,17 +127,18 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .navbar {
-  .navbar-brand {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
 
   &__toggle {
-    display: flex;
-    align-self: center;
+    @include flex($align: center);
+  }
+
+  @media (max-width: 992px) {
+    .navbar-brand {
+      width: 100%;
+      @include flex($justify: space-between);
+    }
   }
 }
 

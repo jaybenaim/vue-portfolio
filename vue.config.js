@@ -1,6 +1,16 @@
 // eslint-disable-next-line
 const path = require('path');  
 module.exports = {
+  css: {
+    loaderOptions: {
+      scss: {
+        data: `
+          @import "@/styles/_variables.scss";
+          @import "@/styles/_mixins.scss";
+        `
+      }
+    }
+  },
   runtimeCompiler: true,
   chainWebpack: (config) => {
     config.resolve.alias.set('@components', path.join(__dirname, 'src/components'))

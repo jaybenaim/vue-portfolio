@@ -1,0 +1,11 @@
+@mixin flex($dir: null, $wrap: null, $justify: null, $align: null) {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  flex-wrap: $wrap;
+  justify-content: $justify;
+  align-items: $align;
+}
