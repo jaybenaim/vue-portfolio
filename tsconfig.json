@@ -20,7 +20,7 @@
         "src/*"
       ],
       "@types/*": [
-        "src/types/*"
+        "src/lib/types/*"
       ],
       "@components/*": [
         "src/components/*"

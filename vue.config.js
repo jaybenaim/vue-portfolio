@@ -5,5 +5,6 @@ module.exports = {
   chainWebpack: (config) => {
     config.resolve.alias.set('@components', path.join(__dirname, 'src/components'))
     config.resolve.alias.set('@layout', path.join(__dirname, 'src/components/layout'))
+    config.resolve.alias.set('@types', path.join(__dirname, 'src/lib/types'))
   },
 }
