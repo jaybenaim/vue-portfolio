@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { Image } from '@/types'
+import { Image } from '@lib/types'
 
 export default {
   name: 'menu-mobile',
@@ -112,19 +112,6 @@ export default {
         alt: 'Lightweight UI components for Vue.js based on Bulma'
       } as Image)
     }
-  },
-  data() {
-    return {
-      screen: undefined as any
-    }
-  },
-  watch: {
-    '$store.state.getScreenSize': function watcher() {
-      this.screen = this.$store.getters.getScreenSize
-    }
-  },
-  created() {
-    this.screen = this.$store.getters.getScreenSize
   }
 }
 </script>

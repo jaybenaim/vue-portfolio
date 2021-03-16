@@ -19,14 +19,17 @@
       "@/*": [
         "src/*"
       ],
-      "@types/*": [
-        "src/lib/types/*"
+      "@lib/*": [
+        "src/lib/*"
       ],
       "@components/*": [
         "src/components/*"
       ],
       "@layout/*": [
         "src/components/layout/*"
+      ],
+      "@mixins/*": [
+        "src/mixins/*"
       ],
     },
     "lib": [
