@@ -105,7 +105,7 @@ import { IImage } from '@/lib/types'
 import ButtonDefault from '@atoms/ButtonDefault/button-default.vue'
 
 export default Vue.extend({
-  name: 'navbar',
+  name: 'navbar-default',
   mixins: [ Responsive ],
   props: {
     /**

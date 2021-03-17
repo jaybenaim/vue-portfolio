@@ -28,7 +28,7 @@
 import Responsive from '@mixins/Responsive'
 
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
-import Navbar from '@layout/Navbar/navbar.vue'
+import Navbar from '@/components/layout/Navbar/navbar-default.vue'
 
 export default {
   name: 'App',
