@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 const path = require('path');  
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? 'vue-portfolio/' : '/',
+  publicPath: '/vue-portfolio/',
   css: {
     loaderOptions: {
       scss: {
