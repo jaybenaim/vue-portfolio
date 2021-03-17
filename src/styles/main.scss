@@ -2,3 +2,8 @@
   background: var(--background-color);
   color: var(--primary-text-color);
 }
+
+html.has-navbar-fixed-top,
+body.has-navbar-fixed-top {
+  padding-top: 0;
+}

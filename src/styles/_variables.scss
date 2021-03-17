@@ -19,3 +19,8 @@ $blackRgb: 0, 0, 0;
   --background-color: var(--white);
   --primary-text-color: var(--black);
 }
+
+[data-theme="dark"] {
+  --background-color: var(--black);
+  --primary-text-color: var(--white);
+}

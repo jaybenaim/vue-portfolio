@@ -2,7 +2,6 @@
   <div
     class="hero"
     :class="withNav ? 'is-fullheight-with-navbar' : ''"
-    :data-theme="$store.getters.getTheme"
   >
     <slot name="head">
       <div class="hero-head hero__head">
@@ -64,7 +63,7 @@ export default Vue.extend({
   @include transition();
 
   h1 {
-    color: var(--white);
+    color: var(--primary-text-color);
     position: absolute;
     top: 100px;
     font-size: 52px;
@@ -72,7 +71,8 @@ export default Vue.extend({
   }
 
   &__particles {
-    background-color: var(--black);
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
   }
 
   &__body {

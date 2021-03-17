@@ -163,7 +163,7 @@ export default Vue.extend({
   }
 
   &__item, .navbar-item {
-    color: var(--white);
+    color: var(--primary-text-color);
     font-size: 18px;
   }
 
