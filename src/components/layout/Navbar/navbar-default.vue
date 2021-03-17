@@ -73,6 +73,16 @@
           </div>
         </b-navbar-item>
       </div>
+
+      <div class="navbar__dark-mode-toggle">
+        <b-navbar-item
+          tag="div"
+          class="navbar__item"
+          v-if="useDarkModeToggle"
+        >
+          <SwitchDefault />
+        </b-navbar-item>
+      </div>
     </template>
 
     <template
@@ -103,6 +113,7 @@ import Responsive from '@mixins/Responsive'
 import { IImage } from '@/lib/types'
 
 import ButtonDefault from '@atoms/ButtonDefault/button-default.vue'
+import SwitchDefault from '@/components/atoms/Switch/switch-default.vue'
 
 export default Vue.extend({
   name: 'navbar-default',
@@ -130,17 +141,22 @@ export default Vue.extend({
     withAuth: {
       type: Boolean,
       default: false
+    },
+    useDarkModeToggle: {
+      type: Boolean,
+      default: true
     }
   },
   components: {
-    ButtonDefault
+    ButtonDefault,
+    SwitchDefault
   }
 })
 </script>
 
 <style lang="scss">
 .navbar {
-  background-color: var(--black) !important;
+  background-color: transparent !important;
 
   &__toggle {
     @include flex($align: center);

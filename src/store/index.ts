@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    windowWidth: window.innerWidth
+    windowWidth: window.innerWidth,
+    theme: localStorage.getItem('theme') || 'dark'
   },
   getters: {
     getWindowSize: (state) => state.windowWidth,
@@ -32,11 +33,24 @@ export const store = new Vuex.Store({
 
       return 'wide'
     },
-    isMobile: (state) => (state.windowWidth <= 992)
+    isMobile: (state) => (state.windowWidth <= 992),
+    getTheme: (state) => state.theme
   },
   mutations: {
     setWindowWidth(state) {
       state.windowWidth = window.innerWidth
+    },
+    setInitialTheme(state) {
+      state.theme = localStorage.getItem('theme') || 'dark'
+    },
+    toggleTheme(state) {
+      const currentTheme = localStorage.getItem('theme')
+      const themeAfterChange = currentTheme === 'dark' ? 'light' : 'dark'
+
+      state.theme = themeAfterChange
+
+      document.body.setAttribute('data-theme', themeAfterChange)
+      localStorage.setItem('theme', themeAfterChange)
     }
   },
   actions: {

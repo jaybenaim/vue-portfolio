@@ -1,6 +1,7 @@
 $white: #ffffff;
 $whiteRgb: 255, 255, 255;
 $secondary: #00f070;
+$secondaryRgb: 0, 240, 112;
 
 $black: #000000;
 $blackRgb: 0, 0, 0;
@@ -9,4 +10,12 @@ $blackRgb: 0, 0, 0;
   --white: #ffffff;
   --black: #000000;
   --secondary: #00f070;
+  --background-color: var(--black);
+  --primary-text-color: var(--white);
+  --secondary-rgb: 0, 240, 112;
+}
+
+[data-theme="light"] {
+  --background-color: var(--white);
+  --primary-text-color: var(--black);
 }

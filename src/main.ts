@@ -9,6 +9,7 @@ import router from './router'
 import { store } from './store'
 
 import 'buefy/dist/buefy.css'
+import '@/styles/main.scss'
 
 Vue.use(Buefy)
 

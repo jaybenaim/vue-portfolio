@@ -32,6 +32,11 @@ import Navbar from '@/components/layout/Navbar/navbar-default.vue'
 export default {
   name: 'App',
   mixins: [ Responsive ],
+  async mounted() {
+    await this.$nextTick()
+
+    this.$store.commit('setInitialTheme')
+  },
   components: {
     MenuMobile,
     Navbar
