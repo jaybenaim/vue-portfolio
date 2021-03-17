@@ -14,7 +14,6 @@
       <Navbar
         v-if="isMobile"
         fixed-top
-        useCustomToggle
         @open="open = !open"
       />
     </div>

@@ -3,31 +3,25 @@
     class="hero"
     :class="withNav ? 'is-fullheight-with-navbar' : ''"
   >
-    <div class="hero-head">
-      <div class="container">
-        <h1 class="title">
+    <slot name="head">
+      <div class="hero-head hero__head">
+        <Particles
+          class="hero__particles"
+        />
+
+        <h1 class="title pl-5 ml-5">
           Jacob Benaim
         </h1>
       </div>
-    </div>
+    </slot>
 
-    <div
-      class="hero__inner-container"
-      :style="setBackground"
-    >
-      <Particles
-        class="hero__particles"
-      />
-
-      <slot name="body">
-        <div class="hero-body hero__body">
-
-          <slot name="title">
-
-          </slot>
+    <slot name="body">
+      <div class="hero-body hero__body">
+        <div class="box pl-5 ml-5">
+          <ButtonDefault> Click me </ButtonDefault>
         </div>
-      </slot>
-    </div>
+      </div>
+    </slot>
   </div>
 </template>
 
@@ -37,6 +31,7 @@ import Vue from 'vue'
 import Responsive from '@mixins/Responsive'
 
 import Particles from '@atoms/Particles/particles.vue'
+import ButtonDefault from '@atoms/ButtonDefault/button-default.vue'
 
 export default Vue.extend({
   name: 'hero',
@@ -56,19 +51,9 @@ export default Vue.extend({
       return `--background-url: url('${this.backgroundUrl}')`
     }
   },
-  mounted() {
-    // if (this.$el.querySelector('#particles-js')) {
-    //   // this.initParticles()
-    // }
-  },
-  methods: {
-    initParticles() {
-      console.log(window)
-      // window.particlesJS.load('particles-js', 'particles.json', () => console.log('working'))
-    }
-  },
   components: {
-    Particles
+    Particles,
+    ButtonDefault
   }
 })
 </script>
@@ -80,13 +65,28 @@ export default Vue.extend({
   h1 {
     color: var(--white);
     position: absolute;
-    width: 100%;
     top: 100px;
     font-size: 52px;
+    z-index: 6;
   }
 
   &__particles {
     background-color: var(--black);
+  }
+
+  &__head {
+
+  }
+
+  &__body {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    .button {
+      position: relative;
+      z-index: 6;
+    }
   }
 }
 </style>

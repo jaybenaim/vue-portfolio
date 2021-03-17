@@ -1,9 +1,10 @@
 <template>
   <div class="particles">
     <vue-particles
+      class="particles-container"
       color="#00f070"
       :particleOpacity="0.7"
-      :particlesNumber="100"
+      :particlesNumber="75"
       shapeType="circle"
       :particleSize="4"
       linesColor="#ffffff"
@@ -29,6 +30,14 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+  .particles-container {
+    height: 100%;
+  }
 
+  canvas {
+    min-height: 100%;
+    position: relative;
+    z-index: 5;
+  }
 </style>

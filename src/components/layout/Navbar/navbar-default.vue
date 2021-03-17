@@ -125,7 +125,7 @@ export default Vue.extend({
     },
     useCustomToggle: {
       type: Boolean,
-      default: false
+      default: true
     },
     withAuth: {
       type: Boolean,

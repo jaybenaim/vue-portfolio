@@ -1,7 +1,15 @@
 <template>
-  <section>
-    <Hero />
-  </section>
+  <div>
+    <section>
+      <Hero />
+    </section>
+
+    <section>
+      <div class="container">
+        adfsdfa
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -22,7 +30,8 @@ export default {
 </script>
 
 <style>
-.fade-left-enter {
-  color: blue;
+.container {
+  height: 300px;
+  width: 100%;
 }
 </style>
