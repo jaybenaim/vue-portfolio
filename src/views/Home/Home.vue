@@ -6,7 +6,6 @@
 
     <section>
       <div class="container">
-        adfsdfa
       </div>
     </section>
   </div>
