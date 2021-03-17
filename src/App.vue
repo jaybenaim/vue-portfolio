@@ -24,12 +24,13 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
 import Responsive from '@mixins/Responsive'
 
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
 
-export default {
+export default Vue.extend({
   name: 'App',
   mixins: [ Responsive ],
   async mounted() {
@@ -41,7 +42,7 @@ export default {
     MenuMobile,
     Navbar
   }
-}
+})
 </script>
 
 <style lang="scss">

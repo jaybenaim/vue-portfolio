@@ -41,7 +41,11 @@ export const store = new Vuex.Store({
       state.windowWidth = window.innerWidth
     },
     setInitialTheme(state) {
-      state.theme = localStorage.getItem('theme') || 'dark'
+      const currentTheme = localStorage.getItem('theme') || 'dark'
+
+      state.theme = currentTheme
+
+      document.body.setAttribute('data-theme', currentTheme)
     },
     toggleTheme(state) {
       const currentTheme = localStorage.getItem('theme')
