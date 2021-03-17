@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Buefy from 'buefy'
+import VueParticles from 'vue-particles'
 
 import App from './App.vue'
 
@@ -10,6 +11,8 @@ import { store } from './store'
 import 'buefy/dist/buefy.css'
 
 Vue.use(Buefy)
+
+Vue.use(VueParticles)
 
 Vue.config.productionTip = false
 

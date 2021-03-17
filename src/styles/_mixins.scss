@@ -9,3 +9,26 @@
   justify-content: $justify;
   align-items: $align;
 }
+
+@mixin transition($transition: 3s ease-in-out) {
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -ms-transition: $transition;
+  -o-transition: $transition;
+  transition: $transition;
+}
+
+@mixin animate($name: null, $duration: 3s, $fill: forwards) {
+  animation: $name $duration $fill;
+}
+
+@mixin slideRight($duration: 3s, $fill: forwards) {
+  animation: slide-right $duration $fill;
+}
+
+@keyframes slide-right {
+  100% {
+    left: -10%;
+    transform: translateX(10%);
+  }
+}

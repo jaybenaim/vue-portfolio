@@ -18,6 +18,7 @@
       <b-navbar-item
         to="/"
         tag="router-link"
+        class="navbar__item"
       >
         Home
       </b-navbar-item>
@@ -25,6 +26,7 @@
       <b-navbar-item
         to="/blogs"
         tag="router-link"
+        class="navbar__item"
       >
         Blogs
       </b-navbar-item>
@@ -32,6 +34,7 @@
       <b-navbar-item
         to="/about"
         tag="router-link"
+        class="navbar__item"
       >
         About
       </b-navbar-item>
@@ -39,13 +42,17 @@
       <b-navbar-item
         to="/contact"
         tag="router-link"
+        class="navbar__item"
       >
         Contact
       </b-navbar-item>
     </template>
 
     <template #end>
-      <div>
+      <div
+        class="navbar__auth"
+        v-if="withAuth"
+      >
         <b-navbar-item tag="div">
           <div class="buttons">
             <ButtonDefault
@@ -119,6 +126,10 @@ export default Vue.extend({
     useCustomToggle: {
       type: Boolean,
       default: false
+    },
+    withAuth: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -129,9 +140,15 @@ export default Vue.extend({
 
 <style lang="scss">
 .navbar {
+  background-color: var(--black) !important;
 
   &__toggle {
     @include flex($align: center);
+  }
+
+  &__item, .navbar-item {
+    color: var(--white);
+    font-size: 18px;
   }
 
   @media (max-width: 992px) {

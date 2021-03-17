@@ -28,11 +28,17 @@
       "@atoms/*": [
         "src/components/atoms/*"
       ],
+      "@organisms/*": [
+        "src/components/organisms/*"
+      ],
       "@layout/*": [
         "src/components/layout/*"
       ],
       "@mixins/*": [
         "src/mixins/*"
+      ],
+      "@images/*": [
+        "src/assets/images/*"
       ],
     },
     "lib": [
@@ -47,7 +53,8 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    "*"
   ],
   "exclude": [
     "node_modules"
