@@ -26,6 +26,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Responsive from '@mixins/Responsive'
+import { $get } from '@/helpers/api/get'
 
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
@@ -33,6 +34,11 @@ import Navbar from '@/components/layout/Navbar/navbar-default.vue'
 export default Vue.extend({
   name: 'App',
   mixins: [ Responsive ],
+  async created() {
+    // Wake up heroku
+    const data = await $get()
+    console.log(data.data)
+  },
   async mounted() {
     await this.$nextTick()
 
