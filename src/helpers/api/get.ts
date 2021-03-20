@@ -1,4 +1,6 @@
 import BASE_API from '../api-base-url'
+import { store } from '@/store'
+
 /**
  * Sends a get request to the API
  *
@@ -8,4 +10,4 @@ import BASE_API from '../api-base-url'
  * Default route is 'api/'
  */
 // eslint-disable-next-line
-export const $get = async (route = '/') => await BASE_API.get(route).then((response: any) => response).catch((err: any) => err)
+export const $get = async (route = '/') => await BASE_API.get(route).then((response: any) => response).catch((err: any) => store.commit('error', err))

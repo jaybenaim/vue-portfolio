@@ -31,6 +31,9 @@
       "@organisms/*": [
         "src/components/organisms/*"
       ],
+      "@sections/*": [
+        "src/components/sections/*"
+      ],
       "@layout/*": [
         "src/components/layout/*"
       ],
