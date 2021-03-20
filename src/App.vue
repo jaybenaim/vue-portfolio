@@ -1,7 +1,6 @@
 <template>
   <div
     id="app"
-    class="theme-colors"
   >
     <MenuMobile
       :open.sync="open"
@@ -33,8 +32,6 @@ import { $get } from '@/helpers/api/get'
 
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
-
-import '@/styles/main.scss'
 
 export default Vue.extend({
   name: 'App',

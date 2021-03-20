@@ -1,10 +1,10 @@
-.theme-colors {
-  background: var(--background-color);
-  color: var(--primary-text-color);
-  height: 100vh;
-}
-
 html.has-navbar-fixed-top,
 body.has-navbar-fixed-top {
   padding-top: 0;
+}
+
+body {
+  height: 100vh;
+  background: var(--background-color);
+  color: var(--primary-text-color);
 }

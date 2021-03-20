@@ -1,8 +1,14 @@
 <template>
-  <section class="blogs section is-large">
+  <section
+    class="blogs section is-medium"
+    v-if="isReady"
+  >
+    <h1 class="title">
+      Blogs
+    </h1>
+
     <ul
       class="blogs__list"
-      v-if="isReady"
     >
       <li
         v-for="(blog, index) in blogs"
@@ -11,6 +17,10 @@
         <CardBlog :blog="blog" />
       </li>
     </ul>
+
+    <div class="blogs__new-blog-button box">
+      <NewBlog />
+    </div>
   </section>
 </template>
 
@@ -19,6 +29,7 @@ import Vue from 'vue'
 
 import { Blog } from '@/lib/types/Blog'
 import CardBlog from '@organisms/Card/Blog/card-blog.vue'
+import NewBlog from '@atoms/NewBlog/new-blog.vue'
 
 import { $getBlogs } from '@/helpers/api/blogs'
 
@@ -39,11 +50,22 @@ export default Vue.extend({
     }
   },
   components: {
-    CardBlog
+    CardBlog,
+    NewBlog
   }
 })
 </script>
 
 <style lang="scss" scoped>
+.blogs {
+  .title {
+    color: var(--primary-text-color);
+  }
 
+  &__new-blog-button {
+    position: fixed;
+    bottom: 25px;
+    right: 50px;
+  }
+}
 </style>

@@ -158,6 +158,10 @@ export default Vue.extend({
 .navbar {
   background-color: transparent !important;
 
+  .navbar-brand {
+    background-color: transparent !important;
+  }
+
   &__toggle {
     @include flex($align: center);
   }
