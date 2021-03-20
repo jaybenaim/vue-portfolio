@@ -34,10 +34,27 @@ import Navbar from '@/components/layout/Navbar/navbar-default.vue'
 export default Vue.extend({
   name: 'App',
   mixins: [ Responsive ],
+  data() {
+    return {
+      dbIsReady: false,
+      errors: {}
+    }
+  },
+  watch: {
+    '$store.getters.getErrors': function watcher() {
+      this.errors = this.$store.getters('getErrors')
+    }
+  },
   async created() {
     // Wake up heroku
-    const data = await $get()
-    console.log(data.data)
+    const response = await $get()
+
+    if (response.data.status === 'success') {
+      this.dbIsReady = true
+    } else {
+      this.dbIsReady = false
+      this.$store.commit('error', response.data)
+    }
   },
   async mounted() {
     await this.$nextTick()
