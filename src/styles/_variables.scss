@@ -24,3 +24,18 @@ $blackRgb: 0, 0, 0;
   --background-color: var(--black);
   --primary-text-color: var(--white);
 }
+
+.theme-colors {
+  background: var(--background-color);
+  color: var(--primary-text-color);
+
+  p,
+  span h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--primary-text-color);
+  }
+}

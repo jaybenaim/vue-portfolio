@@ -11,6 +11,7 @@
       :isOpen="isOpen"
       @close="isOpen = false"
       @blog-added="$emit('blog-added')"
+      :labelPosition="labelPosition"
     />
   </div>
 </template>
@@ -26,6 +27,15 @@ export default Vue.extend({
     icon: {
       type: String,
       default: 'add'
+    },
+    labelPosition: {
+      type: String,
+      default: '',
+      validator: (value: string) => [
+        '',
+        'inside',
+        'on-border'
+      ].indexOf(value) > -1
     }
   },
   data() {

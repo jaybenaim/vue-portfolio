@@ -1,6 +1,6 @@
 <template>
   <section
-    class="blogs section is-medium"
+    class="blogs section is-medium theme-colors"
     v-if="isReady"
   >
     <h1 class="title">
@@ -24,6 +24,7 @@
     <div class="blogs__new-blog-button box">
       <NewBlog
         @blog-added="refreshBlogs"
+        :labelPosition="labelPos"
       />
     </div>
   </section>
@@ -40,10 +41,37 @@ import { $getBlogs } from '@/helpers/api/blogs'
 
 export default Vue.extend({
   name: 'blogs',
+  props: {
+    labelPosition: {
+      type: String,
+      default: 'on-border',
+      validator: (value: string) => [
+        '',
+        'inside',
+        'on-border'
+      ].indexOf(value) > -1
+    }
+  },
   data() {
     return {
       blogs: [] as Blog[],
-      isReady: false
+      isReady: false,
+      theme: this.$store.getters.getTheme,
+      labelPos: this.labelPosition
+    }
+  },
+  watch: {
+    /// watch theme
+    '$store.getters.getTheme': function watcher() {
+      const theme = this.$store.getters.getTheme
+
+      if (theme === 'dark') {
+        this.labelPos = ''
+      } else {
+        this.labelPos = this.labelPosition
+      }
+
+      this.theme = theme
     }
   },
   async created() {

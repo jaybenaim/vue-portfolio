@@ -70,6 +70,7 @@ export default Vue.extend({
       type: String,
       default: 'inside',
       validator: (value: string) => [
+        '',
         'inside',
         'on-border'
       ].indexOf(value) > -1

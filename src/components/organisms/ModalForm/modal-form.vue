@@ -11,12 +11,15 @@
       @close="$emit('close')"
     >
       <template>
-        <form @submit.prevent>
+        <form
+          @submit.prevent
+          class="form"
+        >
           <div
             class="modal-card"
             style="width: auto"
           >
-            <header class="modal-card-head">
+            <header class="modal-card-head modal-card__head theme-colors">
               <p class="modal-card-title">
                 New Post
               </p>
@@ -28,7 +31,7 @@
               />
             </header>
 
-            <section class="modal-card-body">
+            <section class="modal-card-body modal-card__body theme-colors">
               <b-field
                 label="Title"
                 :label-position="labelPosition"
@@ -65,6 +68,7 @@
                   v-model="formProps.summary"
                   maxlength="200"
                   type="textarea"
+                  placeholder="Summary"
                 />
               </b-field>
 
@@ -78,6 +82,7 @@
                   v-model="formProps.content"
                   maxlength="200"
                   type="textarea"
+                  placeholder="Content"
                 />
               </b-field>
 
@@ -120,7 +125,7 @@
               </b-field>
             </section>
 
-            <footer class="modal-card-foot">
+            <footer class="modal-card-foot modal-card__footer p-3 mb-5 theme-colors">
               <b-button
                 label="Close"
                 @click="$emit('close')"
@@ -128,7 +133,7 @@
 
               <b-button
                 label="Post"
-                native-type="submit"
+                type="is-primary"
                 @click.prevent="handleSubmit"
               />
             </footer>
@@ -159,6 +164,7 @@ export default Vue.extend({
       type: String,
       default: 'on-border',
       validator: (value: string) => [
+        '',
         'inside',
         'on-border'
       ].indexOf(value) > -1
@@ -227,17 +233,52 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss">
-.field:not(:last-child) {
-  margin-top: 20px;
-  margin-bottom: 20px;
+[data-theme="dark"] {
+  .modal-card {
+    &__head {
+      border-top: 1px solid var(--primary-text-color);
+      border-left: 1px solid var(--primary-text-color);
+      border-right: 1px solid var(--primary-text-color);
+      border-bottom: none;
+    }
+
+    &__body {
+      border-left: 1px solid var(--primary-text-color);
+      border-right: 1px solid var(--primary-text-color);
+      border-bottom: none;
+    }
+
+    &__footer {
+      border-bottom: 1px solid var(--primary-text-color);
+      border-left: 1px solid var(--primary-text-color);
+      border-right: 1px solid var(--primary-text-color);
+      border-top: none;
+    }
+  }
 }
 
-.label {
-  text-align: left;
-  font-size: 18px !important;
+.modal-form {
+
+  .field:not(:last-child) {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .label {
+    text-align: left;
+    font-size: 18px !important;
+    color: var(--primary-text-color);
+  }
+
+  .textarea {
+    resize: none;
+  }
+
+  @media (max-width: 1200px) {
+    .form {
+    margin-top: 5rem !important;
+    }
+  }
 }
 
-.textarea {
-  resize: none;
-}
 </style>

@@ -81,6 +81,7 @@
           type: String,
           default: 'on-border',
           validator: (value: string) => [
+            '',
             'inside',
             'on-border'
           ].indexOf(value) > -1
