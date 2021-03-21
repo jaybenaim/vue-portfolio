@@ -39,12 +39,7 @@ export default Vue.extend({
   data() {
     return {
       dbIsReady: false,
-      errors: {}
-    }
-  },
-  watch: {
-    '$store.getters.getErrors': function watcher() {
-      this.errors = this.$store.getters('getErrors')
+      errors: this.$store.getters.getErrors
     }
   },
   async created() {

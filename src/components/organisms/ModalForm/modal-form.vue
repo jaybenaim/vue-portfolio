@@ -73,8 +73,11 @@
                 />
               </b-field>
 
+              <img :src="formProps.image" />
+
               <UploadDragAndDrop
                 :label-position="labelPosition"
+                @uploaded="handleFileUpload"
               />
 
               <b-field
@@ -124,6 +127,7 @@ import { Blog } from '@/lib/types/Blog'
 
 import Sortable from '@/components/atoms/Sortable/sortable.vue'
 import UploadDragAndDrop from '../input/UploadDragAndDrop/upload-drag-and-drop.vue'
+import { $getImage } from '@/helpers/api/getImage'
 
 export default Vue.extend({
   props: {
@@ -153,6 +157,26 @@ export default Vue.extend({
         tags: undefined as any
       } as Blog
     }
+  },
+  methods: {
+    toBase64(file: any) {
+      const url = new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = (error) => reject(error)
+      })
+      return url
+    },
+    async handleFileUpload(file: any) {
+      const base64String: string = await this.toBase64(file) as string
+
+      const imageUrl: string = await $getImage(base64String)
+
+      if (imageUrl) {
+        this.formProps.image = imageUrl
+      }
+    },
   },
   components: {
     UploadDragAndDrop,

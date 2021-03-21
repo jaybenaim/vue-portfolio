@@ -1,7 +1,10 @@
 <template>
   <section class="mb-5">
     <label class="label">Image</label>
-    <b-field class="file">
+    <b-field
+      class="file"
+      v-if="asButton"
+    >
       <b-upload
         v-model="file"
         expanded
@@ -13,10 +16,9 @@
       </b-upload>
     </b-field>
 
-    <b-field>
+    <b-field v-else>
       <b-upload
-        v-model="dropFiles"
-        multiple
+        v-model="file"
         drag-drop
         expanded
       >
@@ -28,7 +30,7 @@
                 size="is-medium"
               ></b-icon>
             </p>
-            <p>Drop your files here or click to upload</p>
+            <p>Drop your files here or click to upload</p> {{ file.name }}
           </div>
         </section>
       </b-upload>
@@ -57,6 +59,10 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'upload-drag-and-drop',
   props: {
+    asButton: {
+      type: Boolean,
+      default: false,
+    },
     labelPosition: {
       type: String,
       default: 'inside',
@@ -64,6 +70,14 @@ export default Vue.extend({
         'inside',
         'on-border'
       ].indexOf(value) > -1
+    }
+  },
+  watch: {
+    dropFiles() {
+      this.$emit('uploaded', this.dropFiles)
+    },
+    file() {
+      this.$emit('uploaded', this.file)
     }
   },
   data() {
