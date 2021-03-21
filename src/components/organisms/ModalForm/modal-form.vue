@@ -11,7 +11,7 @@
       @close="$emit('close')"
     >
       <template>
-        <form action="">
+        <form @submit.prevent>
           <div
             class="modal-card"
             style="width: auto"
@@ -32,6 +32,8 @@
               <b-field
                 label="Title"
                 :label-position="labelPosition"
+                :message="errors.title"
+                :type="{ 'is-danger': errors.title }"
               >
                 <b-input
                   v-model="formProps.title"
@@ -43,6 +45,8 @@
               <b-field
                 label="Author"
                 :label-position="labelPosition"
+                :message="errors.author"
+                :type="{ 'is-danger': errors.author }"
               >
                 <b-input
                   v-model="formProps.author"
@@ -54,6 +58,8 @@
               <b-field
                 label="Summary"
                 :label-position="labelPosition"
+                :message="errors.summary"
+                :type="{ 'is-danger': errors.summary }"
               >
                 <b-input
                   v-model="formProps.summary"
@@ -65,6 +71,8 @@
               <b-field
                 label="Content"
                 :label-position="labelPosition"
+                :message="errors.content"
+                :type="{ 'is-danger': errors.content }"
               >
                 <b-input
                   v-model="formProps.content"
@@ -73,7 +81,16 @@
                 />
               </b-field>
 
-              <img :src="formProps.image" />
+              <div
+                class="preview"
+                v-if="formProps.image"
+              >
+                <span>Preview: </span>
+                <img
+                  :src="formProps.image"
+                  class="preview__image"
+                />
+              </div>
 
               <UploadDragAndDrop
                 :label-position="labelPosition"
@@ -108,9 +125,11 @@
                 label="Close"
                 @click="$emit('close')"
               />
+
               <b-button
-                label="Login"
-                type="is-primary"
+                label="Post"
+                native-type="submit"
+                @click.prevent="handleSubmit"
               />
             </footer>
           </div>
@@ -128,6 +147,7 @@ import { Blog } from '@/lib/types/Blog'
 import Sortable from '@/components/atoms/Sortable/sortable.vue'
 import UploadDragAndDrop from '../input/UploadDragAndDrop/upload-drag-and-drop.vue'
 import { $getImage } from '@/helpers/api/getImage'
+import { $createBlog } from '@/helpers/api/blogs'
 
 export default Vue.extend({
   props: {
@@ -146,6 +166,12 @@ export default Vue.extend({
   },
   data() {
     return {
+      errors: {
+        title: '',
+        author: '',
+        summary: '',
+        content: '',
+      },
       formProps: {
         title: '',
         author: '',
@@ -171,12 +197,28 @@ export default Vue.extend({
     async handleFileUpload(file: any) {
       const base64String: string = await this.toBase64(file) as string
 
+      this.formProps.imageCaption = file.name
+
       const imageUrl: string = await $getImage(base64String)
 
       if (imageUrl) {
         this.formProps.image = imageUrl
       }
     },
+    async handleSubmit() {
+      const newBlogResponse = await $createBlog(this.formProps)
+
+      const errors = newBlogResponse && newBlogResponse.data && newBlogResponse.data.errors
+
+      if (!errors) {
+        this.$emit('close')
+        this.$emit('blog-added')
+      } else if (errors) {
+        for (const error of Object.keys(errors)) {
+          this.errors[error as 'title' | 'author' | 'summary' | 'content'] = errors[error].message.replace('Path', '')
+        }
+      }
+    }
   },
   components: {
     UploadDragAndDrop,

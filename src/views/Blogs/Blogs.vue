@@ -19,7 +19,9 @@
     </ul>
 
     <div class="blogs__new-blog-button box">
-      <NewBlog />
+      <NewBlog
+        @blog-added="refreshBlogs"
+      />
     </div>
   </section>
 </template>
@@ -37,16 +39,24 @@ export default Vue.extend({
   name: 'blogs',
   data() {
     return {
-      blogs: {} as Blog[],
+      blogs: [] as Blog[],
       isReady: false
     }
   },
   async created() {
-    const blogs: Blog[] = await $getBlogs()
+    await this.getBlogs()
+  },
+  methods: {
+    async getBlogs() {
+      const blogs: void | Blog[] = await $getBlogs()
 
-    if (Object.keys(blogs).length > 0) {
-      this.blogs = blogs
-      this.isReady = true
+      if (blogs && Object.keys(blogs).length > 0) {
+        this.blogs = blogs
+        this.isReady = true
+      }
+    },
+    refreshBlogs() {
+      this.getBlogs()
     }
   },
   components: {

@@ -36,13 +36,16 @@
       </b-upload>
     </b-field>
 
-    <div class="tags">
+    <div
+      class="tags"
+      v-if="multiple"
+    >
       <span
         v-for="(file, index) in dropFiles"
         :key="index"
         class="tag is-primary"
       >
-        {{file.name}}
+        {{ file.name }}
         <button
           class="delete is-small"
           type="button"
@@ -70,25 +73,20 @@ export default Vue.extend({
         'inside',
         'on-border'
       ].indexOf(value) > -1
+    },
+    multiple: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
-    dropFiles() {
-      this.$emit('uploaded', this.dropFiles)
-    },
     file() {
       this.$emit('uploaded', this.file)
     }
   },
   data() {
     return {
-      file: {},
-      dropFiles: []
-    }
-  },
-  methods: {
-    deleteDropFile(index: number) {
-      this.dropFiles.splice(index, 1)
+      file: {} as File
     }
   }
 })

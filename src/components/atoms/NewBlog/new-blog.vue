@@ -10,6 +10,7 @@
     <ModalForm
       :isOpen="isOpen"
       @close="isOpen = false"
+      @blog-added="$emit('blog-added')"
     />
   </div>
 </template>
