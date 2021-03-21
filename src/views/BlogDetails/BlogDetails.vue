@@ -1,15 +1,20 @@
 <template>
-  <div class="blog-details">
-    details
+  <div
+    class="blog-details section is-large theme-colors mt-6"
+    v-if="Object.keys(currentBlog).length > 0"
+  >
+    <CardBlog :blog="currentBlog" />
   </div>
 </template>
 
 <script lang="ts">
+import CardBlog from '@/components/organisms/Card/Blog/card-blog.vue'
 import { $getBlogById } from '@/helpers/api/blogs'
 import { Blog, IBlogApiResponse } from '@/lib/types/Blog'
 import Vue from 'vue'
 
 export default Vue.extend({
+  components: { CardBlog },
   name: 'blog-details',
   props: {
     blog: {

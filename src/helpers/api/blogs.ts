@@ -1,5 +1,5 @@
 import BASE_API from '../api-base-url'
-import { Blog, IBlogApiResponse } from '@/lib/types/Blog'
+import { Blog } from '@/lib/types/Blog'
 import { store } from '@/store'
 
 /**
@@ -13,7 +13,15 @@ import { store } from '@/store'
  */
 // eslint-disable-next-line
 export const $getBlogs = async (route = '/blogs') => await BASE_API.get(route)
-.then((response) => response.data as Blog[])
+.then(({ data: blogs }) => {
+  const blogList = [] as Blog[]
+
+  for (const blog of blogs) {
+    blogList.push(new Blog(blog))
+  }
+
+  return blogList
+})
 .catch((err: any) => err.data)
 
 /**
@@ -27,7 +35,7 @@ export const $getBlogs = async (route = '/blogs') => await BASE_API.get(route)
  */
 // eslint-disable-next-line
 export const $getBlogById = async (blogId: string) => await BASE_API.get(`/blogs/${blogId}`)
-.then((response) => response.data as IBlogApiResponse)
+.then((response) => response.data)
 .catch((err: any) => {
   store.commit('error', err)
 

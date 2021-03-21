@@ -2,7 +2,7 @@
   <div class="blog">
     <router-link
       :to="{
-        path: `${blog._id}`,
+        path: `${blog.id}`,
         query: blog
       }"
       append
