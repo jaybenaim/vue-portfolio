@@ -2,7 +2,7 @@
   <div class="blog">
     <div class="card">
       <div class="card-image">
-        <figure class="image is-4by3">
+        <figure class="image is-2by1">
           <img
             :alt="blog.imageCaption"
             :src="blog.image"
