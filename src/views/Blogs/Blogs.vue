@@ -13,8 +13,11 @@
       <li
         v-for="(blog, index) in blogs"
         :key="index"
+        class="box"
       >
-        <CardBlog :blog="blog" />
+        <CardBlog
+          :blog="blog"
+        />
       </li>
     </ul>
 

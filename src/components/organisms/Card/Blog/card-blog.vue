@@ -22,27 +22,33 @@
           </div>
 
           <div class="media-content">
-            <p class="title is-4">
-              {{ blog.author }}
+            <p class="title is-4 blog__title">
+              {{ blog.title }}
             </p>
 
-            <p class="subtitle is-6">
-              @johnsmith
+            <p class="subtitle is-6 blog__author">
+              By: {{ blog.author }}
             </p>
           </div>
         </div>
 
-        <div class="content">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Phasellus nec iaculis mauris. <a>@bulmaio</a>.
+        <div class="content blog__content-container">
+          <span
+            v-html="blog.summary"
+            class="blog__summary"
+          />
 
-          <a href="#">#css</a> <a href="#">#responsive</a>
-          <br>
-
-          <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+          <time
+            class="blog__publish-date"
+            :datetime="blog.publishDate"
+          >{{ formatDate(blog.publishDate) }}
+          </time>
         </div>
 
-        <footer class="card-footer">
+        <footer
+          class="card-footer"
+          v-if="includeFooter"
+        >
           <a
             href="#"
             class="card-footer-item"
@@ -64,19 +70,47 @@
 </template>
 
 <script lang="ts">
-import { Blog } from '@/lib/types/Blog'
 import Vue from 'vue'
+
+import { Blog } from '@/lib/types/Blog'
+import { $formatDate } from '@/helpers/date-time/date-time'
 
 export default Vue.extend({
   name: 'card-blog',
   props: {
     blog: {
       type: Object as () => Blog
+    },
+    includeFooter: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    formatDate(date: Date): string {
+      return $formatDate(date)
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+.blog {
+  &__title,
+  &__author {
+    text-align: left;
+  }
 
+  &__content-container {
+    @include flex($dir: column);
+  }
+
+  &__summary {
+    align-self: flex-start;
+  }
+
+  &__publish-date {
+    align-self: flex-end;
+  }
+}
 </style>
