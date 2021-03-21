@@ -44,13 +44,15 @@ export default Vue.extend({
   },
   async created() {
     // Wake up heroku
-    const response = await $get()
+    if (!this.dbIsReady) {
+      const response = await $get()
 
-    if (response.data.status === 'success') {
-      this.dbIsReady = true
-    } else {
-      this.dbIsReady = false
-      this.$store.commit('error', response.data)
+      if (response.data.status === 'success') {
+        this.dbIsReady = true
+      } else {
+        this.dbIsReady = false
+        this.$store.commit('error', response.data)
+      }
     }
   },
   async mounted() {

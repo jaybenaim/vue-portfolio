@@ -7,9 +7,7 @@
       Blogs
     </h1>
 
-    <ul
-      class="blogs__list"
-    >
+    <ul class="blogs__list">
       <li
         v-for="(blog, index) in blogs"
         :key="index"

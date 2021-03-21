@@ -214,7 +214,7 @@ export default Vue.extend({
     async handleSubmit() {
       const newBlogResponse = await $createBlog(this.formProps)
 
-      const errors = newBlogResponse && newBlogResponse.data && newBlogResponse.data.errors
+      const errors = newBlogResponse && newBlogResponse.errors
 
       if (!errors) {
         this.$emit('close')

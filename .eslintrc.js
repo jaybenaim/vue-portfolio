@@ -36,11 +36,7 @@ module.exports = {
         'code': 120
       }
     ],
-    'quotes': [
-      'error',
-      'single',
-      { 'allowTemplateLiterals': true }
-    ],
+    'no-underscore-dangle': 0,
     'no-continue': 0,
     'no-empty-function': 'off',
     '@typescript-eslint/no-var-requires': 1,
