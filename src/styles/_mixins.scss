@@ -1,10 +1,11 @@
-@mixin flex($dir: null, $wrap: null, $justify: null, $align: null) {
+@mixin flex($flex: flex, $dir: row, $wrap: nowrap, $justify: center, $align: center) {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
-  display: flex;
+  display: $flex;
 
+  flex-direction: $dir;
   flex-wrap: $wrap;
   justify-content: $justify;
   align-items: $align;

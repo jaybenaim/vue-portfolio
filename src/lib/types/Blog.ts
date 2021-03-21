@@ -6,7 +6,7 @@ export interface Blog {
   isCreator?: boolean
   image: string
   imageCaption: string
-  publishDate: string
+  publishDate: Date
   created: string
   updated: string
   tags: string[]

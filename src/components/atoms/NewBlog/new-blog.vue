@@ -3,14 +3,21 @@
     <ButtonDefault
       rounded
       icon-right="plus"
+      @click.native="isOpen = true"
     >
     </ButtonDefault>
+
+    <ModalForm
+      :isOpen="isOpen"
+      @close="isOpen = false"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import ButtonDefault from '../ButtonDefault/button-default.vue'
+import ModalForm from '@organisms/ModalForm/modal-form.vue'
 
 export default Vue.extend({
   name: 'new-blog',
@@ -20,7 +27,15 @@ export default Vue.extend({
       default: 'add'
     }
   },
-  components: { ButtonDefault }
+  data() {
+    return {
+      isOpen: false
+    }
+  },
+  components: {
+    ButtonDefault,
+    ModalForm
+  }
 })
 </script>
 
