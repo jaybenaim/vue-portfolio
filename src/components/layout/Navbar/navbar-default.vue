@@ -53,29 +53,53 @@
         class="navbar__auth"
         v-if="withAuth"
       >
-        <b-navbar-item tag="div">
-          <div class="buttons">
+        <div
+          class="logged-out-buttons"
+          v-if="!isLoggedIn"
+        >
+          <b-navbar-item class="navbar__item">
             <ButtonDefault
+              tag="router-link"
+              :to="{
+                name: 'Login'
+              }"
+              @click.native="$emit('close')"
+            >
+              Login
+            </ButtonDefault>
+          </b-navbar-item>
+
+          <b-navbar-item class="navbar__item">
+            <ButtonDefault
+              tag="router-link"
+              :to="{
+                name: 'SignUp'
+              }"
               type="is-primary"
-              @click.native="isOpen = true"
+              @click.native="$emit('close')"
             >
               Sign Up
             </ButtonDefault>
+          </b-navbar-item>
+        </div>
 
-            <SignUp
-              v-if="isOpen"
-              @close="isOpen = false"
-            />
+        <div class="navbar__is-logged-in is-flex is-flex-direction-row">
+          <b-navbar-item
+            class="navbar__item"
+            v-if="isLoggedIn && user"
+          >
+            Signed in as, {{ user.username }}
+          </b-navbar-item>
 
+          <b-navbar-item>
             <ButtonDefault
-              tag="router-link"
-              to="login"
               type="is-light"
+              @click.native="handleLogout"
             >
-              Log In
+              Logout
             </ButtonDefault>
-          </div>
-        </b-navbar-item>
+          </b-navbar-item>
+        </div>
       </div>
 
       <div class="navbar__dark-mode-toggle">
@@ -118,7 +142,6 @@ import { IImage } from '@/lib/types'
 
 import ButtonDefault from '@atoms/ButtonDefault/button-default.vue'
 import SwitchDefault from '@/components/atoms/Switch/switch-default.vue'
-import SignUp from '@/views/SignUp/SignUp.vue'
 
 export default Vue.extend({
   name: 'navbar-default',
@@ -154,13 +177,35 @@ export default Vue.extend({
   },
   data() {
     return {
-      isOpen: false
+      isOpen: false,
+      isLoggedIn: this.$store.getters.isLoggedIn,
+      user: this.$store.getters.getUser
     }
+  },
+  watch: {
+    '$store.getters.isLoggedIn': function watcher() {
+      const isLoggedIn = this.$store.getters.isLoggedIn
+      if (isLoggedIn) {
+        this.$router.go(-1)
+        this.$emit('close')
+        this.isLoggedIn = isLoggedIn
+        this.user = this.$store.getters.getUser
+      }
+    }
+  },
+  methods: {
+    handleLogout() {
+      // eslint-disable-next-line
+      const auth2 = gapi.auth2.getAuthInstance()
+      auth2.signOut().then(() => {
+        console.log('User signed out.')
+      })
+      this.$store.commit('isLoggedIn', false)
+    },
   },
   components: {
     ButtonDefault,
-    SwitchDefault,
-    SignUp
+    SwitchDefault
   }
 })
 </script>

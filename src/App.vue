@@ -11,6 +11,7 @@
       <Navbar
         v-if="!isMobile"
         fixed-top
+        withAuth
       />
 
       <Navbar
