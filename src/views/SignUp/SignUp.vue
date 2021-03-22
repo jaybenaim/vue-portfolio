@@ -119,6 +119,7 @@ import Vue from 'vue'
 import { User } from '@/lib/types/models/User'
 import { $createUser } from '@/helpers/google'
 import ModalDefault from '@/components/organisms/Modal/ModalDefault/modal-default.vue'
+import { $signUp } from '@/helpers/api/auth'
 
 /* eslint-disable */
 export default Vue.extend({
@@ -199,6 +200,9 @@ export default Vue.extend({
         onsuccess: this.handleSuccess,
         onfailure: this.handleErrors
       })
+    }, 
+    async handleSubmit() { 
+      await $signUp(this.user)
     }
   }
 })

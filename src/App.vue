@@ -39,6 +39,7 @@ import { $get } from '@/helpers/api/get'
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
 import { $googleInit } from './helpers/google'
+import { IStatusResponse } from './lib/types/api'
 
 export default Vue.extend({
   name: 'App',
@@ -66,13 +67,13 @@ export default Vue.extend({
   async created() {
     // Wake up heroku
     if (!this.dbIsReady) {
-      const response = await $get()
+      const response: IStatusResponse | void = await $get()
 
-      if (response.data.status === 'success') {
+      if (response && response.status === 'success') {
         this.dbIsReady = true
       } else {
         this.dbIsReady = false
-        this.$store.commit('error', response.data)
+        this.$store.commit('error', response)
       }
     }
 

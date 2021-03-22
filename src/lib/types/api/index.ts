@@ -1,3 +1,5 @@
+import { User } from '../models/User'
+
 export interface RequestTypes {
   /**
    * Sends a get request to the API
@@ -7,13 +9,25 @@ export interface RequestTypes {
    *
    * Default route is 'api/'
    */
-    $get: (route: string) => Promise<IGetResponse>
+    $get: (route: string) => Promise<IGetResponse>,
+
+    $signUp: (user: User) => Promise<IUserResponse>
   }
 
-interface IGetResponse {
+export interface IGetResponse {
     data: IStatusResponse
   }
 
-interface IStatusResponse {
+export interface IStatusResponse {
     status: string
+  }
+
+export interface IUserResponse {
+    data: IApiUserResponse
+  }
+
+export interface IApiUserResponse {
+    name: string
+    email: string
+    isAuthenticated: boolean
   }
