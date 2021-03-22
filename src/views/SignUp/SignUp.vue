@@ -184,13 +184,6 @@ export default Vue.extend({
     handleErrors(reason: {error: string}) {
       this.$store.commit('error', reason)
     },
-    signOut() {
-      const auth2 = gapi.auth2.getAuthInstance()
-      auth2.signOut().then(() => {
-        console.log('User signed out.')
-      })
-      this.$store.commit('isLoggedIn', false)
-    },
     handleClose() { 
       this.$router.go(-1)
     }, 
@@ -209,8 +202,10 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .sign-up { 
-
+  .label { 
+    text-align: left; 
+  }
 }
 </style>

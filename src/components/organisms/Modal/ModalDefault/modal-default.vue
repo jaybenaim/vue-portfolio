@@ -28,7 +28,6 @@
 
             <section class="modal-card-body modal-card__body theme-colors">
               <slot>
-
               </slot>
             </section>
 
@@ -84,6 +83,6 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 </style>
