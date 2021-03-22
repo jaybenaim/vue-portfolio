@@ -57,7 +57,7 @@
       </div>
 
       <div class="m-3 p-4">
-        <SwitchDefault class="is-justify-content-center box"/>
+        <SwitchDefault class="is-justify-content-center box theme-colors"/>
       </div>
     </BSidebar>
   </section>
@@ -151,17 +151,10 @@ export default {
   }
 
   &__link {
+    @include themeLink();
 
-    a,
-    i,
-    span {
-      color: var(--primary-text-color);
-    }
-
-    &:hover a,
-    &:hover i,
-    &:hover span {
-      color: var(--primary-text-color-hover);
+    a:hover {
+      background-color: var(--background-color-hover) !important;
     }
   }
 

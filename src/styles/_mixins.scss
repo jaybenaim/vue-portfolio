@@ -38,3 +38,17 @@
   background-color: var(--background-color) !important;
   color: var(--primary-text-color) !important;
 }
+
+@mixin themeLink() {
+  a,
+  i,
+  span {
+    color: var(--primary-text-color);
+  }
+
+  &:hover a,
+  &:hover i,
+  &:hover span {
+    color: var(--primary-text-color-hover);
+  }
+}
