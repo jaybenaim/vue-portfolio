@@ -22,18 +22,21 @@
               icon="home"
               tag="router-link"
               to="/"
+              @click.native="$emit('close')"
             />
 
             <BMenuItem
               label="Blogs"
               tag="router-link"
               to="/blogs"
+              @click.native="$emit('close')"
             />
 
             <BMenuItem
               label="About"
               tag="router-link"
               to="/about"
+              @click.native="$emit('close')"
             />
 
             <BMenuItem
@@ -41,6 +44,7 @@
               icon="phone"
               tag="router-link"
               to="/contact"
+              @click.native="$emit('close')"
             />
           </BMenuList>
         </BMenu>
