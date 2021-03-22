@@ -30,16 +30,27 @@ import Vue from 'vue'
 import Responsive from '@mixins/Responsive'
 import { $get } from '@/helpers/api/get'
 
+/* eslint-disable  */
+// import '@types/gapi.auth2/index'
+
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
+import { $googleInit } from './helpers/google'
 
 export default Vue.extend({
   name: 'App',
   mixins: [ Responsive ],
   data() {
     return {
-      dbIsReady: false,
-      errors: this.$store.getters.getErrors
+      dbIsReady: false
+    }
+  },
+  computed: {
+    errors() {
+      return this.$store.getters.getErrors
+    },
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn
     }
   },
   async created() {
@@ -54,11 +65,34 @@ export default Vue.extend({
         this.$store.commit('error', response.data)
       }
     }
+
+    $googleInit()
   },
   async mounted() {
     await this.$nextTick()
 
     this.$store.commit('setInitialTheme')
+  },
+  methods: {
+  
+    /**
+     * Listener method for sign-out live value.
+     *
+     * @param {boolean} val the updated signed out state.
+     */
+    signinChanged(val: boolean) {
+      console.log('Signin state changed to ', val);
+      return val
+    }, 
+    /**
+   * Listener method for when the user changes.
+   *
+   * @param {GoogleUser} user the updated user.
+   */
+    userChanged(user: gapi.auth2.GoogleUser) { 
+      console.log(user)
+      this.$store.commit('setUser', user)
+    }
   },
   components: {
     MenuMobile,

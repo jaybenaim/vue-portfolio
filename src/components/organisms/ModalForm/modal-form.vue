@@ -147,7 +147,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { Blog } from '@/lib/types/Blog'
+import { Blog } from '@/lib/types/models/Blog'
 
 import Sortable from '@/components/atoms/Sortable/sortable.vue'
 import UploadDragAndDrop from '../input/UploadDragAndDrop/upload-drag-and-drop.vue'

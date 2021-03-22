@@ -72,7 +72,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { IBlog } from '@/lib/types/Blog'
+import { IBlog } from '@/lib/types/models/Blog'
 import { $formatDate } from '@/helpers/date-time/date-time'
 
 export default Vue.extend({

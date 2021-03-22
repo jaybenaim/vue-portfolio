@@ -40,7 +40,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { Blog } from '@/lib/types/Blog'
+import { Blog } from '@/lib/types/models/Blog'
 import CardBlog from '@organisms/Card/Blog/card-blog.vue'
 import NewBlog from '@atoms/NewBlog/new-blog.vue'
 

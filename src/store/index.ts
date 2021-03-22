@@ -1,3 +1,4 @@
+import { User } from '@/lib/types/models/User'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -7,7 +8,10 @@ export const store = new Vuex.Store({
   state: {
     windowWidth: window.innerWidth,
     theme: localStorage.getItem('theme') || 'dark',
-    errors: {}
+    errors: {},
+    isLoggedIn: false,
+    user: {} as User,
+    googleIsLoaded: false
   },
   getters: {
     getWindowSize: (state) => state.windowWidth,
@@ -36,7 +40,10 @@ export const store = new Vuex.Store({
     },
     isMobile: (state) => (state.windowWidth <= 992),
     getTheme: (state) => state.theme,
-    getErrors: (state) => state.errors
+    getErrors: (state) => state.errors,
+    isLoggedIn: (state) => state.isLoggedIn,
+    getUser: (state) => state.user,
+    isGoogleLoaded: (state) => state.googleIsLoaded
   },
   mutations: {
     setWindowWidth(state) {
@@ -57,6 +64,14 @@ export const store = new Vuex.Store({
 
       document.body.setAttribute('data-theme', themeAfterChange)
       localStorage.setItem('theme', themeAfterChange)
+    },
+    setUser(state, user) {
+      state.user = user
+      state.isLoggedIn = true
+      state.googleIsLoaded = true
+    },
+    googleIsLoaded(state, currentState) {
+      state.googleIsLoaded = currentState
     },
     error(state, errors) {
       state.errors = errors

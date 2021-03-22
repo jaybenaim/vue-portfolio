@@ -13,7 +13,7 @@
 <script lang="ts">
 import CardBlog from '@/components/organisms/Card/Blog/card-blog.vue'
 import { $getBlogById } from '@/helpers/api/blogs'
-import { Blog, IBlogApiResponse } from '@/lib/types/Blog'
+import { Blog, IBlogApiResponse } from '@/lib/types/models/Blog'
 import Vue from 'vue'
 
 export default Vue.extend({

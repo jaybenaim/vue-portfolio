@@ -1,5 +1,5 @@
 import BASE_API from '../api-base-url'
-import { Blog } from '@/lib/types/Blog'
+import { Blog } from '@/lib/types/models/Blog'
 import { store } from '@/store'
 
 /**

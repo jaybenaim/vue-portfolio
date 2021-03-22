@@ -1,5 +1,5 @@
 ---
-to: "src/views/<%= Name %>/<%= h.changeCase.kebab(name) %>.vue"
+to: "src/views/<%= Name %>/<%= Name %>.vue"
 ---
 
 <template>

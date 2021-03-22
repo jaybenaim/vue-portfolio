@@ -56,6 +56,24 @@
         </BMenu>
       </div>
 
+      <div class="menu-mobile__auth">
+        <ButtonDefault
+          tag="router-link"
+          to="/login"
+          @click.native="$emit('close')"
+        >
+          Login
+        </ButtonDefault>
+
+        <ButtonDefault
+          tag="router-link"
+          to="/sign-up"
+          @click.native="$emit('close')"
+        >
+          Sign Up
+        </ButtonDefault>
+      </div>
+
       <div class="m-3 p-4">
         <SwitchDefault class="is-justify-content-center box theme-colors"/>
       </div>
@@ -66,9 +84,10 @@
 <script lang="ts">
 import { IImage } from '@lib/types'
 import SwitchDefault from '@/components/atoms/Switch/switch-default.vue'
+import ButtonDefault from '@/components/atoms/ButtonDefault/button-default.vue'
 
 export default {
-  components: { SwitchDefault },
+  components: { SwitchDefault, ButtonDefault },
   name: 'menu-mobile',
   props: {
     open: {
@@ -139,6 +158,9 @@ export default {
         alt: 'Lightweight UI components for Vue.js based on Bulma'
       } as IImage)
     }
+  },
+  computed: {
+
   }
 }
 </script>
