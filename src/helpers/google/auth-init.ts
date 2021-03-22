@@ -27,7 +27,9 @@ export const $googleInit
           userProfile.image = profile.getImageUrl()
           userProfile.username = profile.getName()
 
-          store.commit('setUser', new User(userProfile))
+          store.commit('setUser', {
+            user: new User(userProfile)
+          })
         }
       }
     }

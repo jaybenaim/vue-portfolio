@@ -71,14 +71,14 @@
 
           <b-field
             label="Confirm Password"
-            :message="errors.confirmPassword"
-            :type="{ 'is-danger': errors.confirmPassword
+            :message="errors.password2"
+            :type="{ 'is-danger': errors.password2
               || (formData.password.length > 0
-                && formData.confirmPassword !== formData.password)
+                && formData.password2 !== formData.password)
             }"
           >
             <b-input
-              v-model="formData.confirmPassword"
+              v-model="formData.password2"
               type="password"
               placeholder="*********"
               required
@@ -120,6 +120,7 @@ import { User } from '@/lib/types/models/User'
 import { $createUser } from '@/helpers/google'
 import ModalDefault from '@/components/organisms/Modal/ModalDefault/modal-default.vue'
 import { $signUp } from '@/helpers/api/auth'
+import { IApiUserError, IApiUserErrorType, IApiUserResponse } from '@/lib/types/api'
 
 /* eslint-disable */
 export default Vue.extend({
@@ -133,15 +134,14 @@ export default Vue.extend({
         email: '', 
         username: '',
         password: '',
-        confirmPassword: ''
+        password2: ''
       }, 
       errors: { 
         name: '', 
         email: '', 
-        username: '',
         password: '',
-        confirmPassword: ''
-      }
+        password2: ''
+      } as IApiUserError
     }
   },
   computed: {
@@ -177,12 +177,15 @@ export default Vue.extend({
   },
   created() { 
     if (this.$store.getters.isLoggedIn) this.$router.go(-1)
+
   },
   methods: {
     handleSuccess(googleUser: gapi.auth2.GoogleUser) {
       const userProfile = $createUser(googleUser)
 
-      this.$store.commit('setUser', userProfile)
+      this.$store.commit('setUser', {
+        user: userProfile
+        })
     },
     handleErrors(reason: {error: string}) {
       this.$store.commit('error', reason)
@@ -202,7 +205,23 @@ export default Vue.extend({
       })
     }, 
     async handleSubmit() { 
-      await $signUp(this.user)
+      const user = new User(this.formData) 
+
+      const response: IApiUserResponse | IApiUserError = await $signUp(user.getSignUpData())
+
+      if (!response.hasErrors && response.isAuthenticated) { 
+
+        this.$store.commit('setUser', { user }) 
+
+        this.$emit('close')
+      } 
+
+        console.log(response)
+        if (response.hasErrors) { 
+          for (const error of Object.keys(response)) { 
+            this.errors[error as IApiUserErrorType] = response[error as IApiUserErrorType]
+          }
+        }
     }
   }
 })

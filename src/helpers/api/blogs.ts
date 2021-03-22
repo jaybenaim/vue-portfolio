@@ -1,4 +1,4 @@
-import BASE_API from '../api-base-url'
+import BASE_URL from '../api-base-url'
 import { Blog } from '@/lib/types/models/Blog'
 import { store } from '@/store'
 import { AxiosError } from 'axios'
@@ -13,7 +13,7 @@ import { AxiosError } from 'axios'
  * @route 'api/blogs'
  */
 // eslint-disable-next-line
-export const $getBlogs = async (route = '/blogs') => await BASE_API.get(route)
+export const $getBlogs = async (route = '/blogs') => await BASE_URL.get(route)
 .then(({ data: blogs }) => {
   const blogList = [] as Blog[]
 
@@ -35,7 +35,7 @@ export const $getBlogs = async (route = '/blogs') => await BASE_API.get(route)
  * @route 'api/blogs/:id'
  */
 // eslint-disable-next-line
-export const $getBlogById = async (blogId: string) => await BASE_API.get(`/blogs/${blogId}`)
+export const $getBlogById = async (blogId: string) => await BASE_URL.get(`/blogs/${blogId}`)
 .then((response) => response.data)
 .catch((err: AxiosError) => {
   store.commit('error', err)
@@ -50,6 +50,6 @@ export const $getBlogById = async (blogId: string) => await BASE_API.get(`/blogs
  *
  * @returns Blog
  */
-export const $createBlog = async (blog: Blog) => await BASE_API.post('/blogs/new', blog)
+export const $createBlog = async (blog: Blog) => await BASE_URL.post('/blogs/new', blog)
  .then((response: any) => response.data)
  .catch((err: AxiosError) => err)

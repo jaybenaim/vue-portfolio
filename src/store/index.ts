@@ -65,9 +65,9 @@ export const store = new Vuex.Store({
       document.body.setAttribute('data-theme', themeAfterChange)
       localStorage.setItem('theme', themeAfterChange)
     },
-    setUser(state, user) {
+    setUser(state: any, { user, isLoggedIn = true }) {
       state.user = user
-      state.isLoggedIn = true
+      state.isLoggedIn = isLoggedIn
       state.googleIsLoaded = true
     },
     googleIsLoaded(state, currentState) {

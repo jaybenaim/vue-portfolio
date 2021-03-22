@@ -1,4 +1,4 @@
-import BASE_API from '../api-base-url'
+import BASE_URL from '../api-base-url'
 
 /**
  * Get's an image url
@@ -9,7 +9,7 @@ import BASE_API from '../api-base-url'
  */
 
 export const $getImage = async (base64String: string) => {
-  const results = await BASE_API.post('/image-upload',
+  const results = await BASE_URL.post('/image-upload',
      { image: base64String })
 
   return results ? results.data.secure_url : 'error'

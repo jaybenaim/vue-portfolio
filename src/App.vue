@@ -87,7 +87,6 @@ export default Vue.extend({
     this.$store.commit('setInitialTheme')
   },
   methods: {
-
     /**
      * Listener method for sign-out live value.
      *
@@ -104,7 +103,7 @@ export default Vue.extend({
    */
     userChanged(user: gapi.auth2.GoogleUser) {
       console.log(user)
-      this.$store.commit('setUser', user)
+      this.$store.commit('setUser', { user })
     }
   },
   components: {

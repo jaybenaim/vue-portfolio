@@ -1,4 +1,4 @@
-import BASE_API from '../api-base-url'
+import BASE_URL from '../api-base-url'
 import { store } from '@/store'
 import { AxiosError } from 'axios'
 import { IStatusResponse } from '@/lib/types/api'
@@ -12,4 +12,4 @@ import { IStatusResponse } from '@/lib/types/api'
  * Default route is 'api/'
  */
 // eslint-disable-next-line
-export const $get = async (route = '/') => await BASE_API.get(route).then(({data}) => data as IStatusResponse).catch((err: AxiosError) => store.commit('error', err))
+export const $get = async (route = '/') => await BASE_URL.get(route).then(({data}) => data as IStatusResponse).catch((err: AxiosError) => store.commit('error', err))

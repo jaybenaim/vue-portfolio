@@ -1,19 +1,28 @@
-import BASE_API from '../api-base-url'
+import BASE_URL from '../api-base-url'
 import { store } from '@/store'
-import { User } from '@/lib/types/models/User'
-import { IApiUserResponse } from '@/lib/types/api'
+import { IUser } from '@/lib/types/models/User'
+import { ApiUserError, IApiUserError, IApiUserResponse } from '@/lib/types/api'
 import { AxiosError } from 'axios'
 
 /**
- * Sends a get request to the API
+ * Attempts to sign a user in
  *
- * @param {*} route
- * @returns Results from the route
+ * @route /sign-up
  *
- * Default route is 'api/'
+ * @param User
+ *
+ * @returns IApiUserResponse
+ *
  */
 // eslint-disable-next-line
-export const $signUp = async (user: User) => await BASE_API
-.get('/sign-up')
+export const $signUp = async (user: IUser) => await BASE_URL
+.post('users/sign-up', user)
+/**
+ * @todo Set isLoggedIn to true and anything else needed
+*/
 .then(({ data }) => data as IApiUserResponse)
-.catch((err: AxiosError) => store.commit('error', err))
+.catch((err: AxiosError) => {
+  store.commit('error', err.response?.data)
+
+  return new ApiUserError(err.response?.data) as IApiUserError
+})
