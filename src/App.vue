@@ -30,7 +30,6 @@ import Vue from 'vue'
 import Responsive from '@mixins/Responsive'
 import { $get } from '@/helpers/api/get'
 
-/* eslint-disable  */
 // import '@types/gapi.auth2/index'
 
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
@@ -42,7 +41,8 @@ export default Vue.extend({
   mixins: [ Responsive ],
   data() {
     return {
-      dbIsReady: false
+      dbIsReady: false,
+      googleIsReady: false
     }
   },
   computed: {
@@ -67,6 +67,8 @@ export default Vue.extend({
     }
 
     $googleInit()
+
+    this.googleIsReady = this.$store.getters.isGoogleLoaded
   },
   async mounted() {
     await this.$nextTick()
@@ -74,22 +76,22 @@ export default Vue.extend({
     this.$store.commit('setInitialTheme')
   },
   methods: {
-  
+
     /**
      * Listener method for sign-out live value.
      *
      * @param {boolean} val the updated signed out state.
      */
     signinChanged(val: boolean) {
-      console.log('Signin state changed to ', val);
+      console.log('Signin state changed to ', val)
       return val
-    }, 
+    },
     /**
    * Listener method for when the user changes.
    *
    * @param {GoogleUser} user the updated user.
    */
-    userChanged(user: gapi.auth2.GoogleUser) { 
+    userChanged(user: gapi.auth2.GoogleUser) {
       console.log(user)
       this.$store.commit('setUser', user)
     }

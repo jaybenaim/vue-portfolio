@@ -56,11 +56,12 @@
         </BMenu>
       </div>
 
-      <div class="menu-mobile__auth">
+      <div class="menu-mobile__auth p-4">
         <ButtonDefault
           tag="router-link"
           to="/login"
           @click.native="$emit('close')"
+          class="m-2"
         >
           Login
         </ButtonDefault>
@@ -68,7 +69,9 @@
         <ButtonDefault
           tag="router-link"
           to="/sign-up"
+          type="is-primary"
           @click.native="$emit('close')"
+          class="m-2"
         >
           Sign Up
         </ButtonDefault>

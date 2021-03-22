@@ -56,12 +56,16 @@
         <b-navbar-item tag="div">
           <div class="buttons">
             <ButtonDefault
-              tag="router-link"
-              to="sign-up"
               type="is-primary"
+              @click.native="isOpen = true"
             >
               Sign Up
             </ButtonDefault>
+
+            <SignUp
+              v-if="isOpen"
+              @close="isOpen = false"
+            />
 
             <ButtonDefault
               tag="router-link"
@@ -114,6 +118,7 @@ import { IImage } from '@/lib/types'
 
 import ButtonDefault from '@atoms/ButtonDefault/button-default.vue'
 import SwitchDefault from '@/components/atoms/Switch/switch-default.vue'
+import SignUp from '@/views/SignUp/SignUp.vue'
 
 export default Vue.extend({
   name: 'navbar-default',
@@ -147,9 +152,15 @@ export default Vue.extend({
       default: true
     }
   },
+  data() {
+    return {
+      isOpen: false
+    }
+  },
   components: {
     ButtonDefault,
-    SwitchDefault
+    SwitchDefault,
+    SignUp
   }
 })
 </script>

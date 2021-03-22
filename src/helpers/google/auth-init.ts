@@ -21,12 +21,14 @@ export const $googleInit
 
         const userProfile = {} as User
 
-        userProfile.name = profile.getName()
-        userProfile.email = profile.getEmail()
-        userProfile.image = profile.getImageUrl()
-        userProfile.username = profile.getName()
+        if (profile) {
+          userProfile.name = profile.getName()
+          userProfile.email = profile.getEmail()
+          userProfile.image = profile.getImageUrl()
+          userProfile.username = profile.getName()
 
-        store.commit('setUser', new User(userProfile))
+          store.commit('setUser', new User(userProfile))
+        }
       }
     }
 
@@ -41,9 +43,7 @@ export const $googleInit
   // Listen for changes to current user.
     auth2.currentUser.listen(userChanged)
 
-    const isSignedIn = auth2.isSignedIn.get()
-
-    if (isSignedIn) {
+    if (auth2) {
       store.commit('googleIsLoaded', true)
     }
   })
