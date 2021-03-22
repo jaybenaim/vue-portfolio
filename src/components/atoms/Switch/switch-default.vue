@@ -3,7 +3,6 @@
     <b-switch
       v-model="darkMode"
       passive-type="is-dark"
-      type="is-warning"
       @click.native="$store.commit('toggleTheme')"
     >
       {{ darkMode ? "Dark Mode" : "Light Mode" }}
@@ -26,11 +25,19 @@ export default Vue.extend({
 
 <style lang="scss">
 .switch {
-  &:hover input[type=checkbox]:checked + .check.is-warning {
+  &:hover input[type=checkbox]:checked {
     background: rgba(var(--secondary-rgb), 0.7) !important;
   }
 
-  input[type=checkbox]:checked + .check.is-warning {
+  input[type=checkbox]:checked {
+    background: var(--secondary) !important;
+  }
+
+  &:hover input[type=checkbox] + .check {
+    background: rgba(var(--secondary-rgb), 0.7) !important;
+  }
+
+  input[type=checkbox] + .check {
     background: var(--secondary) !important;
   }
 }

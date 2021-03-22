@@ -65,6 +65,7 @@
               type="password"
               placeholder="*********"
               validation-message="Must be at least 6 characters."
+              required
             />
           </b-field>
 
@@ -80,6 +81,7 @@
               v-model="formData.confirmPassword"
               type="password"
               placeholder="*********"
+              required
             />
           </b-field>
 

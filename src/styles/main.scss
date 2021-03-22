@@ -56,3 +56,24 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(var(--background-color-rgb), 0.5) !important;
 }
+
+// Buefy/Bulma overrides
+
+.is-primary {
+  background-color: var(--primary) !important;
+
+  * {
+    color: var(--primary-text-color-flipped);
+    font-weight: 600;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: rgba(var(--primary-rgb), 0.9) !important;
+  }
+}
+
+.button {
+  font-size: 16px;
+  font-weight: 600;
+}

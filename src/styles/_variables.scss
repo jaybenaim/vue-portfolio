@@ -7,27 +7,41 @@ $secondaryRgb: 0, 240, 112;
 $black: #000000;
 $blackRgb: 0, 0, 0;
 
+$primary: #00f070;
+$primary-rgb: 0, 240, 112;
+
 :root {
+  // Globals
   --white: #ffffff;
   --white-rgb: 255, 255, 255;
   --black: #1e1d1d;
   --black-rgb: 0, 0, 0;
+
+  // Dark theme
+  --primary: #00f070;
+  --primary-rgb: 0, 240, 112;
   --secondary: #00f070;
   --secondary-rgb: 0, 240, 112;
   --background-color: var(--black);
   --background-color-rgb: var(--black-rgb);
   --background-color-hover: rgba(var(--black-rgb), 0.8);
   --primary-text-color: var(--white);
+  --primary-text-color-flipped: var(--black);
   --primary-text-color-hover: rgba(var(--white-rgb), 0.8);
-  --secondary-rgb: 0, 240, 112;
 }
 
+// Light Theme
 [data-theme="light"] {
+  --primary: var(--black);
+  --primary-rgb: var(--black-rgb);
+  --secondary: var(--primary-text-color);
+  --secondary-rgb: var(--white-rgb);
   --background-color: var(--white);
+  --background-color-rgb: var(--white-rgb);
   --background-color-hover: rgba(var(--black-rgb), 0.1);
   --primary-text-color: var(--black);
+  --primary-text-color-flipped: var(--white);
   --primary-text-color-hover: rgba(var(--black-rgb), 0.8);
-  --secondary: var(--primary-text-color);
 }
 
 // [data-theme="dark"] {
