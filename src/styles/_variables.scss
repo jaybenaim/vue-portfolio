@@ -10,11 +10,13 @@ $blackRgb: 0, 0, 0;
 :root {
   --white: #ffffff;
   --white-rgb: 255, 255, 255;
-  --black: #000000;
+  --black: #1e1d1d;
   --black-rgb: 0, 0, 0;
   --secondary: #00f070;
   --background-color: var(--black);
+  --background-color-hover: rgba(var(--black-rgb), 0.8);
   --primary-text-color: var(--white);
+  --primary-text-color-hover: rgba(var(--white-rgb), 0.8);
   --secondary-rgb: 0, 240, 112;
 }
 
@@ -23,30 +25,12 @@ $blackRgb: 0, 0, 0;
   --background-color-hover: rgba(var(--black-rgb), 0.1);
   --primary-text-color: var(--black);
   --primary-text-color-hover: rgba(var(--black-rgb), 0.8);
+  --secondary: var(--primary-text-color);
 }
 
-[data-theme="dark"] {
-  --background-color: var(--black);
-  --background-color-hover: rgba(var(--black-rgb), 0.8);
-  --primary-text-color: var(--white);
-  --primary-text-color-hover: rgba(var(--white-rgb), 0.8);
-}
-
-.theme-colors {
-  background: var(--background-color);
-  color: var(--primary-text-color);
-
-  p,
-  span h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: var(--primary-text-color);
-  }
-
-  &:hover {
-    color: var(--primary-text-color-hover);
-  }
-}
+// [data-theme="dark"] {
+//   --background-color: var(--black);
+//   --background-color-hover: rgba(var(--black-rgb), 0.8);
+//   --primary-text-color: var(--white);
+//   --primary-text-color-hover: rgba(var(--white-rgb), 0.8);
+// }

@@ -1,5 +1,5 @@
 <template>
-  <section class="blog-section section is-large">
+  <section class="blog-section section is-large theme-colors">
     <h1 class="title">
       Blogs
     </h1>
@@ -20,6 +20,9 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .blog-section {
-
+  .title,
+  .subtitle {
+    color: var(--primary-text-color);
+  }
 }
 </style>

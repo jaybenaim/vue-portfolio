@@ -54,62 +54,56 @@
         v-if="withAuth"
       >
         <div
-          class="logged-out-buttons"
+          class="logged-out-buttons is-flex is-flex-direction-row"
           v-if="!isLoggedIn"
         >
-          <b-navbar-item class="navbar__item">
-            <ButtonDefault
-              tag="router-link"
-              :to="{
-                name: 'Login'
-              }"
-              @click.native="$emit('close')"
-            >
-              Login
-            </ButtonDefault>
-          </b-navbar-item>
+          <ButtonDefault
+            tag="router-link"
+            :to="{
+              name: 'Login'
+            }"
+            @click.native="$emit('close')"
+            class="navbar__item m-3"
+          >
+            Login
+          </ButtonDefault>
 
-          <b-navbar-item class="navbar__item">
-            <ButtonDefault
-              tag="router-link"
-              :to="{
-                name: 'SignUp'
-              }"
-              type="is-primary"
-              @click.native="$emit('close')"
-            >
-              Sign Up
-            </ButtonDefault>
-          </b-navbar-item>
+          <ButtonDefault
+            tag="router-link"
+            :to="{
+              name: 'SignUp'
+            }"
+            type="is-primary"
+            @click.native="$emit('close')"
+            class="navbar__item m-3"
+          >
+            Sign Up
+          </ButtonDefault>
         </div>
 
         <div class="navbar__is-logged-in is-flex is-flex-direction-row">
           <b-navbar-item
             class="navbar__item"
-            v-if="isLoggedIn && user"
+            v-if="isLoggedIn && user && showSignedInAs"
           >
             Signed in as, {{ user.username }}
           </b-navbar-item>
 
-          <b-navbar-item>
-            <ButtonDefault
-              type="is-light"
-              @click.native="handleLogout"
-            >
-              Logout
-            </ButtonDefault>
-          </b-navbar-item>
+          <ButtonDefault
+            v-if="isLoggedIn"
+            type="is-secondary"
+            @click.native="handleLogout"
+          >
+            Logout
+          </ButtonDefault>
         </div>
       </div>
 
-      <div class="navbar__dark-mode-toggle">
-        <b-navbar-item
-          tag="div"
+      <div class="navbar__dark-mode-toggle m-3 is-flex is-flex-align-items-center">
+        <SwitchDefault
           class="navbar__item"
           v-if="useDarkModeToggle"
-        >
-          <SwitchDefault />
-        </b-navbar-item>
+        />
       </div>
     </template>
 
@@ -121,13 +115,11 @@
       <slot v-if="isMobile">
         <ButtonDefault
           @clicked="$emit('open')"
-          class="navbar__toggle m-4"
-        >
-          <b-icon
-            icon="menu"
-            size="is-big"
-          />
-        </ButtonDefault>
+          class="navbar__toggle m-2"
+          :type="theme"
+          icon-left="menu"
+          size="is-medium"
+        />
       </slot>
     </template>
   </BNavbar>
@@ -173,7 +165,29 @@ export default Vue.extend({
     useDarkModeToggle: {
       type: Boolean,
       default: true
-    }
+    },
+    showSignedInAs: {
+      type: Boolean,
+      default: false
+    },
+     /**
+     * Set the theme of the menu. Options: `is-light`, `is-dark`.
+     */
+    theme: {
+      type: String,
+      default: 'is-light',
+      validator: (value: string) => [
+        'is-white',
+        'is-black',
+        'is-light',
+        'is-dark',
+        'is-primary',
+        'is-info',
+        'is-success',
+        'is-warning',
+        'is-danger'
+      ].indexOf(value) > -1
+    },
   },
   data() {
     return {
@@ -186,7 +200,6 @@ export default Vue.extend({
     '$store.getters.isLoggedIn': function watcher() {
       const isLoggedIn = this.$store.getters.isLoggedIn
       if (isLoggedIn) {
-        this.$router.go(-1)
         this.$emit('close')
         this.isLoggedIn = isLoggedIn
         this.user = this.$store.getters.getUser

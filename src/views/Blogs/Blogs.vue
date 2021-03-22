@@ -7,13 +7,12 @@
       Blogs
     </h1>
 
-    <ul class="blogs__list">
+    <ul class="blogs__list columns is-flex is-flex-wrap-wrap">
       <li
         v-for="(blog, index) in blogs"
         :key="index"
-        class="box"
+        class="column is-one-third-tablet is-one-quarter-desktop"
       >
-
         <router-link
           :to="{
             path: `${blog.id}`,
@@ -28,7 +27,7 @@
       </li>
     </ul>
 
-    <div class="blogs__new-blog-button box">
+    <div class="blogs__new-blog-button">
       <NewBlog
         @blog-added="refreshBlogs"
         :labelPosition="labelPos"
@@ -104,7 +103,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .blogs {
   .title {
     color: var(--primary-text-color);
@@ -113,7 +112,7 @@ export default Vue.extend({
   &__new-blog-button {
     position: fixed;
     bottom: 25px;
-    right: 50px;
+    right: 25px;
   }
 }
 </style>

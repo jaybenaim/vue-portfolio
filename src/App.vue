@@ -4,18 +4,21 @@
   >
     <MenuMobile
       :open.sync="open"
+      :theme="`is-${theme}`"
       @close="open = false"
     />
 
     <div id="nav">
       <Navbar
         v-if="!isMobile"
+        :theme="`is-${theme}`"
         fixed-top
         withAuth
       />
 
       <Navbar
         v-if="isMobile"
+        :theme="`is-${theme}`"
         fixed-top
         @open="open = !open"
       />
@@ -43,7 +46,8 @@ export default Vue.extend({
   data() {
     return {
       dbIsReady: false,
-      googleIsReady: false
+      googleIsReady: false,
+      theme: this.$store.getters.getTheme
     }
   },
   computed: {
@@ -52,6 +56,11 @@ export default Vue.extend({
     },
     isLoggedIn() {
       return this.$store.getters.isLoggedIn
+    }
+  },
+  watch: {
+    '$store.getters.getTheme': function watchTheme() {
+      this.theme = this.$store.getters.getTheme
     }
   },
   async created() {

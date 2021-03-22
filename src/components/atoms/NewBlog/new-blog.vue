@@ -4,8 +4,8 @@
       rounded
       icon-right="plus"
       @click.native="isOpen = true"
-    >
-    </ButtonDefault>
+      class="is-large theme-colors"
+    />
 
     <ModalForm
       :isOpen="isOpen"

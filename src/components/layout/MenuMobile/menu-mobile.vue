@@ -1,109 +1,108 @@
 <template>
-  <section>
-    <BSidebar
-      :type="theme"
-      :fullheight="fullheight"
-      :fullwidth="fullwidth"
-      :overlay="overlay"
-      :right="right"
-      :open="open"
-      @close="$emit('close')"
-      :on-cancel="() => $emit('close')"
-      class="menu-mobile"
-    >
-      <div class="p-1">
-        <BImage
-          v-if="includeLogo"
-          v-bind="logo"
-        />
+  <BSidebar
+    :type="theme"
+    :fullheight="fullheight"
+    :fullwidth="fullwidth"
+    :overlay="overlay"
+    :right="right"
+    :open="open"
+    @close="$emit('close')"
+    :on-cancel="() => $emit('close')"
+    class="menu-mobile"
+  >
+    <div class="p-1">
+      <BImage
+        v-if="includeLogo"
+        v-bind="logo"
+      />
 
-        <BMenu>
-          <BMenuList label="Menu">
-            <BMenuItem
-              label="Home"
-              icon="home"
-              tag="router-link"
-              to="/"
-              @click.native="$emit('close')"
-              class="menu-mobile__link"
-            />
+      <BMenu class="menu-mobile__menu">
+        <BMenuList label="Menu">
+          <BMenuItem
+            label="Home"
+            icon="home"
+            tag="router-link"
+            to="/"
+            @click.native="$emit('close')"
+            class="menu-mobile__link"
+          />
 
-            <BMenuItem
-              label="Blogs"
-              tag="router-link"
-              to="/blogs"
-              @click.native="$emit('close')"
-              class="menu-mobile__link"
-            />
+          <BMenuItem
+            label="Blogs"
+            tag="router-link"
+            to="/blogs"
+            @click.native="$emit('close')"
+            class="menu-mobile__link"
+          />
 
-            <BMenuItem
-              label="About"
-              tag="router-link"
-              to="/about"
-              @click.native="$emit('close')"
-              class="menu-mobile__link"
-            />
+          <BMenuItem
+            label="About"
+            tag="router-link"
+            to="/about"
+            @click.native="$emit('close')"
+            class="menu-mobile__link"
+          />
 
-            <BMenuItem
-              label="Contact"
-              icon="phone"
-              tag="router-link"
-              to="/contact"
-              @click.native="$emit('close')"
-              class="menu-mobile__link"
-            />
-          </BMenuList>
-        </BMenu>
-      </div>
+          <BMenuItem
+            label="Contact"
+            tag="router-link"
+            to="/contact"
+            @click.native="$emit('close')"
+            class="menu-mobile__link menu-mobile__link__contact"
+            icon="phone"
+          />
+        </BMenuList>
+      </BMenu>
+    </div>
 
-      <div class="menu-mobile__auth p-4">
-        <div
-          class="logged-out-buttons"
-          v-if="!isLoggedIn"
+    <div class="menu-mobile__auth p-4">
+      <div
+        class="logged-out-buttons"
+        v-if="!isLoggedIn"
+      >
+        <ButtonDefault
+          tag="router-link"
+          to="/login"
+          @click.native="$emit('close')"
+          class="m-2 menu-item"
         >
-          <ButtonDefault
-            tag="router-link"
-            to="/login"
-            @click.native="$emit('close')"
-            class="m-2 menu-item"
-          >
-            Login
-          </ButtonDefault>
+          Login
+        </ButtonDefault>
 
-          <ButtonDefault
-            tag="router-link"
-            to="/sign-up"
-            type="is-primary"
-            @click.native="$emit('close')"
-            class="m-2"
-          >
-            Sign Up
-          </ButtonDefault>
-        </div>
-
-        <div class="menu-mobile__is-logged-in is-flex is-flex-direction-column">
-          <div
-            class="menu-mobile__item"
-            v-if="isLoggedIn && user"
-          >
-            Signed in as, {{ user.username }}
-          </div>
-
-          <ButtonDefault
-            type="is-light"
-            @click.native="handleLogout"
-            class="menu-mobile__item"
-          >
-            Logout
-          </ButtonDefault>
-        </div>
+        <ButtonDefault
+          tag="router-link"
+          to="/sign-up"
+          type="is-primary"
+          @click.native="$emit('close')"
+          class="m-2"
+        >
+          Sign Up
+        </ButtonDefault>
       </div>
 
-      <div class="m-3 p-4">
-        <SwitchDefault class="is-justify-content-center box theme-colors"/>
+      <div class="menu-mobile__is-logged-in is-flex is-flex-direction-column">
+        <div
+          class="menu-mobile__item"
+          v-if="isLoggedIn && user && showSignedInAs"
+        >
+          Signed in as, {{ user.username }}
+        </div>
+
+        <ButtonDefault
+          v-if="isLoggedIn"
+          :type="theme"
+          @click.native="handleLogout"
+          class="menu-mobile__item"
+        >
+          Logout
+        </ButtonDefault>
       </div>
-    </BSidebar>
-  </section>
+    </div>
+
+    <div class="m-3 p-2">
+      <SwitchDefault class="box is-flex is-justify-content-center theme-colors"/>
+    </div>
+  </BSidebar>
 </template>
 
 <script lang="ts">
@@ -183,6 +182,10 @@ export default Vue.extend({
         src: 'https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png',
         alt: 'Lightweight UI components for Vue.js based on Bulma'
       } as IImage)
+    },
+    showSignedInAs: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -195,8 +198,6 @@ export default Vue.extend({
     '$store.getters.isLoggedIn': function watcher() {
       const isLoggedIn = this.$store.getters.isLoggedIn
       if (isLoggedIn) {
-        this.$router.go(-1)
-        this.$emit('close')
         this.isLoggedIn = isLoggedIn
         this.user = this.$store.getters.getUser
       }
@@ -215,7 +216,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss">gcb
+<style lang="scss">
 .menu-mobile {
 
   .sidebar-content {
@@ -224,14 +225,12 @@ export default Vue.extend({
 
   &__link {
     @include themeLink();
-
-    a:hover {
-      background-color: var(--background-color-hover) !important;
-    }
   }
 
   .p-1 {
     padding: 1em;
   }
+
+  @include scrollbar();
 }
 </style>
