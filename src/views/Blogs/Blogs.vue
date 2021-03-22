@@ -13,9 +13,18 @@
         :key="index"
         class="box"
       >
-        <CardBlog
-          :blog="blog"
-        />
+
+        <router-link
+          :to="{
+            path: `${blog.id}`,
+            query: blog
+          }"
+          append
+        >
+          <CardBlog
+            :blog="blog"
+          />
+        </router-link>
       </li>
     </ul>
 

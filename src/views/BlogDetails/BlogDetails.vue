@@ -3,7 +3,10 @@
     class="blog-details section is-large theme-colors mt-6"
     v-if="Object.keys(currentBlog).length > 0"
   >
-    <CardBlog :blog="currentBlog" />
+    <CardBlog
+      :blog="currentBlog"
+      :withRouterLink="false"
+    />
   </div>
 </template>
 
