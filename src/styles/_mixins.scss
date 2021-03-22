@@ -33,3 +33,8 @@
     transform: translateX(10%);
   }
 }
+
+@mixin theme() {
+  background-color: var(--background-color) !important;
+  color: var(--primary-text-color) !important;
+}

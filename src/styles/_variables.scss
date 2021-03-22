@@ -18,11 +18,13 @@ $blackRgb: 0, 0, 0;
 [data-theme="light"] {
   --background-color: var(--white);
   --primary-text-color: var(--black);
+  --primary-text-color-hover: var(--black);
 }
 
 [data-theme="dark"] {
   --background-color: var(--black);
   --primary-text-color: var(--white);
+  --primary-text-color-hover: var(--black);
 }
 
 .theme-colors {
@@ -37,5 +39,9 @@ $blackRgb: 0, 0, 0;
   h5,
   h6 {
     color: var(--primary-text-color);
+  }
+
+  &:hover {
+    color: var(--primary-text-color-hover);
   }
 }

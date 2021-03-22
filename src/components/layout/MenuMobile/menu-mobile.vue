@@ -8,6 +8,8 @@
       :right="right"
       :open="open"
       @close="$emit('close')"
+      :on-cancel="() => $emit('close')"
+      class="menu-mobile"
     >
       <div class="p-1">
         <BImage
@@ -23,6 +25,7 @@
               tag="router-link"
               to="/"
               @click.native="$emit('close')"
+              class="menu-mobile__link"
             />
 
             <BMenuItem
@@ -30,6 +33,7 @@
               tag="router-link"
               to="/blogs"
               @click.native="$emit('close')"
+              class="menu-mobile__link"
             />
 
             <BMenuItem
@@ -37,6 +41,7 @@
               tag="router-link"
               to="/about"
               @click.native="$emit('close')"
+              class="menu-mobile__link"
             />
 
             <BMenuItem
@@ -45,9 +50,14 @@
               tag="router-link"
               to="/contact"
               @click.native="$emit('close')"
+              class="menu-mobile__link"
             />
           </BMenuList>
         </BMenu>
+      </div>
+
+      <div class="m-3 p-4">
+        <SwitchDefault class="is-justify-content-center box"/>
       </div>
     </BSidebar>
   </section>
@@ -55,8 +65,10 @@
 
 <script lang="ts">
 import { IImage } from '@lib/types'
+import SwitchDefault from '@/components/atoms/Switch/switch-default.vue'
 
 export default {
+  components: { SwitchDefault },
   name: 'menu-mobile',
   props: {
     open: {
@@ -131,8 +143,30 @@ export default {
 }
 </script>
 
-<style>
-.p-1 {
-  padding: 1em;
+<style lang="scss">
+.menu-mobile {
+
+  .sidebar-content {
+    @include theme();
+  }
+
+  &__link {
+
+    a,
+    i,
+    span {
+      color: var(--primary-text-color);
+    }
+
+    &:hover a,
+    &:hover i,
+    &:hover span {
+      color: var(--primary-text-color-hover);
+    }
+  }
+
+  .p-1 {
+    padding: 1em;
+  }
 }
 </style>
