@@ -5,46 +5,50 @@ import { $createUser } from '@/helpers/google'
 import $store from '@/store'
 
 export default Vue.extend({
+  data() {
+    return {
+      googleSignUpBtnIsReady: false
+    }
+  },
   computed: {
     theme() {
       return $store.getters.getTheme
     },
-    isReady() {
+    isGoogleLoaded() {
       return $store.getters.isGoogleLoaded
     },
     isLoggedIn() {
       return $store.getters.isLoggedIn
     }
   },
-  watch: {
-    theme() {
-      this.renderButton()
-    },
-    isReady() {
-      if ($store.getters.isLoggedIn) this.$router.push({ name: 'Home' })
-    },
-    '$store.getters.isLoggedIn': function watcher() {
-      if ($store.getters.isLoggedIn) this.$router.push({ name: 'Home' })
-      this.$emit('close')
-    }
-  },
-  updated() {
-    if (this.isReady && !this.isLoggedIn) this.renderButton()
-  },
-  async mounted() {
-    await this.$nextTick()
-
-    if (this.isReady) this.renderButton()
-  },
-  created() {
-    if ($store.getters.isLoggedIn) this.$router.push({ name: 'Home' })
+  mounted() {
+    $store.dispatch('googleInit')
   },
   methods: {
     /**
+     * Only renders the sign up button if its ready
+     *
+     * @returns Bool - If the button was ready to load or not
+     */
+    renderButtonIfReady() {
+      if (this.$route.path.includes('login') || this.$route.path.includes('sign-up')) {
+        if (this.isGoogleLoaded && !this.googleSignUpBtnIsReady && !this.isLoggedIn) {
+          this.renderButton()
+        }
+
+        return true
+      }
+      return false
+    },
+    /**
      * Renders the google sign in button
      */
-    renderButton() {
-      gapi.signin2.render('sign-in', {
+    async renderButton() {
+      this.googleSignUpBtnIsReady = true
+
+      await this.$nextTick()
+
+      window.gapi.signin2.render('sign-in', {
         scope: 'profile email',
         width: 240,
         height: 50,
@@ -71,6 +75,8 @@ export default Vue.extend({
      */
     handleErrors(reason: {error: string}) {
       $store.commit('error', reason)
+
+      this.googleSignUpBtnIsReady = false
     },
     /**
      * Handle modal close

@@ -1,15 +1,3 @@
-export interface IUser {
-  _id?: string
-  name: string
-  email: string
-  createdOn?: string
-  isAuthenticated?: string
-  image?: string
-  username?: string
-  password?: string
-  password2?: string
-}
-
 export class User {
   id?: string
 
@@ -30,7 +18,7 @@ export class User {
   password2?: string
 
   constructor(user: IUser) {
-    this.id = user._id
+    this.id = user.id
     this.name = user.name
     this.email = user.email
     this.image = user.image
@@ -59,15 +47,27 @@ export class User {
       email: this.email,
       password: this.password,
       password2: this.password2
-    } as IUser
+    } as ISignUpData
   }
 
   getLoginData() {
     return {
       email: this.email,
       password: this.password
-    } as IUser
+    } as ILoginData
   }
+}
+
+export interface IUser {
+  id?: string
+  name: string
+  email: string
+  createdOn?: string
+  isAuthenticated?: string
+  image?: string
+  username?: string
+  password?: string
+  password2?: string
 }
 export interface IUserResponse {
     data: IApiUserResponse
@@ -79,7 +79,7 @@ export interface IApiUserResponse {
     email: string
     createdOn: string
     isAuthenticated: boolean
-    hasErrors: false
+    success: true
   }
 
 export type IApiUserErrorType = 'name' | 'email' | 'password' | 'password2'
@@ -91,7 +91,17 @@ export interface IApiLoginResponse {
   email: string
   password: string
   token: string
-  success: boolean
+  success: true
   isAuthenticated: boolean
-  hasErrors: true
+}
+
+export interface ILoginData {
+  email: string
+  password: string
+}
+export interface ISignUpData {
+  name: string,
+  email: string
+  password: string
+  password2: string
 }

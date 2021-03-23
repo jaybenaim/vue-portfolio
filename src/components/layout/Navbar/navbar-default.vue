@@ -116,7 +116,7 @@
         <ButtonDefault
           @clicked="$emit('open')"
           class="navbar__toggle m-2"
-          :type="theme"
+          :type="`is-${theme}`"
           icon-left="menu"
           size="is-medium"
         />
@@ -169,30 +169,11 @@ export default Vue.extend({
     showSignedInAs: {
       type: Boolean,
       default: false
-    },
-     /**
-     * Set the theme of the menu. Options: `is-light`, `is-dark`.
-     */
-    theme: {
-      type: String,
-      default: 'is-light',
-      validator: (value: string) => [
-        'is-white',
-        'is-black',
-        'is-light',
-        'is-dark',
-        'is-primary',
-        'is-info',
-        'is-success',
-        'is-warning',
-        'is-danger'
-      ].indexOf(value) > -1
-    },
+    }
   },
   data() {
     return {
       isOpen: false,
-      isLoggedIn: this.$store.getters.isLoggedIn,
       user: this.$store.getters.getUser
     }
   },
@@ -201,20 +182,9 @@ export default Vue.extend({
       const isLoggedIn = this.$store.getters.isLoggedIn
       if (isLoggedIn) {
         this.$emit('close')
-        this.isLoggedIn = isLoggedIn
         this.user = this.$store.getters.getUser
       }
     }
-  },
-  methods: {
-    handleLogout() {
-      // eslint-disable-next-line
-      const auth2 = gapi.auth2.getAuthInstance()
-      auth2.signOut().then(() => {
-        console.log('User signed out.')
-      })
-      this.$store.commit('isLoggedIn', false)
-    },
   },
   components: {
     ButtonDefault,

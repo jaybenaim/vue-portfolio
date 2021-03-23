@@ -57,11 +57,12 @@
           </b-field>
 
           <!-- Google sign in  -->
-          <div
-            v-if="isReady"
-            id="sign-in"
-            class="sign-up__google mt-6 is-flex is-justify-content-center"
-          ></div>
+          <div v-if="googleSignUpBtnIsReady">
+            <div
+              id="sign-in"
+              class="sign-up__google mt-6 is-flex is-justify-content-center"
+            ></div>
+          </div>
         </section>
       </template>
 
@@ -95,8 +96,9 @@ import {
   IApiLoginResponse,
  IUser, User
 } from '@/lib/types/models/User'
-import { $login } from '@/helpers/api/auth'
-import { IApiLoginError, IApiUserError } from '@/lib/types/errors'
+import {
+ IApiError, IApiLoginError, IApiUserError
+} from '@/lib/types/errors'
 
 export default Auth.extend({
   name: 'login',
@@ -113,23 +115,41 @@ export default Auth.extend({
       } as IApiUserError
     }
   },
+  created() {
+    if (this.$store.getters.isLoggedIn) this.$router.push({ name: 'Home' })
+  },
+  watch: {
+    isLoggedIn() {
+      this.isLoggedIn && this.$emit('close')
+    }
+  },
+  mounted() {
+    this.renderButtonIfReady()
+  },
   methods: {
     async handleLogin() {
       const user = new User(this.formData)
 
-      const userResponse: IApiLoginResponse | IApiLoginError = await $login(user.getLoginData())
-
+      const userResponse: IApiLoginResponse | IApiLoginError = await this.$store.dispatch('login', user.getLoginData())
       console.log(userResponse)
-      if (!userResponse.hasErrors && userResponse.user.isAuthenticated) {
-        this.$store.commit('setUser', { user: userResponse.user })
-
+      if (userResponse
+      && userResponse.success
+      && userResponse.user.isAuthenticated) {
         this.$emit('close')
       }
 
-      if (userResponse.hasErrors) {
+      if (userResponse && !userResponse.success) {
         for (const error of Object.keys(userResponse)) {
           this.errors[error as IApILoginErrorType] = userResponse[error as IApILoginErrorType]
         }
+      } else {
+        this.$store.commit('error', {
+          error: {
+            name: 'UnknownError',
+            message: 'Something went wrong'
+          },
+          success: false
+        } as IApiError)
       }
     }
   },

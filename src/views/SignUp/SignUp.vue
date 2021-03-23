@@ -88,7 +88,7 @@
 
           <!-- Google Sign in -->
           <div
-            v-if="isReady"
+            v-if="googleSignUpBtnIsReady"
             id="sign-in"
             class="sign-up__google mt-6 is-flex is-justify-content-center"
           ></div>
@@ -123,7 +123,6 @@ import {
  IApiUserErrorType, IApiUserResponse, IUser, User
 } from '@/lib/types/models/User'
 import ModalDefault from '@organisms/Modal/ModalDefault/modal-default.vue'
-import { $signUp } from '@/helpers/api/auth'
 import { IApiUserError } from '@/lib/types/errors'
 
 export default Auth.extend({
@@ -146,19 +145,24 @@ export default Auth.extend({
       } as IApiUserError
     }
   },
+  created() {
+    if (this.$store.getters.isLoggedIn) this.$router.push({ name: 'Home' })
+
+    this.renderButtonIfReady()
+  },
   methods: {
     async handleSubmit() {
       const user = new User(this.formData)
 
-      const userResponse: IApiUserResponse | IApiUserError = await $signUp(user.getSignUpData())
+      const userResponse: IApiUserResponse | IApiUserError = await this.$store.dispatch('sign-up', user.getSignUpData())
 
-      if (!userResponse.hasErrors && userResponse.isAuthenticated) {
+      if (userResponse.success && userResponse.isAuthenticated) {
         this.$store.commit('setUser', { user })
 
         this.$emit('close')
       }
 
-      if (userResponse.hasErrors) {
+      if (!userResponse.success) {
         for (const error of Object.keys(userResponse)) {
           this.errors[error as IApiUserErrorType] = userResponse[error as IApiUserErrorType]
         }

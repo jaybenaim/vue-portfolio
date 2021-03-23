@@ -38,11 +38,11 @@ export default Vue.extend({
   async created() {
     const blog = this.$route.query as any
 
-    if (!blog._id && Object.keys(this.currentBlog).length === 0 && !this.blog) {
+    if (!blog.id && Object.keys(this.currentBlog).length === 0 && !this.blog) {
       const blogId = this.id
       const blogResponse: IBlogApiResponse | undefined = await $getBlogById(blogId)
 
-      if (blogResponse?._id) {
+      if (blogResponse?.id) {
         this.currentBlog = new Blog(blogResponse)
       } else {
         this.$store.commit('error', 'Error getting the current blog.')

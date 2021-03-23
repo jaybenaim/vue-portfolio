@@ -11,7 +11,7 @@ export class ApiUserError {
 
   isAuthenticated: boolean
 
-  hasErrors: true
+  success: false
 
   constructor(error: IApiUserError) {
     this.name = error.name ? error.name : ''
@@ -19,7 +19,7 @@ export class ApiUserError {
     this.password = error.password ? error.password : ''
     this.password2 = error.password2 ? error.password2 : ''
     this.isAuthenticated = error.isAuthenticated
-    this.hasErrors = true
+    this.success = false
   }
   }
 
@@ -29,12 +29,27 @@ export interface IApiUserError {
   password?: string
   password2?: string
   isAuthenticated: boolean
-  hasErrors: true
+  success: false
 }
 
 export interface IApiLoginError {
-  hasErrors: true
+  success: false
   email: string
   password: string
   user: IUser
+}
+
+export interface IApiTokenError {
+  success: false
+  error: IApiErrorMessage
+}
+
+export interface IApiErrorMessage {
+  name: string
+  message: string
+}
+
+export interface IApiError {
+  success: false
+  error: IApiErrorMessage
 }

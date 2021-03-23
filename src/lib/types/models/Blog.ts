@@ -1,6 +1,5 @@
 export interface IBlogApiResponse {
-  __v: string | number | undefined | null
-  _id: string
+  id: string
   title: string
   author: string
   content: string
@@ -54,7 +53,7 @@ export class Blog {
   tags: string[]
 
   constructor(blog: IBlogApiResponse) {
-    this.id = blog._id
+    this.id = blog.id
     this.title = blog.title
     this.author = blog.author
     this.content = blog.content

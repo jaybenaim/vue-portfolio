@@ -1,11 +1,7 @@
 import BASE_URL from '../api-base-url'
-import { store } from '@/store'
 import {
- IApiLoginResponse, IApiUserResponse, IUser
+ ILoginData, ISignUpData,
 } from '@/lib/types/models/User'
-import { AxiosError } from 'axios'
-import { ApiUserError, IApiLoginError, IApiUserError } from '@/lib/types/errors'
-
 /**
  * Sign in the user
  *
@@ -17,17 +13,8 @@ import { ApiUserError, IApiLoginError, IApiUserError } from '@/lib/types/errors'
  *
  */
 // eslint-disable-next-line
-export const $signUp = async (user: IUser) => await BASE_URL
+export const $signUp = async (user: ISignUpData) => await BASE_URL
 .post('users/sign-up', user)
-/**
- * @todo Set isLoggedIn to true and anything else needed
-*/
-.then(({ data }) => data as IApiUserResponse)
-.catch((err: AxiosError) => {
-  store.commit('error', err.response?.data)
-
-  return new ApiUserError(err.response?.data) as IApiUserError
-})
 
 /**
  * Sign in the user
@@ -40,14 +27,26 @@ export const $signUp = async (user: IUser) => await BASE_URL
  *
  */
 // eslint-disable-next-line
-export const $login = async (user: IUser) => await BASE_URL
+export const $login = async (user: ILoginData) => await BASE_URL
 .post('users/login', user)
-/**
- * @todo Set isLoggedIn to true and anything else needed
-*/
-.then(({ data }) => data as IApiLoginResponse)
-.catch((err: AxiosError) => {
-  store.commit('error', err.response?.data)
 
-  return err.response?.data as IApiLoginError
-})
+/**
+ * Check if a user is authenticated via JWT
+ *
+ * @route /users/:id/verify?token={token}
+ *
+ * @params id - User id
+ *
+ * @query token - Bearer token
+ *
+ */
+export const $verifyToken = async (token: string) => await BASE_URL
+.get(`users/verify?token=${token}`)
+
+export const $logout = () => {
+  const auth2 = gapi.auth2.getAuthInstance()
+
+  auth2.signOut().then(() => {
+    console.log('User signed out.')
+  })
+}

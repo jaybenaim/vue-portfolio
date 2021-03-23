@@ -30,7 +30,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import Responsive from '@mixins/Responsive'
 import { $get } from '@/helpers/api/get'
 
@@ -38,17 +37,15 @@ import { $get } from '@/helpers/api/get'
 
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
-import { $googleInit } from './helpers/google'
-import { IStatusResponse } from './lib/types/api'
+import { IStatusResponse, ITokenResponse } from './lib/types/api'
+import { IApiTokenError } from './lib/types/errors'
 
-export default Vue.extend({
+export default Responsive.extend({
   name: 'App',
   mixins: [ Responsive ],
   data() {
     return {
       dbIsReady: false,
-      googleIsReady: false,
-      theme: this.$store.getters.getTheme
     }
   },
   computed: {
@@ -57,11 +54,6 @@ export default Vue.extend({
     },
     isLoggedIn() {
       return this.$store.getters.isLoggedIn
-    }
-  },
-  watch: {
-    '$store.getters.getTheme': function watchTheme() {
-      this.theme = this.$store.getters.getTheme
     }
   },
   async created() {
@@ -78,13 +70,25 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    await this.$nextTick()
-
-    $googleInit()
-
-    this.googleIsReady = this.$store.getters.isGoogleLoaded
-
+    // Set Theme
     this.$store.commit('setInitialTheme')
+
+    // Check if user is signed in
+    if (!this.isLoggedIn) {
+      const tokenStatus: ITokenResponse | IApiTokenError = await this.$store.dispatch('checkToken')
+      if (tokenStatus.success) {
+          // awesome user login in with token
+      } else {
+          // failed to login with token
+        this.$router.push({
+          name: 'Login'
+        })
+      }
+    }
+
+    await this.$store.dispatch('checkToken')
+    // Load google to setup google sign in
+    await this.$store.dispatch('googleInit')
   },
   methods: {
   //   /**

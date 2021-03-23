@@ -1,6 +1,6 @@
-import Vue from 'vue'
+import Auth from './Auth'
 
-export default Vue.extend({
+export default Auth.extend({
   data() {
     return {
       open: false,
@@ -16,6 +16,9 @@ export default Vue.extend({
     '$store.state.getScreenSize': function watcher() {
       this.isMobile = this.$store.getters.isMobile
       this.screen = this.$store.getters.getScreenSize
+    },
+    '$store.getters.getTheme': function watchTheme() {
+      this.theme = this.$store.getters.getTheme
     }
   },
   created() {
