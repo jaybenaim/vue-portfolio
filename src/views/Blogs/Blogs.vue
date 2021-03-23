@@ -50,7 +50,7 @@ export default Vue.extend({
   props: {
     labelPosition: {
       type: String,
-      default: 'on-border',
+      default: '',
       validator: (value: string) => [
         '',
         'inside',
