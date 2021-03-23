@@ -9,6 +9,7 @@
       :active="true"
       :has-modal-card="true"
       @close="handleClose"
+      class="has-text-left"
     >
       <template #header>
         <header class="modal-card-head modal-card__head theme-colors">
@@ -85,9 +86,10 @@
             />
           </b-field>
 
+          <!-- Google Sign in -->
           <div
             v-if="isReady"
-            id="my-signin2"
+            id="sign-in"
             class="sign-up__google mt-6 is-flex is-justify-content-center"
           ></div>
         </section>
@@ -115,122 +117,62 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { User } from '@/lib/types/models/User'
-import { $createUser } from '@/helpers/google'
-import ModalDefault from '@/components/organisms/Modal/ModalDefault/modal-default.vue'
-import { $signUp } from '@/helpers/api/auth'
-import { IApiUserError, IApiUserErrorType, IApiUserResponse } from '@/lib/types/api'
+import Auth from '@mixins/Auth'
 
-/* eslint-disable */
-export default Vue.extend({
-  components: { ModalDefault },
+import {
+ IApiUserErrorType, IApiUserResponse, IUser, User
+} from '@/lib/types/models/User'
+import ModalDefault from '@organisms/Modal/ModalDefault/modal-default.vue'
+import { $signUp } from '@/helpers/api/auth'
+import { IApiUserError } from '@/lib/types/errors'
+
+export default Auth.extend({
   name: 'sign-up',
+  mixins: [Auth],
   data() {
     return {
-      user: this.$store.getters.getUser as User, 
       formData: {
-        name: '', 
-        email: '', 
+        name: '',
+        email: '',
         username: '',
         password: '',
         password2: ''
-      }, 
-      errors: { 
-        name: '', 
-        email: '', 
+      } as IUser,
+      errors: {
+        name: '',
+        email: '',
         password: '',
         password2: ''
       } as IApiUserError
     }
   },
-  computed: {
-    theme() {
-      return this.$store.getters.getTheme
-    }, 
-    isReady() { 
-      return this.$store.getters.isGoogleLoaded
-    }, 
-    isLoggedIn() { 
-      return this.$store.getters.isLoggedIn
-    }
-  },
-  watch: {
-    theme() {
-      this.renderButton()
-    }, 
-    isReady() { 
-      if (this.$store.getters.isLoggedIn) this.$router.go(-1)
-    }, 
-    '$store.getters.isLoggedIn': function watcher (){ 
-     if (this.$store.getters.isLoggedIn) this.$router.go(-1)
-     this.$emit('close')
-    }
-  },
-  updated() {
-    if (this.isReady) this.renderButton()
-  },
-  async mounted() { 
-    await this.$nextTick() 
-
-    if (this.isReady) this.renderButton()
-  },
-  created() { 
-    if (this.$store.getters.isLoggedIn) this.$router.go(-1)
-
-  },
   methods: {
-    handleSuccess(googleUser: gapi.auth2.GoogleUser) {
-      const userProfile = $createUser(googleUser)
+    async handleSubmit() {
+      const user = new User(this.formData)
 
-      this.$store.commit('setUser', {
-        user: userProfile
-        })
-    },
-    handleErrors(reason: {error: string}) {
-      this.$store.commit('error', reason)
-    },
-    handleClose() { 
-      this.$router.go(-1)
-    }, 
-    renderButton() {
-      gapi.signin2.render('my-signin2', {
-        scope: 'profile email',
-        width: 240,
-        height: 50,
-        longtitle: true,
-        theme: this.theme === 'dark' ? 'light' : 'dark',
-        onsuccess: this.handleSuccess,
-        onfailure: this.handleErrors
-      })
-    }, 
-    async handleSubmit() { 
-      const user = new User(this.formData) 
+      const userResponse: IApiUserResponse | IApiUserError = await $signUp(user.getSignUpData())
 
-      const response: IApiUserResponse | IApiUserError = await $signUp(user.getSignUpData())
-
-      if (!response.hasErrors && response.isAuthenticated) { 
-
-        this.$store.commit('setUser', { user }) 
+      if (!userResponse.hasErrors && userResponse.isAuthenticated) {
+        this.$store.commit('setUser', { user })
 
         this.$emit('close')
-      } 
+      }
 
-        console.log(response)
-        if (response.hasErrors) { 
-          for (const error of Object.keys(response)) { 
-            this.errors[error as IApiUserErrorType] = response[error as IApiUserErrorType]
-          }
+      if (userResponse.hasErrors) {
+        for (const error of Object.keys(userResponse)) {
+          this.errors[error as IApiUserErrorType] = userResponse[error as IApiUserErrorType]
         }
+      }
     }
-  }
+  },
+  components: { ModalDefault },
 })
 </script>
 
 <style lang="scss" >
-.sign-up { 
-  .label { 
-    text-align: left; 
+.sign-up {
+  .label {
+    text-align: left;
   }
 }
 </style>

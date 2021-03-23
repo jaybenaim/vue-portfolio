@@ -50,7 +50,7 @@ export class User {
       image: this.image,
       createdOn: this.createdOn,
       isAuthenticated: this.isAuthenticated
-    }
+    } as IUser
   }
 
   getSignUpData() {
@@ -59,6 +59,39 @@ export class User {
       email: this.email,
       password: this.password,
       password2: this.password2
-    }
+    } as IUser
   }
+
+  getLoginData() {
+    return {
+      email: this.email,
+      password: this.password
+    } as IUser
+  }
+}
+export interface IUserResponse {
+    data: IApiUserResponse
+  }
+
+export interface IApiUserResponse {
+    id: string
+    name: string
+    email: string
+    createdOn: string
+    isAuthenticated: boolean
+    hasErrors: false
+  }
+
+export type IApiUserErrorType = 'name' | 'email' | 'password' | 'password2'
+
+export type IApILoginErrorType = 'email' | 'password'
+
+export interface IApiLoginResponse {
+  user: IUser
+  email: string
+  password: string
+  token: string
+  success: boolean
+  isAuthenticated: boolean
+  hasErrors: true
 }

@@ -34,7 +34,7 @@ import Vue from 'vue'
 import Responsive from '@mixins/Responsive'
 import { $get } from '@/helpers/api/get'
 
-// import '@types/gapi.auth2/index'
+// import * from '@types/gapi.auth2/index'
 
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
@@ -76,35 +76,35 @@ export default Vue.extend({
         this.$store.commit('error', response)
       }
     }
-
-    $googleInit()
-
-    this.googleIsReady = this.$store.getters.isGoogleLoaded
   },
   async mounted() {
     await this.$nextTick()
 
+    $googleInit()
+
+    this.googleIsReady = this.$store.getters.isGoogleLoaded
+
     this.$store.commit('setInitialTheme')
   },
   methods: {
-    /**
-     * Listener method for sign-out live value.
-     *
-     * @param {boolean} val the updated signed out state.
-     */
-    signinChanged(val: boolean) {
-      console.log('Signin state changed to ', val)
-      return val
-    },
-    /**
-   * Listener method for when the user changes.
-   *
-   * @param {GoogleUser} user the updated user.
-   */
-    userChanged(user: gapi.auth2.GoogleUser) {
-      console.log(user)
-      this.$store.commit('setUser', { user })
-    }
+  //   /**
+  //    * Listener method for sign-out live value.
+  //    *
+  //    * @param {boolean} val the updated signed out state.
+  //    */
+  //   signinChanged(val: boolean) {
+  //     console.log('Signin state changed to ', val)
+  //     return val
+  //   },
+  //   /**
+  //  * Listener method for when the user changes.
+  //  *
+  //  * @param {GoogleUser} user the updated user.
+  //  */
+  //   userChanged(user: gapi.auth2.GoogleUser) {
+  //     console.log(user)
+  //     this.$store.commit('setUser', { user })
+  //   }
   },
   components: {
     MenuMobile,

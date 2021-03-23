@@ -21,9 +21,9 @@ export const $getBlogs = async (route = '/blogs') => await BASE_URL.get(route)
     blogList.push(new Blog(blog))
   }
 
-  return blogList
+  return blogList as Blog[]
 })
-.catch((err: AxiosError) => err)
+.catch((err: AxiosError) => err.response?.data)
 
 /**
  * Get's a blog by its id
