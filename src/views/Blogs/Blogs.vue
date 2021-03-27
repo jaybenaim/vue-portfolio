@@ -1,7 +1,6 @@
 <template>
   <section
-    class="blogs section is-medium theme-colors"
-    v-if="isReady"
+    class="blogs section is-medium"
   >
     <h1 class="title">
       Blogs
@@ -28,7 +27,10 @@
       </li>
     </ul>
 
-    <div class="blogs__new-blog-button">
+    <div
+      v-if="isLoggedIn"
+      class="blogs__new-blog-button"
+    >
       <NewBlog
         @blog-added="refreshBlogs"
         :labelPosition="labelPos"
@@ -48,6 +50,7 @@ import Auth from '@/mixins/Auth'
 
 export default Auth.extend({
   name: 'blogs',
+  mixins: [Auth],
   props: {
     labelPosition: {
       type: String,
@@ -90,8 +93,8 @@ export default Auth.extend({
         this.isReady = true
       }
     },
-    refreshBlogs() {
-      this.getBlogs()
+    async refreshBlogs() {
+      await this.getBlogs()
     }
   },
   components: {

@@ -7,7 +7,7 @@
       class="is-large theme-colors"
     />
 
-    <ModalForm
+    <NewBlogModal
       :isOpen="isOpen"
       @close="isOpen = false"
       @blog-added="$emit('blog-added')"
@@ -19,7 +19,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import ButtonDefault from '../ButtonDefault/button-default.vue'
-import ModalForm from '@organisms/ModalForm/modal-form.vue'
+import NewBlogModal from '@organisms/NewBlogModal/new-blog-modal.vue'
 
 export default Vue.extend({
   name: 'new-blog',
@@ -45,7 +45,7 @@ export default Vue.extend({
   },
   components: {
     ButtonDefault,
-    ModalForm
+    NewBlogModal
   }
 })
 </script>

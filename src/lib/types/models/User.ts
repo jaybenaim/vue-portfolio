@@ -83,3 +83,14 @@ export interface ISignUpData {
   password: string
   password2: string
 }
+
+export interface IUserState {
+  user: IUser
+  googleUser: gapi.auth2.GoogleUser
+  isLoggedIn: boolean
+}
+
+export interface IApiGoogleLoginResponse {
+  user: IApiUserResponse
+  token: string
+}

@@ -4,6 +4,10 @@
     <b-field
       class="file"
       v-if="asButton"
+      :message="errors.uploadError"
+      :type="{
+        'is-danger': errors.uploadError
+      }"
     >
       <b-upload
         v-model="file"
@@ -16,7 +20,13 @@
       </b-upload>
     </b-field>
 
-    <b-field v-else>
+    <b-field
+      v-else
+      :message="errors.uploadError"
+      :type="{
+        'is-danger': errors.uploadError
+      }"
+    >
       <b-upload
         v-model="file"
         drag-drop
@@ -82,12 +92,20 @@ export default Vue.extend({
   },
   watch: {
     file() {
-      this.$emit('uploaded', this.file)
+      if (this.file.size <= 102400) {
+        this.errors.uploadError = ''
+        this.$emit('uploaded', this.file)
+      } else {
+        this.errors.uploadError = 'The file is too large. Please try a smaller file.'
+      }
     }
   },
   data() {
     return {
-      file: {} as File
+      file: {} as File,
+      errors: {
+        uploadError: ''
+      }
     }
   }
 })

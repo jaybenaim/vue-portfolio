@@ -1,5 +1,5 @@
 import BASE_URL from '../api-base-url'
-import { Blog } from '@/lib/types/models/Blog'
+import { Blog, IApiBlogResponse } from '@/lib/types/models/Blog'
 import { store } from '@/store'
 import { AxiosError } from 'axios'
 
@@ -51,5 +51,32 @@ export const $getBlogById = async (blogId: string) => await BASE_URL.get(`/blogs
  * @returns Blog
  */
 export const $createBlog = async (blog: Blog) => await BASE_URL.post('/blogs/new', blog)
- .then((response: any) => response.data)
- .catch((err: AxiosError) => err)
+ .then((response) => {
+   const blog = response.data as IApiBlogResponse
+
+   return blog
+ })
+ .catch((err: AxiosError) => {
+   const error = err.response?.data as IApiBlogError
+
+   return {
+     success: false,
+     error
+   } as IApiBlogResponseError
+ })
+
+export interface IApiBlogResponseError {
+   success: false
+   error: IApiBlogError
+ }
+export interface IApiBlogError {
+   uid?: string
+   id?: string
+   title?: string
+   author?: string
+   summary?: string
+   content?: string
+   succes: false
+ }
+
+export type IApiBlogErrorType = 'title' | 'author' | 'summary' | 'content'

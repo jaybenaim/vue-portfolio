@@ -1,5 +1,6 @@
-export interface IBlogApiResponse {
+export interface IApiBlogResponse {
   id: string
+  uid: string
   title: string
   author: string
   content: string
@@ -11,6 +12,7 @@ export interface IBlogApiResponse {
   created: string
   updated: string
   tags: string[]
+  success: true
 }
 export interface IBlog {
   id: string
@@ -30,6 +32,8 @@ export interface IBlog {
 export class Blog {
   id: string
 
+  uid: string
+
   title: string
 
   author: string
@@ -52,8 +56,9 @@ export class Blog {
 
   tags: string[]
 
-  constructor(blog: IBlogApiResponse) {
+  constructor(blog: IApiBlogResponse) {
     this.id = blog.id
+    this.uid = blog.uid
     this.title = blog.title
     this.author = blog.author
     this.content = blog.content

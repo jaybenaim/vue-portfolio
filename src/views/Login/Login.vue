@@ -10,78 +10,70 @@
       class="has-text-left"
     >
       <template #header>
-        <header class="modal-card-head modal-card__head">
-          <p class="modal-card-title">
-            Login
-          </p>
+        <p class="modal-card-title">
+          Login
+        </p>
 
-          <button
-            type="button"
-            class="delete"
-            @click="handleClose"
-          />
-        </header>
+        <button
+          type="button"
+          class="delete"
+          @click="handleClose"
+        />
       </template>
 
       <template #default>
-        <section class="modal-card-body modal-card__body">
-          <b-field
-            label="Email"
-            :message="errors.email"
-            :type="{ 'is-danger': errors.email }"
-          >
-            <b-input
-              v-model="formData.email"
-              type="email"
-              placeholder="Email"
-              required
-            />
-          </b-field>
+        <b-field
+          label="Email"
+          :message="errors.email"
+          :type="{ 'is-danger': errors.email }"
+        >
+          <b-input
+            v-model="formData.email"
+            type="email"
+            placeholder="Email"
+            required
+          />
+        </b-field>
 
-          <b-field
-            label="Password"
-            :message="errors.password"
-            :type="{ 'is-danger':
-              (formData.password
-                && formData.password.length < 6)
-              || errors.password
-            }"
-          >
-            <b-input
-              v-model="formData.password"
-              type="password"
-              placeholder="*********"
-              validation-message="Must be at least 6 characters."
-              required
-            />
-          </b-field>
+        <b-field
+          label="Password"
+          :message="errors.password"
+          :type="{ 'is-danger':
+            (formData.password
+              && formData.password.length < 6)
+            || errors.password
+          }"
+        >
+          <b-input
+            v-model="formData.password"
+            type="password"
+            placeholder="*********"
+            validation-message="Must be at least 6 characters."
+            required
+          />
+        </b-field>
 
-          <!-- Google sign in  -->
-          <div v-if="useGoogleSignIn && googleSignUpBtnIsReady">
-            <div
-              id="sign-in"
-              class="sign-up__google mt-6 is-flex is-justify-content-center"
-            ></div>
-          </div>
-        </section>
+        <!-- Google sign in  -->
+        <div v-if="useGoogleSignIn && googleSignUpBtnIsReady">
+          <div
+            id="sign-in"
+            class="sign-up__google mt-6 is-flex is-justify-content-center"
+          ></div>
+        </div>
       </template>
 
       <template #footer>
-        <footer
-          class="modal-card-foot modal-card__footer p-3 mb-5 theme-colors is-flex is-justify-content-space-between"
-        >
-          <b-button
-            label="Cancel"
-            @click="handleClose"
-          />
+        <b-button
+          label="Cancel"
+          @click="handleClose"
+        />
 
-          <b-button
-            label="Login"
-            type="is-primary"
-            class="is-align-self-flex-end"
-            @click.prevent="handleLogin"
-          />
-        </footer>
+        <b-button
+          label="Login"
+          type="is-primary"
+          class="is-align-self-flex-end"
+          @click.prevent="handleLogin"
+        />
       </template>
     </ModalDefault>
   </div>
@@ -138,10 +130,9 @@ export default Auth.extend({
 
       if (userResponse) {
         if (userResponse.success
-      && userResponse.isAuthenticated) {
+            && userResponse.isAuthenticated) {
           this.handleClose()
         }
-        console.log(userResponse)
         if (!userResponse.success) {
           for (const error of Object.keys(userResponse)) {
             this.errors[error as IApILoginErrorType]
@@ -157,23 +148,6 @@ export default Auth.extend({
 
 <style lang="scss">
 .login {
-  .label {
-    text-align: left;
-  }
 
-  .modal-card {
-    &__head,
-    &__body,
-    &__footer,
-    .modal-card-title {
-      @include theme()
-    }
-  }
-
-  .modal-card {
-    &__body {
-      border: none;
-    }
-  }
 }
 </style>

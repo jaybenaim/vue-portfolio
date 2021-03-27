@@ -1,5 +1,5 @@
 <template>
-  <section class="blog-section section is-large theme-colors">
+  <section class="blog-section section is-large">
     <h1 class="title">
       Blogs
     </h1>

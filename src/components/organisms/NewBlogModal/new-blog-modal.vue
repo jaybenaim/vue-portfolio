@@ -93,7 +93,7 @@
                 <span>Preview: </span>
                 <img
                   :src="formProps.image"
-                  class="preview__image"
+                  class="preview__image m-5"
                 />
               </div>
 
@@ -147,12 +147,14 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { Blog } from '@/lib/types/models/Blog'
+import { Blog, IApiBlogResponse } from '@/lib/types/models/Blog'
 
 import Sortable from '@/components/atoms/Sortable/sortable.vue'
 import UploadDragAndDrop from '../input/UploadDragAndDrop/upload-drag-and-drop.vue'
 import { $getImage } from '@/helpers/api/getImage'
-import { $createBlog } from '@/helpers/api/blogs'
+import {
+ $createBlog, IApiBlogError, IApiBlogErrorType, IApiBlogResponseError
+} from '@/helpers/api/blogs'
 
 export default Vue.extend({
   props: {
@@ -177,8 +179,9 @@ export default Vue.extend({
         author: '',
         summary: '',
         content: '',
-      },
+      } as IApiBlogError,
       formProps: {
+        uid: '',
         title: '',
         author: '',
         summary: '',
@@ -189,6 +192,9 @@ export default Vue.extend({
         tags: undefined as any
       } as Blog
     }
+  },
+  created() {
+    this.formProps.uid = this.$store.getters.getUser.id
   },
   methods: {
     toBase64(file: any) {
@@ -212,16 +218,17 @@ export default Vue.extend({
       }
     },
     async handleSubmit() {
-      const newBlogResponse = await $createBlog(this.formProps)
+      const newBlogResponse: IApiBlogResponse | IApiBlogResponseError = await $createBlog(this.formProps)
 
-      const errors = newBlogResponse && newBlogResponse.errors
+      const errors = !newBlogResponse.success ? newBlogResponse.error as IApiBlogError : undefined
 
       if (!errors) {
         this.$emit('close')
         this.$emit('blog-added')
+        this.errors = {} as IApiBlogError
       } else if (errors) {
         for (const error of Object.keys(errors)) {
-          this.errors[error as 'title' | 'author' | 'summary' | 'content'] = errors[error].message.replace('Path', '')
+          this.errors[error as IApiBlogErrorType] = errors[error as IApiBlogErrorType]
         }
       }
     }
@@ -272,6 +279,11 @@ export default Vue.extend({
 
   .textarea {
     resize: none;
+  }
+
+  .preview__image {
+    height: 250px;
+    width: 250px;
   }
 
   @media (max-width: 1200px) {
