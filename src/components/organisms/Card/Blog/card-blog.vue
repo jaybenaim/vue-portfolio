@@ -3,10 +3,26 @@
     <div class="card">
       <div class="card-image">
         <figure class="image is-2by1">
-          <img
-            :alt="blog.imageCaption"
-            :src="blog.image"
+          <router-link
+            v-if="clickable"
+            :to="{
+              path: `${blog.id}`,
+              query: blog
+            }"
+            append
           >
+            <img
+              :alt="blog.imageCaption"
+              :src="blog.image"
+            >
+          </router-link>
+
+          <span v-else>
+            <img
+              :alt="blog.imageCaption"
+              :src="blog.image"
+            >
+          </span>
         </figure>
       </div>
 
@@ -23,7 +39,22 @@
 
           <div class="media-content">
             <p class="title is-4 blog__title">
-              {{ blog.title }}
+              <router-link
+                v-if="clickable"
+                :to="{
+                  path: `${blog.id}`,
+                  query: blog
+                }"
+                append
+              >
+                {{ blog.title }}
+              </router-link>
+
+              <span
+                v-else
+              >
+                {{ blog.title }}
+              </span>
             </p>
 
             <p class="subtitle is-6 blog__author">
@@ -47,16 +78,18 @@
 
         <footer
           class="card-footer"
-          v-if="includeFooter"
+          v-if="showFooter"
         >
           <a
             href="#"
             class="card-footer-item"
+            @click="handleEdit"
           >Edit</a>
 
           <a
             href="#"
             class="card-footer-item"
+            @click="handleDelete"
           >Delete</a>
         </footer>
       </div>
@@ -69,6 +102,8 @@ import Vue from 'vue'
 
 import { IBlog } from '@/lib/types/models/Blog'
 import { $formatDate } from '@/helpers/date-time/date-time'
+import { IApiDeleteResponse } from '@/lib/types'
+import { IApiError } from '@/lib/types/errors'
 
 export default Vue.extend({
   name: 'card-blog',
@@ -79,13 +114,44 @@ export default Vue.extend({
     includeFooter: {
       type: Boolean,
       default: false
+    },
+    clickable: {
+      type: Boolean,
+      default: false
     }
+  },
+  data() {
+    return {
+      showFooter: false
+    }
+  },
+  created() {
+    if (this.includeFooter) this.checkUserId()
   },
   methods: {
     formatDate(date: Date): string {
       return $formatDate(date)
+    },
+    checkUserId() {
+      if (this.$store.getters.getUser.id === this.blog.uid) {
+        this.showFooter = true
+      }
+    },
+    handleEdit() {
+
+    },
+    async handleDelete() {
+      const response: IApiDeleteResponse | IApiError = await this.$store.dispatch('deleteBlog', this.blog.id)
+
+      console.log(response)
+      if (response.success) {
+        console.log('Success')
+        this.$emit('blog-deleted-successfully')
+      } else {
+        console.log('error')
+      }
     }
-  }
+  },
 })
 </script>
 

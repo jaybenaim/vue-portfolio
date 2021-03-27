@@ -54,3 +54,19 @@ export interface IApiError {
   success: false
   error: IApiErrorMessage
 }
+
+export interface IApiBlogResponseError {
+   success: false
+   error: IApiBlogError
+ }
+export interface IApiBlogError {
+   uid?: string
+   id?: string
+   title?: string
+   author?: string
+   summary?: string
+   content?: string
+   succes: false
+ }
+
+export type IApiBlogErrorType = 'title' | 'author' | 'summary' | 'content'

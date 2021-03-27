@@ -16,6 +16,7 @@ export interface IApiBlogResponse {
 }
 export interface IBlog {
   id: string
+  uid: string
   title: string
   author: string
   content: string

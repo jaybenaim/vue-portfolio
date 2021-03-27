@@ -12,18 +12,12 @@
         :key="index"
         class="column is-one-third-tablet is-one-quarter-desktop"
       >
-        <router-link
-          :to="{
-            path: `${blog.id}`,
-            query: blog
-          }"
-          append
-        >
-          <CardBlog
-            :blog="blog"
-            :includeFooter="isLoggedIn"
-          />
-        </router-link>
+        <CardBlog
+          :blog="blog"
+          :includeFooter="isLoggedIn"
+          clickable
+          @blog-deleted-successfully="refreshBlogs"
+        />
       </li>
     </ul>
 
@@ -114,6 +108,10 @@ export default Auth.extend({
     position: fixed;
     bottom: 25px;
     right: 25px;
+  }
+
+  .media-content {
+    overflow: hidden;
   }
 }
 </style>

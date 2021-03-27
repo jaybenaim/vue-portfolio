@@ -1,7 +1,7 @@
 import BASE_URL from '../api-base-url'
 import { Blog, IApiBlogResponse } from '@/lib/types/models/Blog'
-import { store } from '@/store'
 import { AxiosError } from 'axios'
+import { IApiBlogError, IApiBlogResponseError } from '@/lib/types/errors'
 
 /**
  * Sends a get request to the API
@@ -37,11 +37,6 @@ export const $getBlogs = async (route = '/blogs') => await BASE_URL.get(route)
 // eslint-disable-next-line
 export const $getBlogById = async (blogId: string) => await BASE_URL.get(`/blogs/${blogId}`)
 .then((response) => response.data)
-.catch((err: AxiosError) => {
-  store.commit('error', err)
-
-  return undefined
-})
 
 /**
  * Create new blog
@@ -65,18 +60,9 @@ export const $createBlog = async (blog: Blog) => await BASE_URL.post('/blogs/new
    } as IApiBlogResponseError
  })
 
-export interface IApiBlogResponseError {
-   success: false
-   error: IApiBlogError
- }
-export interface IApiBlogError {
-   uid?: string
-   id?: string
-   title?: string
-   author?: string
-   summary?: string
-   content?: string
-   succes: false
- }
-
-export type IApiBlogErrorType = 'title' | 'author' | 'summary' | 'content'
+ /**
+  *
+  * @param blogId
+  * @returns Promise
+  */
+export const $deleteBlog = async (blogId: string) => await BASE_URL.delete(`/blogs/${blogId}`)
