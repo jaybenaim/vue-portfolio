@@ -4,6 +4,7 @@ body.has-navbar-fixed-top {
 }
 
 body {
+  min-height: 100vh;
   background: var(--background-color);
   color: var(--primary-text-color);
 }

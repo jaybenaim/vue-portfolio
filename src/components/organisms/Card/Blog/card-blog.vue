@@ -31,6 +31,13 @@
           <div class="media-left">
             <figure class="image is-48x48">
               <img
+                v-if="blog.uid.image"
+                :src="blog.uid.image"
+                alt="Author profile image"
+              >
+
+              <img
+                v-else
                 src="https://bulma.io/images/placeholders/96x96.png"
                 alt="Placeholder image"
               >
@@ -126,16 +133,20 @@ export default Vue.extend({
     }
   },
   created() {
-    if (this.includeFooter) this.checkUserId()
+    if (this.includeFooter) {
+      this.showFooter = this.checkUserId()
+    }
   },
   methods: {
     formatDate(date: Date): string {
       return $formatDate(date)
     },
-    checkUserId() {
-      if (this.$store.getters.getUser.id === this.blog.uid) {
-        this.showFooter = true
+    checkUserId(): boolean {
+      if (this.$store.getters.getUser.id === this.blog.uid.id) {
+        return true
       }
+
+      return false
     },
     handleEdit() {
 
@@ -145,10 +156,15 @@ export default Vue.extend({
 
       console.log(response)
       if (response.success) {
-        console.log('Success')
         this.$emit('blog-deleted-successfully')
       } else {
-        console.log('error')
+        this.$store.commit('error', {
+
+          error: {
+            name: 'UnknownError',
+            message: 'Something went wrong'
+          }
+        } as IApiError)
       }
     }
   },

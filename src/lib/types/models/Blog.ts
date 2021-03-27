@@ -16,7 +16,7 @@ export interface IApiBlogResponse {
 }
 export interface IBlog {
   id: string
-  uid: string
+  uid: IBlogUser
   title: string
   author: string
   content: string
@@ -71,4 +71,11 @@ export class Blog {
     this.updated = blog.updated
     this.tags = blog.tags
   }
+}
+
+export interface IBlogUser {
+  id: string
+  name: string
+  username?: string
+  image?: string
 }
