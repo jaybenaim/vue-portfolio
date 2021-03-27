@@ -12,8 +12,6 @@ import { AxiosError } from 'axios'
 import { ActionContext } from 'vuex'
 
 const state = {
-  windowWidth: window.innerWidth,
-  theme: localStorage.getItem('theme') || 'dark',
   errors: {},
   isLoggedIn: false,
   user: {} as User,
@@ -24,32 +22,6 @@ const state = {
 }
 
 const getters = {
-  getWindowSize: (state: any) => state.windowWidth,
-  getScreenSize: (state: any) => {
-    if (state.windowWidth <= 320) {
-      return 'sm-phone'
-    }
-
-    if (state.windowWidth <= 480 && state.windowWidth >= 321) {
-      return 'phone'
-    }
-
-    if (state.windowWidth <= 768 && state.windowWidth >= 481) {
-      return 'mobile'
-    }
-
-    if (state.windowWidth >= 481 && state.windowWidth <= 992) {
-      return 'tablet'
-    }
-
-    if (state.windowWidth >= 993 && state.windowWidth <= 1200) {
-      return 'desktop'
-    }
-
-    return 'wide'
-  },
-  isMobile: (state: any) => (state.windowWidth <= 992),
-  getTheme: (state: any) => state.theme,
   getErrors: (state: any) => state.errors,
   isLoggedIn: (state: any) => state.isLoggedIn,
   getUser: (state: any) => state.user,
@@ -60,25 +32,6 @@ const getters = {
 }
 
 const mutations = {
-  setWindowWidth(state: any) {
-    state.windowWidth = window.innerWidth
-  },
-  setInitialTheme(state: any) {
-    const currentTheme = localStorage.getItem('theme') || 'dark'
-
-    state.theme = currentTheme
-
-    document.body.setAttribute('data-theme', currentTheme)
-  },
-  toggleTheme(state: any) {
-    const currentTheme = localStorage.getItem('theme')
-    const themeAfterChange = currentTheme === 'dark' ? 'light' : 'dark'
-
-    state.theme = themeAfterChange
-
-    document.body.setAttribute('data-theme', themeAfterChange)
-    localStorage.setItem('theme', themeAfterChange)
-  },
   setUser(state: any, {
       user,
       googleUser,

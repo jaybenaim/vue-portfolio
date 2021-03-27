@@ -1,14 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import auth from './auth'
+import {
+ auth, responsive, theme, blogs
+} from './storeModules'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
 
   modules: {
-    auth
+    auth,
+    responsive,
+    theme,
+    blogs
   }
 })
 

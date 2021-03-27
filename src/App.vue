@@ -41,15 +41,20 @@ import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
 import { IStatusResponse, ITokenResponse } from './lib/types/api'
 import { IApiTokenError } from './lib/types/errors'
+import Auth from './mixins/Auth'
 
-export default Responsive.extend({
+export default Auth.extend(Responsive).extend({
   name: 'App',
-  mixins: [ Responsive ],
+  mixins: [
+    Auth,
+    Responsive
+  ],
   data() {
     return {
       dbIsReady: false,
       currentRoute: '',
       showAuth: true,
+      open: false
     }
   },
   computed: {

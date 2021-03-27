@@ -135,10 +135,14 @@ import { IImage } from '@/lib/types'
 
 import ButtonDefault from '@atoms/ButtonDefault/button-default.vue'
 import SwitchDefault from '@/components/atoms/Switch/switch-default.vue'
+import Auth from '@/mixins/Auth'
 
 export default Vue.extend({
   name: 'navbar-default',
-  mixins: [ Responsive ],
+  mixins: [
+    Auth,
+    Responsive
+  ],
   props: {
     /**
     * Image object that contains the logo data.
