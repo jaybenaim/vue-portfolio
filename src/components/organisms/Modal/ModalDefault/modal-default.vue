@@ -12,8 +12,8 @@
           class="form is-flex is-justify-content-center"
         >
           <div class="modal-card">
-            <slot name="header">
-              <header class="modal-card-head modal-card__head theme-colors">
+            <header class="modal-card-head modal-card__head">
+              <slot name="header">
                 <p class="modal-card-title">
                   Sign Up
                 </p>
@@ -23,19 +23,19 @@
                   class="delete"
                   @click="$emit('close')"
                 />
-              </header>
-            </slot>
+              </slot>
+            </header>
 
-            <section class="modal-card-body modal-card__body theme-colors">
+            <section class="modal-card-body modal-card__body p-6">
               <slot>
               </slot>
             </section>
 
-            <slot name="footer">
-              <footer
-                class="modal-card-foot modal-card__footer
-                 p-3 mb-5 theme-colors is-flex is-justify-content-space-between"
-              >
+            <footer
+              class="modal-card-foot modal-card__footer
+                 p-3 mb-5 is-flex is-justify-content-space-between"
+            >
+              <slot name="footer">
                 <b-button
                   label="Cancel"
                   @click="$emit('close')"
@@ -47,8 +47,8 @@
                   class="is-align-self-flex-end"
                   @click.prevent="handleSubmit"
                 />
-              </footer>
-            </slot>
+              </slot>
+            </footer>
           </div>
         </form>
       </template>
@@ -84,5 +84,19 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+.modal-default {
+  .label {
+    text-align: left;
+    color: var(--primary-text-color);
+  }
 
+  .modal-card {
+    &__head,
+    &__body,
+    &__footer,
+    .modal-card-title {
+      @include theme()
+    }
+  }
+}
 </style>

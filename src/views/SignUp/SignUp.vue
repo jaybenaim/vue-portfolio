@@ -12,105 +12,97 @@
       class="has-text-left"
     >
       <template #header>
-        <header class="modal-card-head modal-card__head theme-colors">
-          <p class="modal-card-title">
-            Sign Up
-          </p>
+        <p class="modal-card-title">
+          Sign Up
+        </p>
 
-          <button
-            type="button"
-            class="delete"
-            @click="handleClose"
-          />
-        </header>
+        <button
+          type="button"
+          class="delete"
+          @click="handleClose"
+        />
       </template>
 
       <template #default>
-        <section class="modal-card-body modal-card__body theme-colors">
-          <b-field
-            label="Name"
-            :message="errors.name"
-            :type="{ 'is-danger': errors.name }"
-          >
-            <b-input
-              v-model="formData.name"
-              placeholder="Name"
-              required
-            />
-          </b-field>
+        <b-field
+          label="Name"
+          :message="errors.name"
+          :type="{ 'is-danger': errors.name }"
+        >
+          <b-input
+            v-model="formData.name"
+            placeholder="Name"
+            required
+          />
+        </b-field>
 
-          <b-field
-            label="Email"
-            :message="errors.email"
-            :type="{ 'is-danger': errors.email }"
-          >
-            <b-input
-              v-model="formData.email"
-              type="email"
-              placeholder="Email"
-              required
-            />
-          </b-field>
+        <b-field
+          label="Email"
+          :message="errors.email"
+          :type="{ 'is-danger': errors.email }"
+        >
+          <b-input
+            v-model="formData.email"
+            type="email"
+            placeholder="Email"
+            required
+          />
+        </b-field>
 
-          <b-field
-            label="Password"
-            :message="errors.password"
-            :type="{ 'is-danger':
-              (formData.password
-                && formData.password.length < 6)
-              || errors.password
-            }"
-          >
-            <b-input
-              v-model="formData.password"
-              type="password"
-              placeholder="*********"
-              validation-message="Must be at least 6 characters."
-              required
-            />
-          </b-field>
+        <b-field
+          label="Password"
+          :message="errors.password"
+          :type="{ 'is-danger':
+            (formData.password
+              && formData.password.length < 6)
+            || errors.password
+          }"
+        >
+          <b-input
+            v-model="formData.password"
+            type="password"
+            placeholder="*********"
+            validation-message="Must be at least 6 characters."
+            required
+          />
+        </b-field>
 
-          <b-field
-            label="Confirm Password"
-            :message="errors.password2"
-            :type="{ 'is-danger': errors.password2
-              || (formData.password.length > 0
-                && formData.password2 !== formData.password)
-            }"
-          >
-            <b-input
-              v-model="formData.password2"
-              type="password"
-              placeholder="*********"
-              required
-            />
-          </b-field>
+        <b-field
+          label="Confirm Password"
+          :message="errors.password2"
+          :type="{ 'is-danger': errors.password2
+            || (formData.password.length > 0
+              && formData.password2 !== formData.password)
+          }"
+        >
+          <b-input
+            v-model="formData.password2"
+            type="password"
+            placeholder="*********"
+            required
+          />
+        </b-field>
 
-          <!-- Google Sign in -->
-          <div
-            v-if="googleSignUpBtnIsReady"
-            id="sign-in"
-            class="sign-up__google mt-6 is-flex is-justify-content-center"
-          ></div>
-        </section>
+        <!-- Google Sign in -->
+        <div
+          v-if="useGoogleSignIn && googleSignUpBtnIsReady"
+          id="sign-in"
+          class="sign-up__google mt-6 is-flex is-justify-content-center"
+        ></div>
       </template>
 
       <template #footer>
-        <footer
-          class="modal-card-foot modal-card__footer p-3 mb-5 theme-colors is-flex is-justify-content-space-between"
-        >
-          <b-button
-            label="Cancel"
-            @click="handleClose"
-          />
+        <b-button
+          label="Cancel"
+          @click="handleClose"
+        />
 
-          <b-button
-            label="Sign Up"
-            type="is-primary"
-            class="is-align-self-flex-end"
-            @click.prevent="handleSubmit"
-          />
-        </footer>
+        <b-button
+          label="Sign Up"
+          type="is-primary"
+          class="is-align-self-flex-end"
+          @click.prevent="handleSubmit"
+        />
       </template>
     </ModalDefault>
   </div>
@@ -120,7 +112,7 @@
 import Auth from '@mixins/Auth'
 
 import {
- IApiUserErrorType, IApiUserResponse, IUser, User
+ IApiUserErrorType, IApiUserResponse, ISignUpData, IUser
 } from '@/lib/types/models/User'
 import ModalDefault from '@organisms/Modal/ModalDefault/modal-default.vue'
 import { IApiUserError } from '@/lib/types/errors'
@@ -146,25 +138,25 @@ export default Auth.extend({
     }
   },
   created() {
-    if (this.$store.getters.isLoggedIn) this.$router.push({ name: 'Home' })
+    if (this.isLoggedIn) this.$router.push({ name: 'Home' })
 
-    this.renderButtonIfReady()
+    this.useGoogleSignIn && this.renderButtonIfReady()
   },
   methods: {
     async handleSubmit() {
-      const user = new User(this.formData)
+      const user = this.formData as ISignUpData
 
-      const userResponse: IApiUserResponse | IApiUserError = await this.$store.dispatch('sign-up', user.getSignUpData())
+      const userResponse: IApiUserResponse | IApiUserError = await this.$store.dispatch('signUp', user)
 
-      if (userResponse.success && userResponse.isAuthenticated) {
-        this.$store.commit('setUser', { user })
+      if (userResponse) {
+        if (userResponse.success && userResponse.isAuthenticated) {
+          this.handleClose()
+        }
 
-        this.$emit('close')
-      }
-
-      if (!userResponse.success) {
-        for (const error of Object.keys(userResponse)) {
-          this.errors[error as IApiUserErrorType] = userResponse[error as IApiUserErrorType]
+        if (!userResponse.success) {
+          for (const error of Object.keys(userResponse)) {
+            this.errors[error as IApiUserErrorType] = userResponse[error as IApiUserErrorType]
+          }
         }
       }
     }
@@ -173,10 +165,19 @@ export default Auth.extend({
 })
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .sign-up {
   .label {
     text-align: left;
+  }
+
+  .modal-card {
+    &__head,
+    &__body,
+    &__footer,
+    .modal-card-title {
+      @include theme()
+    }
   }
 }
 </style>

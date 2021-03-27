@@ -2,6 +2,7 @@ import BASE_URL from '../api-base-url'
 import {
  ILoginData, ISignUpData,
 } from '@/lib/types/models/User'
+
 /**
  * Sign in the user
  *
@@ -30,6 +31,9 @@ export const $signUp = async (user: ISignUpData) => await BASE_URL
 export const $login = async (user: ILoginData) => await BASE_URL
 .post('users/login', user)
 
+export const $loginWithGoogle
+= async (user: gapi.auth2.GoogleUser) => await BASE_URL
+.post('users/login?provider=google', user)
 /**
  * Check if a user is authenticated via JWT
  *

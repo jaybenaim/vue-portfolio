@@ -1,6 +1,6 @@
 <template>
   <BSidebar
-    :type="theme"
+    :type="`is-${theme}`"
     :fullheight="fullheight"
     :fullwidth="fullwidth"
     :overlay="overlay"
@@ -55,7 +55,10 @@
       </BMenu>
     </div>
 
-    <div class="menu-mobile__auth p-4">
+    <div
+      class="menu-mobile__auth p-4"
+      v-if="withAuth"
+    >
       <div
         class="logged-out-buttons"
         v-if="!isLoggedIn"
@@ -75,6 +78,7 @@
           type="is-primary"
           @click.native="$emit('close')"
           class="m-2"
+          @close="$emit('close')"
         >
           Sign Up
         </ButtonDefault>
@@ -90,7 +94,7 @@
 
         <ButtonDefault
           v-if="isLoggedIn"
-          :type="theme"
+          :type="`is-${theme}`"
           @click.native="handleLogout"
           class="menu-mobile__item"
         >
@@ -106,36 +110,19 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { IImage } from '@lib/types'
 import SwitchDefault from '@/components/atoms/Switch/switch-default.vue'
 import ButtonDefault from '@/components/atoms/ButtonDefault/button-default.vue'
+import Auth from '@/mixins/Auth'
 
-export default Vue.extend({
+export default Auth.extend({
   components: { SwitchDefault, ButtonDefault },
+  mixins: [Auth],
   name: 'menu-mobile',
   props: {
     open: {
       type: Boolean,
       default: false
-    },
-    /**
-     * Set the theme of the menu. Options: `is-light`, `is-dark`.
-     */
-    theme: {
-      type: String,
-      default: 'is-light',
-      validator: (value: string) => [
-        'is-white',
-        'is-black',
-        'is-light',
-        'is-dark',
-        'is-primary',
-        'is-info',
-        'is-success',
-        'is-warning',
-        'is-danger'
-      ].indexOf(value) > -1
     },
     /**
      * Show an overlay on the rest of the page.
@@ -186,21 +173,10 @@ export default Vue.extend({
     showSignedInAs: {
       type: Boolean,
       default: false
-    }
-  },
-  data() {
-    return {
-      isLoggedIn: this.$store.getters.isLoggedIn,
-      user: this.$store.getters.getUser
-    }
-  },
-  watch: {
-    '$store.getters.isLoggedIn': function watcher() {
-      const isLoggedIn = this.$store.getters.isLoggedIn
-      if (isLoggedIn) {
-        this.isLoggedIn = isLoggedIn
-        this.user = this.$store.getters.getUser
-      }
+    },
+    withAuth: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {

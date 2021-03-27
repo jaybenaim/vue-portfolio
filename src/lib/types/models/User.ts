@@ -7,15 +7,11 @@ export class User {
 
   createdOn?: string
 
-  isAuthenticated?: string
+  isAuthenticated?: boolean
 
   image?: string
 
   username?: string
-
-  password?: string
-
-  password2?: string
 
   constructor(user: IUser) {
     this.id = user.id
@@ -23,8 +19,6 @@ export class User {
     this.email = user.email
     this.image = user.image
     this.username = user.username ? user.username : user.name
-    this.password = user.password
-    this.password2 = user.password2
     this.createdOn = user.createdOn === undefined ? Date.now().toString() : user.createdOn
     this.isAuthenticated = user.isAuthenticated
   }
@@ -40,22 +34,6 @@ export class User {
       isAuthenticated: this.isAuthenticated
     } as IUser
   }
-
-  getSignUpData() {
-    return {
-      name: this.name,
-      email: this.email,
-      password: this.password,
-      password2: this.password2
-    } as ISignUpData
-  }
-
-  getLoginData() {
-    return {
-      email: this.email,
-      password: this.password
-    } as ILoginData
-  }
 }
 
 export interface IUser {
@@ -63,7 +41,7 @@ export interface IUser {
   name: string
   email: string
   createdOn?: string
-  isAuthenticated?: string
+  isAuthenticated?: boolean
   image?: string
   username?: string
   password?: string

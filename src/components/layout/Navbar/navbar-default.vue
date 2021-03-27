@@ -58,24 +58,24 @@
           v-if="!isLoggedIn"
         >
           <ButtonDefault
+            class="navbar__item m-3"
             tag="router-link"
             :to="{
               name: 'Login'
             }"
             @click.native="$emit('close')"
-            class="navbar__item m-3"
           >
             Login
           </ButtonDefault>
 
           <ButtonDefault
+            class="navbar__item m-3"
             tag="router-link"
             :to="{
               name: 'SignUp'
             }"
             type="is-primary"
             @click.native="$emit('close')"
-            class="navbar__item m-3"
           >
             Sign Up
           </ButtonDefault>
@@ -90,6 +90,7 @@
           </b-navbar-item>
 
           <ButtonDefault
+            class="navbar__item m-3"
             v-if="isLoggedIn"
             type="is-secondary"
             @click.native="handleLogout"
@@ -174,7 +175,6 @@ export default Vue.extend({
   data() {
     return {
       isOpen: false,
-      user: this.$store.getters.getUser
     }
   },
   watch: {
@@ -182,7 +182,6 @@ export default Vue.extend({
       const isLoggedIn = this.$store.getters.isLoggedIn
       if (isLoggedIn) {
         this.$emit('close')
-        this.user = this.$store.getters.getUser
       }
     }
   },

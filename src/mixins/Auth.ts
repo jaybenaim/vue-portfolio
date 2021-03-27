@@ -1,10 +1,16 @@
 import Vue from 'vue'
 
-import { $createUser } from '@/helpers/google'
+import { $createUserFromGoogleUser } from '@/helpers/google'
 
-import $store from '@/store'
+import { store } from '@/store'
 
 export default Vue.extend({
+  props: {
+    useGoogleSignIn: {
+      type: Boolean,
+      default: false,
+    }
+  },
   data() {
     return {
       googleSignUpBtnIsReady: false
@@ -12,17 +18,17 @@ export default Vue.extend({
   },
   computed: {
     theme() {
-      return $store.getters.getTheme
+      return store.getters.getTheme
     },
     isGoogleLoaded() {
-      return $store.getters.isGoogleLoaded
+      return store.getters.isGoogleLoaded
     },
     isLoggedIn() {
-      return $store.getters.isLoggedIn
+      return store.getters.isLoggedIn
+    },
+    user() {
+      return store.getters.getUser
     }
-  },
-  mounted() {
-    $store.dispatch('googleInit')
   },
   methods: {
     /**
@@ -62,19 +68,24 @@ export default Vue.extend({
      * Get's called when a user successfully signs in with google
      * @param googleUser
      */
-    handleSuccess(googleUser: gapi.auth2.GoogleUser) {
-      const userProfile = $createUser(googleUser)
+    async handleSuccess(googleUser: gapi.auth2.GoogleUser) {
+      const userProfile = $createUserFromGoogleUser(googleUser)
 
-      $store.commit('setUser', {
-        user: userProfile
+      store.commit('setUser', {
+        user: userProfile,
+        googleUser
       })
+
+      const token = await googleUser.getAuthResponse().access_token
+
+      store.commit('setJwtToken', token)
     },
     /**
      * Gets called if there is an error with google sign in
      * @param reason
      */
     handleErrors(reason: {error: string}) {
-      $store.commit('error', reason)
+      store.commit('error', reason)
 
       this.googleSignUpBtnIsReady = false
     },
@@ -82,7 +93,9 @@ export default Vue.extend({
      * Handle modal close
      */
     handleClose() {
-      this.$router.go(-1)
+      this.$router.push({
+        name: 'Blogs'
+      })
     }
   }
 })

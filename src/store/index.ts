@@ -3,7 +3,9 @@ import {
 } from '@/helpers/api/auth'
 
 import {
- ApiUserError, IApiLoginError, IApiTokenError, IApiUserError
+  ApiUserError,
+  IApiLoginError,
+ IApiTokenError, IApiUserError
 } from '@/lib/types/errors'
 import {
  IApiLoginResponse, IApiUserResponse, ILoginData, ISignUpData, IUser, User
@@ -21,9 +23,10 @@ export const store = new Vuex.Store({
     errors: {},
     isLoggedIn: false,
     user: {} as User,
+    googleUser: {} as gapi.auth2.GoogleUser,
     jwtToken: localStorage.getItem('jvp-token'),
     googleIsLoaded: false,
-
+    signedInWithGoogle: false
   },
   getters: {
     getWindowSize: (state) => state.windowWidth,
@@ -55,8 +58,10 @@ export const store = new Vuex.Store({
     getErrors: (state) => state.errors,
     isLoggedIn: (state) => state.isLoggedIn,
     getUser: (state) => state.user,
+    getGoogleUser: (state) => state.googleUser,
     isGoogleLoaded: (state) => state.googleIsLoaded,
-    getJwtToken: (state) => state.jwtToken
+    getJwtToken: (state) => state.jwtToken,
+    isSignedInWithGoogle: (state) => state.signedInWithGoogle
   },
   mutations: {
     setWindowWidth(state) {
@@ -80,26 +85,40 @@ export const store = new Vuex.Store({
     },
     setUser(state, {
       user,
+      googleUser,
       isLoggedIn = true
       }) {
       state.user = user
       state.isLoggedIn = isLoggedIn
-      state.googleIsLoaded = true
+
+      if (googleUser) {
+        const gUser = googleUser as gapi.auth2.GoogleUser
+
+        state.googleUser = gUser
+        state.googleIsLoaded = true
+        state.isLoggedIn = !!gUser.getAuthResponse()
+      }
+    },
+    setLoginStatus(state, value: boolean) {
+      state.isLoggedIn = value
     },
     setJwtToken(state, token: string) {
       localStorage.setItem('jvp-token', token)
 
       state.jwtToken = token
     },
-    googleIsLoaded(state, currentState) {
-      state.googleIsLoaded = currentState
+    googleIsLoaded(state, value) {
+      state.googleIsLoaded = value
+    },
+    signedInWithGoogle(state, value = true) {
+      state.signedInWithGoogle = value
     },
     error(state, errors) {
       state.errors = errors
       if (process.env.NODE_ENV === 'development') {
         console.log(errors)
       }
-    }
+    },
   },
   actions: {
     /**
@@ -113,12 +132,20 @@ export const store = new Vuex.Store({
      *
      */
     async signUp({ commit }, user: ISignUpData) {
-      await $signUp(user)
-      .then(({ data }) => data as IApiUserResponse)
-      .catch((err: AxiosError) => {
-        commit('error', err.response?.data)
+      return await $signUp(user)
+      .then(({ data }) => {
+        commit('setUser', { user: new User(data.user) })
 
-        return new ApiUserError(err.response?.data) as IApiUserError
+        // Get Token after initial sign up
+        this.dispatch('login', user as ILoginData)
+
+        return data as IApiUserResponse
+      })
+      .catch((err: AxiosError) => {
+        const error = err.response?.data as IApiUserError
+        commit('error', error)
+
+        return new ApiUserError(error)
       })
     },
     /**
@@ -132,19 +159,17 @@ export const store = new Vuex.Store({
      *
      */
     async login({ commit }, user: ILoginData) {
-      console.log(user)
-      await $login(user)
+      return await $login(user)
         .then(({ data, data: { user, token } }) => {
           commit('setUser', { user: new User(user) })
           commit('setJwtToken', token.replace('Bearer ', ''))
 
           return data as IApiLoginResponse
-        })
-        .catch((err: AxiosError) => {
+        }).catch((err: AxiosError) => {
           const error = err.response?.data as IApiLoginError
-          commit('error', error)
+          commit('error', new ApiUserError(error))
 
-          return error
+          return new ApiUserError(error)
         })
     },
     /**
@@ -158,7 +183,12 @@ export const store = new Vuex.Store({
      *
      */
     async checkToken({ commit, state, state: { jwtToken: token } }) {
-      if (token && token !== 'undefined') {
+      // if (state.signedInWithGoogle) {
+      //   const googleUser = state.googleUser.getAuthResponse()
+      //   console.log(googleUser)
+      // }
+
+      if (token && (token !== 'undefined' || token !== undefined)) {
         await $verifyToken(token)
         .then(async ({ data: userResponse }) => {
              // eslint-disable-next-line
@@ -185,72 +215,125 @@ export const store = new Vuex.Store({
 
         commit('error', error)
         commit('setJwtToken', undefined)
-        commit('setUser', { user: {}, isLoggedIn: false })
+        commit('setLoginStatus', false)
 
         return error
       }
       return state.jwtToken
     },
     logout({ commit }) {
-      $logout()
+      if (this.state.signedInWithGoogle) $logout()
 
+      commit('setJwtToken', undefined)
       commit('setUser', {
         user: undefined,
         isLoggedIn: false
       })
     },
-    /**
-     * Initiate Google Auth and set the user to the vuex store
-     *
-     * @param signinChanged Function that returns a {Boolean}
-     * @param userChanged Function that returns a {gapi.auth2.GoogleUser}
-     */
-    googleInit({ commit },
-        signinChanged?: (signedIn: boolean) => any,
-        userChanged?: (user: gapi.auth2.GoogleUser) => any) {
-      gapi.load('auth2', () => {
-        if (!signinChanged) {
-          signinChanged = (signedIn: boolean) => console.log(signedIn)
-        }
+    // /**
+    //  * Initiate Google Auth and set the user to the vuex store
+    //  *
+    //  * @param signinChanged Function that returns a {Boolean}
+    //  * @param userChanged Function that returns a {gapi.auth2.GoogleUser}
+    //  */
+    // googleInit({ commit, state },
+    //     signinChanged?: (signedIn: boolean) => any,
+    //     userChanged?: (user: gapi.auth2.GoogleUser) => any) {
+    //   gapi.load('auth2', () => {
+    //     if (!signinChanged) {
+    //       signinChanged = (signedIn: boolean) => {
+    //         commit('signedInWithGoogle', signedIn)
 
-        if (!userChanged) {
-          userChanged = (user: gapi.auth2.GoogleUser) => {
-            const profile = user.getBasicProfile()
+    //         if (signedIn) {
+    //           this.dispatch('loginWithGoogle', state.user)
+    //         }
 
-            const userProfile = {} as User
+    //         return signedIn
+    //       }
+    //     }
 
-            if (profile) {
-              userProfile.name = profile.getName()
-              userProfile.email = profile.getEmail()
-              userProfile.image = profile.getImageUrl()
-              userProfile.username = profile.getName()
+    //     if (!userChanged) {
+    //       userChanged = (user: gapi.auth2.GoogleUser) => user
+    //     } else {
+    //       userChanged = async (user: gapi.auth2.GoogleUser) => {
+    //         const userProfile = $createUserFromGoogleUser(user)
+    //         console.log(userProfile)
+    //         // Create token and generate user Id
+    //         // await this.dispatch('loginWithGoogle', userProfile)
+    //       }
+    //     }
 
-              commit('setUser', {
-                user: new User(userProfile)
-              })
-            }
-          }
-        }
+    //     const auth2 = gapi.auth2.init({
+    //    // eslint-disable-next-line
+    //     client_id: process.env.VUE_APP_OAUTH_CLIENT_ID
+    //     })
 
-        const auth2 = gapi.auth2.init({
-       // eslint-disable-next-line
-        client_id: process.env.VUE_APP_OAUTH_CLIENT_ID
-        })
+    //     // Listen for sign-in state changes.
+    //     auth2.isSignedIn.listen(signinChanged)
 
-        // Listen for sign-in state changes.
-        auth2.isSignedIn.listen(signinChanged)
+    //     // Listen for changes to current user.
+    //     auth2.currentUser.listen(userChanged)
 
-        // Listen for changes to current user.
-        auth2.currentUser.listen(userChanged)
+    //     // If google Loaded properly
+    //     if (auth2) {
+    //       commit('googleIsLoaded', true)
+    //     } else {
+    //       commit('error', {
+    //         error: 'Google failed to load.'
+    //       })
+    //       console.log('Google failed to load.')
+    //     }
 
-        if (auth2) {
-          commit('googleIsLoaded', true)
-        }
-      })
-    }
+    //     // if (auth2.isSignedIn.get()) {
+    //     //   const userProfile = auth2.currentUser.get()
+    //     //   console.log(userProfile)
+
+    //       // this.dispatch('loginWithGoogle', userProfile)
+    //     // }
+    //   })
+    // },
+    // // eslint-disable-next-line
+    // async loginWithGoogle({ commit }, gUser: gapi.auth2.GoogleUser) {
+    //   await $loginWithGoogle(gUser)
+    //   .then(({ data }) => {
+    //     const userResponse = data as IApiGoogleLoginResponse
+    //     console.log(data)
+    //       // if user returns a token and data
+    //       // create a new User
+    //       // set the current user in the store
+    //       // commit('setUser', {
+    //       //  user: new User(data),
+    //       //  googleUser: user,
+    //       //  isLoggedIn: true
+    //       // })
+
+    //     commit('setUser', {
+    //       user: new User(userResponse.user),
+    //       googleUser: gUser,
+    //       isLoggedIn: true
+    //     })
+
+    //     commit('signedInWithGoogle')
+
+    //     commit('googleIsLoaded', true)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err)
+    //     // throw error
+    //     // set isLoggedIn to false
+    //     // set user to undefined
+    //     // set login status to failed
+    //     // return false
+    //   })
+    // }
   },
   modules: {
   }
 })
 
 export default store
+
+interface IApiGoogleLoginResponse {
+  user: IApiUserResponse
+  token: string
+}

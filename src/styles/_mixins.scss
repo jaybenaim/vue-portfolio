@@ -37,6 +37,10 @@
 @mixin theme() {
   background-color: var(--background-color) !important;
   color: var(--primary-text-color) !important;
+
+  &:hover {
+    color: var(--primary-text-color-hover) !important;
+  }
 }
 
 @mixin themeLink() {

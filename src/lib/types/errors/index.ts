@@ -37,6 +37,7 @@ export interface IApiLoginError {
   email: string
   password: string
   user: IUser
+  isAuthenticated: false
 }
 
 export interface IApiTokenError {

@@ -10,7 +10,7 @@
       class="has-text-left"
     >
       <template #header>
-        <header class="modal-card-head modal-card__head theme-colors">
+        <header class="modal-card-head modal-card__head">
           <p class="modal-card-title">
             Login
           </p>
@@ -24,7 +24,7 @@
       </template>
 
       <template #default>
-        <section class="modal-card-body modal-card__body theme-colors">
+        <section class="modal-card-body modal-card__body">
           <b-field
             label="Email"
             :message="errors.email"
@@ -57,7 +57,7 @@
           </b-field>
 
           <!-- Google sign in  -->
-          <div v-if="googleSignUpBtnIsReady">
+          <div v-if="useGoogleSignIn && googleSignUpBtnIsReady">
             <div
               id="sign-in"
               class="sign-up__google mt-6 is-flex is-justify-content-center"
@@ -94,10 +94,12 @@ import ModalDefault from '@organisms/Modal/ModalDefault/modal-default.vue'
 import {
   IApILoginErrorType,
   IApiLoginResponse,
- IUser, User
+  ILoginData,
+ IUser
 } from '@/lib/types/models/User'
 import {
- IApiError, IApiLoginError, IApiUserError
+  IApiLoginError,
+ IApiUserError
 } from '@/lib/types/errors'
 
 export default Auth.extend({
@@ -116,11 +118,13 @@ export default Auth.extend({
     }
   },
   created() {
-    if (this.$store.getters.isLoggedIn) this.$router.push({ name: 'Home' })
+    if (this.$store.getters.isLoggedIn) this.handleClose()
   },
   watch: {
     isLoggedIn() {
-      this.isLoggedIn && this.$emit('close')
+      if (this.isLoggedIn) {
+        this.handleClose()
+      }
     }
   },
   mounted() {
@@ -128,28 +132,22 @@ export default Auth.extend({
   },
   methods: {
     async handleLogin() {
-      const user = new User(this.formData)
+      const user = this.formData as ILoginData
 
-      const userResponse: IApiLoginResponse | IApiLoginError = await this.$store.dispatch('login', user.getLoginData())
-      console.log(userResponse)
-      if (userResponse
-      && userResponse.success
-      && userResponse.user.isAuthenticated) {
-        this.$emit('close')
-      }
+      const userResponse: IApiLoginResponse | IApiLoginError = await this.$store.dispatch('login', user)
 
-      if (userResponse && !userResponse.success) {
-        for (const error of Object.keys(userResponse)) {
-          this.errors[error as IApILoginErrorType] = userResponse[error as IApILoginErrorType]
+      if (userResponse) {
+        if (userResponse.success
+      && userResponse.isAuthenticated) {
+          this.handleClose()
         }
-      } else {
-        this.$store.commit('error', {
-          error: {
-            name: 'UnknownError',
-            message: 'Something went wrong'
-          },
-          success: false
-        } as IApiError)
+        console.log(userResponse)
+        if (!userResponse.success) {
+          for (const error of Object.keys(userResponse)) {
+            this.errors[error as IApILoginErrorType]
+          = userResponse[error as IApILoginErrorType]
+          }
+        }
       }
     }
   },
@@ -157,6 +155,25 @@ export default Auth.extend({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.login {
+  .label {
+    text-align: left;
+  }
 
+  .modal-card {
+    &__head,
+    &__body,
+    &__footer,
+    .modal-card-title {
+      @include theme()
+    }
+  }
+
+  .modal-card {
+    &__body {
+      border: none;
+    }
+  }
+}
 </style>

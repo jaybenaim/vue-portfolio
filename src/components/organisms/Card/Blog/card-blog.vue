@@ -52,11 +52,6 @@
           <a
             href="#"
             class="card-footer-item"
-          >Save</a>
-
-          <a
-            href="#"
-            class="card-footer-item"
           >Edit</a>
 
           <a
@@ -96,6 +91,10 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .blog {
+  p {
+    color: var(--black) !important;
+  }
+
   &__title,
   &__author {
     text-align: left;

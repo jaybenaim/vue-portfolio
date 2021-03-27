@@ -1,5 +1,5 @@
-import { $createUser } from './create-user'
+import { $createUserFromGoogleUser } from './create-user'
 
 export {
-  $createUser
+  $createUserFromGoogleUser
 }

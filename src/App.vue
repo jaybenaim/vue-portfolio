@@ -6,6 +6,7 @@
       :open.sync="open"
       :theme="`is-${theme}`"
       @close="open = false"
+      :withAuth="showAuth"
     />
 
     <div id="nav">
@@ -13,7 +14,7 @@
         v-if="!isMobile"
         :theme="`is-${theme}`"
         fixed-top
-        withAuth
+        :withAuth="showAuth"
       />
 
       <Navbar
@@ -21,6 +22,7 @@
         :theme="`is-${theme}`"
         fixed-top
         @open="open = !open"
+        :withAuth="showAuth"
       />
     </div>
 
@@ -46,6 +48,8 @@ export default Responsive.extend({
   data() {
     return {
       dbIsReady: false,
+      currentRoute: '',
+      showAuth: true,
     }
   },
   computed: {
@@ -54,7 +58,10 @@ export default Responsive.extend({
     },
     isLoggedIn() {
       return this.$store.getters.isLoggedIn
-    }
+    },
+    user() {
+      return this.$store.getters.getUser
+    },
   },
   async created() {
     // Wake up heroku
@@ -72,25 +79,58 @@ export default Responsive.extend({
   async mounted() {
     // Set Theme
     this.$store.commit('setInitialTheme')
+    // this.$store.dispatch('googleInit')
 
     // Check if user is signed in
-    if (!this.isLoggedIn) {
+    // if (this.$route.fullPath.includes('/blogs')) {
+    const token = localStorage.getItem('jvp-token')
+
+    if (token !== 'undefined') {
       const tokenStatus: ITokenResponse | IApiTokenError = await this.$store.dispatch('checkToken')
-      if (tokenStatus.success) {
+
+      if (tokenStatus && tokenStatus.success) {
           // awesome user login in with token
+        if (this.$route.path.includes('login')) {
+          this.$router.push({
+            name: 'Home'
+          })
+        }
       } else {
           // failed to login with token
         this.$router.push({
-          name: 'Login'
+          name: 'SignUp'
         })
       }
     }
+    // }
 
-    await this.$store.dispatch('checkToken')
+    // await this.$store.dispatch('checkToken')
+
     // Load google to setup google sign in
-    await this.$store.dispatch('googleInit')
+
+    // if (this.$route.fullPath.includes('/blogs')) {
+    //   this.toggleAuth()
+    // }
+  },
+  updated() {
+    // if (this.$route.fullPath.includes('/blogs')) {
+    //   this.toggleAuth()
+    // }
   },
   methods: {
+    /**
+     * Show or hide auth if you are on defined route route
+     * @param Path to check for
+     */
+    toggleAuth(path = '/blogs') {
+      this.currentRoute = this.$route.fullPath
+
+      if (this.$route.fullPath.includes(path)) {
+        this.showAuth = true
+      } else {
+        this.showAuth = false
+      }
+    },
   //   /**
   //    * Listener method for sign-out live value.
   //    *
@@ -125,5 +165,8 @@ export default Responsive.extend({
   text-align: center;
   color: #2c3e50;
 }
-
+button {
+  position: absolute;
+  z-index: 999999999;
+}
 </style>

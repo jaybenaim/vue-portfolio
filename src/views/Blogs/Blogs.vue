@@ -22,6 +22,7 @@
         >
           <CardBlog
             :blog="blog"
+            :includeFooter="isLoggedIn"
           />
         </router-link>
       </li>
@@ -37,15 +38,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 
 import { Blog } from '@/lib/types/models/Blog'
 import CardBlog from '@organisms/Card/Blog/card-blog.vue'
 import NewBlog from '@atoms/NewBlog/new-blog.vue'
 
 import { $getBlogs } from '@/helpers/api/blogs'
+import Auth from '@/mixins/Auth'
 
-export default Vue.extend({
+export default Auth.extend({
   name: 'blogs',
   props: {
     labelPosition: {
@@ -62,7 +63,6 @@ export default Vue.extend({
     return {
       blogs: [] as Blog[],
       isReady: false,
-      theme: this.$store.getters.getTheme,
       labelPos: this.labelPosition
     }
   },
@@ -76,8 +76,6 @@ export default Vue.extend({
       } else {
         this.labelPos = this.labelPosition
       }
-
-      this.theme = theme
     }
   },
   async created() {
