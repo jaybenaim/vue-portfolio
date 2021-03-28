@@ -142,7 +142,6 @@ const actions = {
         .then(async ({ data: userResponse }) => {
              // eslint-disable-next-line
         const user = new User(userResponse as IUser)
-          console.log(user)
           commit('setUser', { user })
           commit('setJwtToken', token.replace('Bearer ', ''))
         })

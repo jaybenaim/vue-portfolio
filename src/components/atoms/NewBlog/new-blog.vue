@@ -7,7 +7,7 @@
       class="is-large theme-colors"
     />
 
-    <NewBlogModal
+    <BlogModal
       :isOpen="isOpen"
       @close="isOpen = false"
       @blog-added="$emit('blog-added')"
@@ -19,7 +19,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import ButtonDefault from '../ButtonDefault/button-default.vue'
-import NewBlogModal from '@organisms/NewBlogModal/new-blog-modal.vue'
+import BlogModal from '@organisms/Modal/BlogModal/blog-modal.vue'
 
 export default Vue.extend({
   name: 'new-blog',
@@ -45,7 +45,7 @@ export default Vue.extend({
   },
   components: {
     ButtonDefault,
-    NewBlogModal
+    BlogModal
   }
 })
 </script>

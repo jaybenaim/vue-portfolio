@@ -14,10 +14,10 @@ import { IApiBlogError, IApiBlogResponseError } from '@/lib/types/errors'
  */
 // eslint-disable-next-line
 export const $getBlogs = async (route = '/blogs') => await BASE_URL.get(route)
-.then(({ data: blogs }) => {
+.then(({ data: blogResponse }) => {
   const blogList = [] as Blog[]
 
-  for (const blog of blogs) {
+  for (const blog of blogResponse.blogs) {
     blogList.push(new Blog(blog))
   }
 
@@ -36,7 +36,7 @@ export const $getBlogs = async (route = '/blogs') => await BASE_URL.get(route)
  */
 // eslint-disable-next-line
 export const $getBlogById = async (blogId: string) => await BASE_URL.get(`/blogs/${blogId}`)
-.then((response) => response.data)
+.then((response) => response.data.blog)
 
 /**
  * Create new blog
@@ -47,7 +47,7 @@ export const $getBlogById = async (blogId: string) => await BASE_URL.get(`/blogs
  */
 export const $createBlog = async (blog: Blog) => await BASE_URL.post('/blogs/new', blog)
  .then((response) => {
-   const blog = response.data as IApiBlogResponse
+   const blog = response.data.blog as IApiBlogResponse
 
    return blog
  })
@@ -59,6 +59,8 @@ export const $createBlog = async (blog: Blog) => await BASE_URL.post('/blogs/new
      error
    } as IApiBlogResponseError
  })
+
+export const $editBlog = async (blog: Blog) => await BASE_URL.patch(`/blogs/${blog.id}`, blog)
 
  /**
   *

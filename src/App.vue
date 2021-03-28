@@ -170,8 +170,5 @@ export default Auth.extend(Responsive).extend({
   text-align: center;
   color: #2c3e50;
 }
-button {
-  position: absolute;
-  z-index: 999999999;
-}
+
 </style>

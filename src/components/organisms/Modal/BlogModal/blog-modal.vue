@@ -21,7 +21,7 @@
           >
             <header class="modal-card-head modal-card__head theme-colors">
               <p class="modal-card-title">
-                New Post
+                {{ !editProps ? "New Post" : "Edit Post" }}
               </p>
 
               <button
@@ -126,15 +126,15 @@
             </section>
 
             <footer class="modal-card-foot modal-card__footer p-3 mb-5 theme-colors">
-              <b-button
+              <ButtonDefault
                 label="Close"
-                @click="$emit('close')"
+                @click.native="$emit('close')"
               />
 
-              <b-button
-                label="Post"
-                type="is-primary"
-                @click.prevent="handleSubmit"
+              <ButtonDefault
+                :label="!editProps ? 'Post' : 'Update'"
+                class="button is-primary"
+                @click.native="handleSubmit"
               />
             </footer>
           </div>
@@ -147,16 +147,25 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { Blog, IApiBlogResponse } from '@/lib/types/models/Blog'
+import {
+  Blog,
+  IApiBlogResponse, IBlog, IBlogUser
+} from '@lib/types/models/Blog'
 
-import Sortable from '@/components/atoms/Sortable/sortable.vue'
-import UploadDragAndDrop from '../input/UploadDragAndDrop/upload-drag-and-drop.vue'
+import Sortable from '@atoms/Sortable/sortable.vue'
+import UploadDragAndDrop from '@organisms/input/UploadDragAndDrop/upload-drag-and-drop.vue'
+import ButtonDefault from '@atoms/ButtonDefault/button-default.vue'
+
 import { $getImage } from '@/helpers/api/getImage'
 import {
- $createBlog, IApiBlogError, IApiBlogErrorType, IApiBlogResponseError
+ $createBlog
 } from '@/helpers/api/blogs'
+import { IApiBlogError, IApiBlogErrorType, IApiBlogResponseError } from '@/lib/types/errors'
+
+import { $urlToBase64 } from '@/helpers'
 
 export default Vue.extend({
+  name: 'blog-modal',
   props: {
     isOpen: {
       type: Boolean,
@@ -164,12 +173,15 @@ export default Vue.extend({
     },
     labelPosition: {
       type: String,
-      default: 'on-border',
+      default: '',
       validator: (value: string) => [
         '',
         'inside',
         'on-border'
       ].indexOf(value) > -1
+    },
+    editProps: {
+      type: Object as () => IBlog
     }
   },
   data() {
@@ -181,7 +193,7 @@ export default Vue.extend({
         content: '',
       } as IApiBlogError,
       formProps: {
-        uid: '',
+        uid: {} as IBlogUser,
         title: '',
         author: '',
         summary: '',
@@ -189,25 +201,42 @@ export default Vue.extend({
         image: '',
         imageCaption: '',
         publishDate: new Date(),
-        tags: undefined as any
-      } as Blog
+        tags: [] as string[]
+      } as IBlog
     }
   },
   created() {
-    this.formProps.uid = this.$store.getters.getUser.id
+    if (this.editProps) {
+      const newBlog = {} as any
+
+      // for (const field of Object.keys(this.formProps)) {
+      newBlog.id = this.editProps.id
+      newBlog.title = this.editProps.title
+      newBlog.author = this.editProps.author
+      newBlog.summary = this.editProps.summary
+      newBlog.content = this.editProps.content
+      newBlog.image = this.editProps.image
+      newBlog.imageCaption = this.editProps.imageCaption
+      if (this.editProps.publishDate) {
+        newBlog.publishDate = new Date(this.editProps.publishDate)
+      }
+      newBlog.tags = this.editProps.tags
+
+      //   if (field === 'publishDate' && this.editProps.publishDate) {
+      //     this.formProps.publishDate = new Date(this.editProps.publishDate)
+      //   } else {
+      //     newBlog[field] = this.editProps[field as IBlogIndexType]
+      //   }
+      // }
+
+      this.formProps = newBlog as IBlog
+    } else {
+      this.formProps.uid.id = this.$store.getters.getUser.id
+    }
   },
   methods: {
-    toBase64(file: any) {
-      const url = new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = () => resolve(reader.result)
-        reader.onerror = (error) => reject(error)
-      })
-      return url
-    },
-    async handleFileUpload(file: any) {
-      const base64String: string = await this.toBase64(file) as string
+    async handleFileUpload(file: File) {
+      const base64String: string = await $urlToBase64(file) as string
 
       this.formProps.imageCaption = file.name
 
@@ -218,24 +247,43 @@ export default Vue.extend({
       }
     },
     async handleSubmit() {
-      const newBlogResponse: IApiBlogResponse | IApiBlogResponseError = await $createBlog(this.formProps)
+      if (!this.editProps) {
+        const newBlogResponse: IApiBlogResponse | IApiBlogResponseError = await $createBlog(new Blog(this.formProps))
 
-      const errors = !newBlogResponse.success ? newBlogResponse.error as IApiBlogError : undefined
+        const errors = !newBlogResponse.success ? newBlogResponse.error as IApiBlogError : undefined
 
-      if (!errors) {
-        this.$emit('close')
-        this.$emit('blog-added')
-        this.errors = {} as IApiBlogError
-      } else if (errors) {
-        for (const error of Object.keys(errors)) {
-          this.errors[error as IApiBlogErrorType] = errors[error as IApiBlogErrorType]
+        if (!errors) {
+          this.$emit('close')
+          this.$emit('blog-added')
+          this.errors = {} as IApiBlogError
+        } else if (errors) {
+          for (const error of Object.keys(errors)) {
+            this.errors[error as IApiBlogErrorType] = errors[error as IApiBlogErrorType]
+          }
+        }
+      } else {
+        const newBlogResponse: IApiBlogResponse | IApiBlogResponseError
+        = await this.$store.dispatch('editBlog', new Blog(this.formProps))
+
+        console.log(newBlogResponse)
+        const errors = !newBlogResponse.success ? newBlogResponse.error as IApiBlogError : undefined
+
+        if (!errors) {
+          this.$emit('close')
+          this.$emit('blog-updated')
+          this.errors = {} as IApiBlogError
+        } else if (errors) {
+          for (const error of Object.keys(errors)) {
+            this.errors[error as IApiBlogErrorType] = errors[error as IApiBlogErrorType]
+          }
         }
       }
     }
   },
   components: {
     UploadDragAndDrop,
-    Sortable
+    Sortable,
+    ButtonDefault
   }
 })
 </script>

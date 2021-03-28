@@ -16,6 +16,7 @@
           :blog="blog"
           :includeFooter="isLoggedIn"
           clickable
+          @blog-updated="refreshBlogs"
           @blog-deleted-successfully="refreshBlogs"
         />
       </li>

@@ -13,7 +13,7 @@
 <script lang="ts">
 import CardBlog from '@/components/organisms/Card/Blog/card-blog.vue'
 import { $getBlogById } from '@/helpers/api/blogs'
-import { Blog, IBlogApiResponse } from '@/lib/types/models/Blog'
+import { Blog, IApiBlogResponse } from '@/lib/types/models/Blog'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -40,7 +40,7 @@ export default Vue.extend({
 
     if (!blog.id && Object.keys(this.currentBlog).length === 0 && !this.blog) {
       const blogId = this.id
-      const blogResponse: IBlogApiResponse | undefined = await $getBlogById(blogId)
+      const blogResponse: IApiBlogResponse | undefined = await $getBlogById(blogId)
 
       if (blogResponse?.id) {
         this.currentBlog = new Blog(blogResponse)

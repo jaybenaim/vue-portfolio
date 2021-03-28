@@ -87,19 +87,28 @@
           class="card-footer"
           v-if="showFooter"
         >
-          <a
-            href="#"
-            class="card-footer-item"
-            @click="handleEdit"
-          >Edit</a>
+          <ButtonDefault
+            label="Edit"
+            class="card-footer-item is-warning m-2"
+            @click.native="handleEdit"
+          />
 
-          <a
-            href="#"
-            class="card-footer-item"
-            @click="handleDelete"
-          >Delete</a>
+          <ButtonDefault
+            label="Delete"
+            class="card-footer-item is-danger m-2"
+            @click.native="handleDelete"
+          />
         </footer>
       </div>
+    </div>
+
+    <div v-if="showEditModal">
+      <BlogModal
+        :isOpen.sync="showEditModal"
+        @close="showEditModal = false"
+        @blog-updated="$emit('blog-updated')"
+        :editProps="blog"
+      />
     </div>
   </div>
 </template>
@@ -107,13 +116,20 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { IBlog } from '@/lib/types/models/Blog'
+import ButtonDefault from '@/components/atoms/ButtonDefault/button-default.vue'
+import BlogModal from '@organisms/Modal/BlogModal/blog-modal.vue'
+
 import { $formatDate } from '@/helpers/date-time/date-time'
 import { IApiDeleteResponse } from '@/lib/types'
+import { IBlog } from '@/lib/types/models/Blog'
 import { IApiError } from '@/lib/types/errors'
 
 export default Vue.extend({
   name: 'card-blog',
+  components: {
+    ButtonDefault,
+    BlogModal
+  },
   props: {
     blog: {
       type: Object as () => IBlog
@@ -129,7 +145,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      showFooter: false
+      showFooter: false,
+      showEditModal: false
     }
   },
   created() {
@@ -142,19 +159,20 @@ export default Vue.extend({
       return $formatDate(date)
     },
     checkUserId(): boolean {
-      if (this.$store.getters.getUser.id === this.blog.uid.id) {
+      if (this.$store.getters.getUser.id === this.blog.uid?.id) {
         return true
       }
 
       return false
     },
-    handleEdit() {
-
+    async handleEdit() {
+      // const response: IApiBlogResponse | IApiBlogResponseError = await this.$store.dispatch('editBlog', this.blog.id, newBlog)
+      // this.$emit('edit', this.blog)
+      this.showEditModal = true
     },
     async handleDelete() {
       const response: IApiDeleteResponse | IApiError = await this.$store.dispatch('deleteBlog', this.blog.id)
 
-      console.log(response)
       if (response.success) {
         this.$emit('blog-deleted-successfully')
       } else {
@@ -167,11 +185,12 @@ export default Vue.extend({
         } as IApiError)
       }
     }
-  },
+  }
 })
 </script>
 
-<style lang="scss" scoped>
+<style
+    EditBlogModal lang="scss" scoped>
 .blog {
   p {
     color: var(--black) !important;
