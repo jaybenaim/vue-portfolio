@@ -50,10 +50,62 @@
 
     <template #end>
       <div
-        class="navbar__auth"
+        class="navbar__auth is-flex is-flex-direction-row is-align-items-center"
         v-if="withAuth"
       >
+        <div v-if="isLoggedIn">
+          <b-navbar-dropdown
+            label="Account"
+            class="account-label"
+          >
+            <!-- <div class="navbar__is-logged-in is-flex is-flex-direction-row"> -->
+            <b-navbar-item
+              class="navbar__item"
+              v-if="isLoggedIn && user && showSignedInAs"
+            >
+              Signed in as, {{ user.username }}
+            </b-navbar-item>
+
+            <ButtonDefault
+              class="navbar__item m-3"
+              v-if="isLoggedIn"
+              type="is-secondary"
+              @click.native="handleLogout"
+            >
+              Logout
+            </ButtonDefault>
+            <!-- </div> -->
+          </b-navbar-dropdown>
+        </div>
+
         <div
+          v-else
+          class="logged-out-buttons is-flex is-flex-direction-row is-align-items-center"
+        >
+          <ButtonDefault
+            class="navbar__item m-3 login-btn"
+            tag="router-link"
+            :to="{
+              name: 'Login'
+            }"
+            @click.native="$emit('close')"
+          >
+            Login
+          </ButtonDefault>
+
+          <ButtonDefault
+            class="navbar__item m-3"
+            tag="router-link"
+            :to="{
+              name: 'SignUp'
+            }"
+            type="is-primary"
+            @click.native="$emit('close')"
+          >
+            Sign Up
+          </ButtonDefault>
+        </div>
+        <!-- <div
           class="logged-out-buttons is-flex is-flex-direction-row"
           v-if="!isLoggedIn"
         >
@@ -97,7 +149,7 @@
           >
             Logout
           </ButtonDefault>
-        </div>
+        </div> -->
       </div>
 
       <div class="navbar__dark-mode-toggle m-3 is-flex is-flex-align-items-center">
@@ -127,17 +179,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-
 import Responsive from '@mixins/Responsive'
 
 import { IImage } from '@/lib/types'
 
 import ButtonDefault from '@atoms/ButtonDefault/button-default.vue'
 import SwitchDefault from '@/components/atoms/Switch/switch-default.vue'
-import Auth from '@/mixins/Auth'
+import Auth from '@mixins/Auth'
 
-export default Vue.extend({
+export default Auth.extend({
   name: 'navbar-default',
   mixins: [
     Auth,
@@ -181,14 +231,6 @@ export default Vue.extend({
       isOpen: false,
     }
   },
-  watch: {
-    '$store.getters.isLoggedIn': function watcher() {
-      const isLoggedIn = this.$store.getters.isLoggedIn
-      if (isLoggedIn) {
-        this.$emit('close')
-      }
-    }
-  },
   components: {
     ButtonDefault,
     SwitchDefault
@@ -211,6 +253,14 @@ export default Vue.extend({
   &__item, .navbar-item {
     color: var(--primary-text-color);
     font-size: 18px;
+  }
+
+  .account-label a {
+    color: var(--primary-text-color);
+
+    &:hover {
+      color: var(--primary-text-color-flipped);
+    }
   }
 
   @media (max-width: 992px) {

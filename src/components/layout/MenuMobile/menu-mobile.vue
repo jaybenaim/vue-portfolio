@@ -178,11 +178,6 @@ export default Auth.extend({
       type: Boolean,
       default: false
     }
-  },
-  methods: {
-    handleLogout() {
-      this.$store.dispatch('logout')
-    }
   }
 })
 </script>

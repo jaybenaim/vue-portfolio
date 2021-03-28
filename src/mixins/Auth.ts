@@ -96,6 +96,9 @@ export default Vue.extend({
       this.$router.push({
         name: 'Blogs'
       })
+    },
+    handleLogout() {
+      this.$store.dispatch('logout')
     }
   }
 })

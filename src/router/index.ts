@@ -44,6 +44,11 @@ const routes: Array<RouteConfig> = [
     name: 'Contact',
     component: () => import(/* webpackChunkName: "contact" */ '../views/Contact/Contact.vue'),
   },
+  {
+    path: '/account',
+    name: 'Account',
+    component: () => import(/* webpackChunkName: "account" */ '../views/Account/Account.vue'),
+  },
 ]
 
 const router = new VueRouter({
