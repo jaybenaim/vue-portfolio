@@ -1,5 +1,5 @@
 <template>
-  <div
+  <section
     class="blog-details section is-large theme-colors mt-6"
     v-if="Object.keys(currentBlog).length > 0"
   >
@@ -7,12 +7,11 @@
       :blog="currentBlog"
       :withRouterLink="false"
     />
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
 import CardBlog from '@/components/organisms/Card/Blog/card-blog.vue'
-import { $getBlogById } from '@/helpers/api/blogs'
 import { IApiBlogResponseError } from '@/lib/types/errors'
 import { Blog, IApiBlogResponse } from '@/lib/types/models/Blog'
 import Vue from 'vue'
@@ -44,10 +43,10 @@ export default Vue.extend({
     && Object.keys(this.currentBlog).length === 0
     ) {
       const blogId = this.id
-      const blogResponse: IApiBlogResponse | IApiBlogResponseError = await $getBlogById(blogId)
+      const blogResponse: IApiBlogResponse | IApiBlogResponseError = await this.$store.dispatch('getBlogById', blogId)
 
       if (blogResponse.success) {
-        this.currentBlog = new Blog(blogResponse.blog)
+        this.currentBlog = blogResponse.blog
       } else {
         this.$store.commit('error', 'Error getting the current blog.')
       }

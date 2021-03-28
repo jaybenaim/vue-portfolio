@@ -189,9 +189,13 @@ export default Vue.extend({
 })
 </script>
 
-<style
-    EditBlogModal lang="scss" scoped>
+<style lang="scss">
 .blog {
+
+  * {
+    overflow: hidden;
+  }
+
   p {
     color: var(--black) !important;
   }
