@@ -1,7 +1,7 @@
 import { ActionContext } from 'vuex'
-import { $deleteBlog, $editBlog } from '@/helpers/api/blogs'
+import { $deleteBlog, $editBlog, $getBlogById } from '@/helpers/api/blogs'
 import { IApiDeleteResponse } from '@/lib/types'
-import { Blog, IApiBlogResponse } from '@/lib/types/models/Blog'
+import { Blog, IApiBlogResponse, IBlog } from '@/lib/types/models/Blog'
 import { IApiBlogResponseError } from '@/lib/types/errors'
 
 const state = {
@@ -13,6 +13,22 @@ const getters = {
 }
 
 const actions = {
+  async getBlogById({ commit }: ActionContext<any, any>, blogId: string) {
+    return await $getBlogById(blogId).then((response) => {
+      const blog = response.data.blog as IBlog
+
+      return {
+        success: true,
+        blog
+      } as IApiBlogResponse
+    }).catch((err) => {
+      commit('error', err)
+      return {
+        success: false,
+        error: err
+      }
+    })
+  },
   /**
    * @param blog
    * @returns

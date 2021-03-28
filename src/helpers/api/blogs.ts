@@ -36,7 +36,6 @@ export const $getBlogs = async (route = '/blogs') => await BASE_URL.get(route)
  */
 // eslint-disable-next-line
 export const $getBlogById = async (blogId: string) => await BASE_URL.get(`/blogs/${blogId}`)
-.then((response) => response.data.blog)
 
 /**
  * Create new blog
