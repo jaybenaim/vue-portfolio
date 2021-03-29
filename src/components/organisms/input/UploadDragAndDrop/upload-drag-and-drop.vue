@@ -1,6 +1,9 @@
 <template>
   <section class="mb-5">
-    <label class="label">Image</label>
+    <label
+      v-if="showLabel"
+      class="label"
+    >Image</label>
     <b-field
       class="file"
       v-if="asButton"
@@ -88,6 +91,10 @@ export default Vue.extend({
     multiple: {
       type: Boolean,
       default: false
+    },
+    showLabel: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {
