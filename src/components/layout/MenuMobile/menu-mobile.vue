@@ -65,7 +65,7 @@
                   Account
                   <b-icon
                     class="is-pulled-right"
-                    :icon="showAccountDropdown ? 'menu-down' : 'menu-up'"
+                    :icon="showAccountDropdown ? 'menu-up' : 'menu-down'"
                   ></b-icon>
                 </template>
 

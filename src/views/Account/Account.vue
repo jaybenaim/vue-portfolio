@@ -1,20 +1,24 @@
 <template>
   <div class="account">
-    <section class="section is-large mt-6">
-      <div class="media ml-1 mt-4 mb-6">
+    <section class="section is-medium">
+      <div class="media ml-1 mt-4 mb-4">
         <div class="media-left">
-          <img
-            v-if="user.image"
-            :src="user.image"
-            alt="profile image is-128x128"
+          <b-image
+            v-if="formProps.image"
+            :src="formProps.image"
+            alt="profile image"
+            rounded
+            class="is-256x256"
           />
 
           <div v-else>
-            <b-skeleton
-              circle
-              width="128px"
-              height="128px"
-            ></b-skeleton>
+            <p class="image is-128x128">
+              <b-skeleton
+                circle
+                width="128px"
+                height="128px"
+              ></b-skeleton>
+            </p>
           </div>
         </div>
 
@@ -25,12 +29,17 @@
             :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
             class="edit-icon is-flex is-align-self-flex-start"
             icon="pencil"
-            @click.native="handleEdit('email')"
+            @click.native="toggleUploader"
           />
 
-          <div class="upload ml-3 is-flex is-align-items-flex-start">
+          <div
+            v-if="!isDisabled.image"
+            class="upload ml-3 is-flex is-align-items-flex-start"
+          >
             <UploadDragAndDrop
               :showLabel="false"
+              @uploaded="handleUpload"
+              height="20px"
             />
           </div>
         </div>
@@ -97,9 +106,10 @@
       </b-field>
 
       <ButtonDefault
-        v-if="!isDisabled.username || !isDisabled.email"
+        v-if="!isDisabled.username || !isDisabled.email || !isDisabled.image"
         @click.native="handleSave"
         classname="is-flex is-align-justify-content-flex-start is-success"
+        class="save-button"
       >
         Save
       </ButtonDefault>
@@ -115,6 +125,8 @@ import { IApiError } from '@/lib/types/errors'
 import { IApiUserUpdateResponse, IUser } from '@/lib/types/models/User'
 import Theme from '@/mixins/Theme'
 import UploadDragAndDrop from '@/components/organisms/input/UploadDragAndDrop/upload-drag-and-drop.vue'
+import { $urlToBase64 } from '@/helpers'
+import { $getImage } from '@/helpers/api/getImage'
 
 export default Auth.extend(Theme).extend({
   components: {
@@ -126,22 +138,28 @@ export default Auth.extend(Theme).extend({
     return {
       formProps: {
         username: '',
-        email: ''
+        email: '',
+        image: ''
       },
       loading: true,
       isDisabled: {
         username: true,
         email: true,
         image: true
-      }
+      },
+      previewImage: ''
     }
   },
   created() {
     this.formProps.username = this.user.username
     this.formProps.email = this.user.email
+    this.formProps.image = this.user.image
   },
   methods: {
-    handleEdit(type: 'username' | 'email' | 'image') {
+    toggleUploader() {
+      this.isDisabled.image = !this.isDisabled.image
+    },
+    handleEdit(type: 'username' | 'email') {
       this.isDisabled[type] = false
     },
     async handleSave() {
@@ -153,8 +171,19 @@ export default Auth.extend(Theme).extend({
       })
 
       if (updatedProfile.success) {
-        this.$router.go(0)
+        // this.$router.push({
+        //   name: 'Account'
+        // })
+        // this.$router.go(0)
+        console.log(updatedProfile)
       }
+    },
+    async handleUpload(file: File) {
+      const base64String: string = await $urlToBase64(file) as string
+
+      const imageUrl: string = await $getImage(base64String)
+
+      this.formProps.image = imageUrl
     }
   }
 })
@@ -170,6 +199,14 @@ export default Auth.extend(Theme).extend({
   .edit-icon {
     &:hover {
       cursor: pointer;
+    }
+  }
+
+  .save-button {
+    color: var(--black);
+
+    &:hover {
+      color: rgba(var(--black-rgb), 0.8);
     }
   }
 }

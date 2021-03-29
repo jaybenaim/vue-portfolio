@@ -4,8 +4,12 @@
     :class="withNav ? 'is-fullheight-with-navbar' : ''"
   >
     <slot name="head">
-      <div class="hero-head hero__head">
+      <div
+        class="hero-head hero__head"
+        :style="!useParticles && setBackground"
+      >
         <Particles
+          v-if="useParticles"
           class="hero__particles"
         />
 
@@ -37,14 +41,18 @@ export default Vue.extend({
       type: Boolean,
       default: true
     },
-    backgroundUrl: {
+    background: {
       type: String,
-      default: 'https://imgur.com/SiFvM90'
+      default: ''
+    },
+    useParticles: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     setBackground() {
-      return `--background-url: url('${this.backgroundUrl}')`
+      return `--background-url: ${this.background}`
     }
   },
   components: {
@@ -68,6 +76,10 @@ export default Vue.extend({
   &__particles {
     background-color: var(--background-color);
     color: var(--primary-text-color);
+  }
+
+  &__head {
+    background: var(--background-url)
   }
 
   &__body {

@@ -4,6 +4,7 @@
       v-if="showLabel"
       class="label"
     >Image</label>
+
     <b-field
       class="file"
       v-if="asButton"
@@ -15,6 +16,8 @@
       <b-upload
         v-model="file"
         expanded
+        height="40px"
+        v-bind="$attrs"
       >
         <a class="button is-primary is-fullwidth">
           <b-icon icon="upload"></b-icon>
@@ -24,7 +27,28 @@
     </b-field>
 
     <b-field
-      v-else
+      class="file"
+      v-if="withButton"
+      :message="errors.uploadError"
+      :type="{
+        'is-danger': errors.uploadError
+      }"
+    >
+      <b-upload
+        v-model="file"
+        expanded
+        height="40px"
+        v-bind="$attrs"
+      >
+        <a class="button is-primary is-fullwidth">
+          <b-icon icon="upload"></b-icon>
+          <span>{{ file.name || "Click to upload"}}</span>
+        </a>
+      </b-upload>
+    </b-field>
+
+    <b-field
+      v-if="withDragAndDrop"
       :message="errors.uploadError"
       :type="{
         'is-danger': errors.uploadError
@@ -34,6 +58,7 @@
         v-model="file"
         drag-drop
         expanded
+        v-bind="$attrs"
       >
         <section class="section">
           <div class="content has-text-centered">
@@ -95,6 +120,14 @@ export default Vue.extend({
     showLabel: {
       type: Boolean,
       default: true
+    },
+    withDragAndDrop: {
+      type: Boolean,
+      default: true
+    },
+    withButton: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
