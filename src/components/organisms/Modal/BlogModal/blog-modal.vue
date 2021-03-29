@@ -80,7 +80,7 @@
               >
                 <b-input
                   v-model="formProps.content"
-                  maxlength="200"
+                  maxlength="5000"
                   type="textarea"
                   placeholder="Content"
                 />
@@ -231,7 +231,7 @@ export default Vue.extend({
 
       this.formProps = newBlog as IBlog
     } else {
-      this.formProps.uid.id = this.$store.getters.getUser.id
+      this.formProps.uid = this.$store.getters.getUser.id
     }
   },
   methods: {

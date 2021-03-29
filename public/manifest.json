@@ -1,0 +1,16 @@
+{
+  "name": "vue-portfolio",
+  "short_name": "vue-portfolio",
+  "theme_color": "#000",
+  "icons": [
+    {
+      "src": "./img/icons/code-gif.gif",
+      "sizes": "512x512",
+      "type": "image/gif",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#000000"
+}

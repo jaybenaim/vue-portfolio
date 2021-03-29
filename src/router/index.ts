@@ -49,10 +49,13 @@ const routes: Array<RouteConfig> = [
     name: 'Account',
     component: () => import(/* webpackChunkName: "account" */ '../views/Account/Account.vue'),
   },
+  {
+    path: '*', component: Home
+  }
 ]
 
 const router = new VueRouter({
-  mode: 'hash',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes,
 })

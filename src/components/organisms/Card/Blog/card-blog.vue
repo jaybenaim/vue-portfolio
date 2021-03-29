@@ -1,7 +1,10 @@
 <template>
   <div class="blog">
     <div class="card">
-      <div class="card-image">
+      <div
+        v-if="includeElements.elements.image"
+        class="blog__image card-image"
+      >
         <figure class="image is-2by1">
           <router-link
             v-if="clickable"
@@ -28,8 +31,11 @@
 
       <div class="card-content">
         <div class="media">
-          <div class="media-left">
-            <figure class="image is-48x48">
+          <div
+            v-if="includeElements.elements.authorImage"
+            class="media-left"
+          >
+            <figure class="image is-128x128">
               <img
                 v-if="blog.uid && blog.uid.image"
                 :src="blog.uid.image"
@@ -45,7 +51,10 @@
           </div>
 
           <div class="media-content">
-            <p class="title is-4 blog__title">
+            <p
+              v-if="includeElements.elements.title"
+              class="is-4 blog__title"
+            >
               <router-link
                 v-if="clickable"
                 :to="{
@@ -53,34 +62,82 @@
                   query: blog
                 }"
                 append
+                class="title"
               >
                 {{ blog.title }}
               </router-link>
 
               <span
                 v-else
+                class="title"
               >
                 {{ blog.title }}
               </span>
             </p>
 
-            <p class="subtitle is-6 blog__author">
+            <p
+              v-if="includeElements.elements.author"
+              class="subtitle is-6 blog__author"
+            >
               By: {{ blog.author }}
             </p>
           </div>
         </div>
 
-        <div class="content blog__content-container">
-          <span
-            v-html="blog.summary"
-            class="blog__summary"
-          />
+        <div class="content">
+          <div
+            v-if="includeElements.elements.summary"
+            class="blog__summary is-flex"
+          >
+            <span
+              v-html="blog.summary"
+            />
+          </div>
 
-          <time
-            class="blog__publish-date"
-            :datetime="blog.publishDate"
-          >{{ formatDate(blog.publishDate) }}
-          </time>
+          <div
+            class="blog__content is-flex"
+            v-if="includeElements.elements.content"
+          >
+            <span
+              v-html="blog.content"
+            />
+          </div>
+
+          <div
+            class="blog__bottom-section columns"
+          >
+            <div
+              v-if="includeElements.elements.preview"
+              class="blog__preview is-flex is-justify-self-flex-start column is-align-items-center"
+              :class="(includeElements.elements.preview
+                && includeElements.elements.publishDate)
+                ? 'is-half' : 'is-full'"
+            >
+              <ButtonDefault
+                :to="{
+                  path: `blogs/${blog.id}`,
+                  query: blog
+                }"
+                tag="router-link"
+              >
+                Preview
+
+              </ButtonDefault>
+            </div>
+
+            <div
+              v-if="includeElements.elements.publishDate"
+              class="blog__publish-date is-flex is-justify-content-flex-end column"
+              :class="(includeElements.elements.preview
+                && includeElements.elements.publishDate)
+                ? 'is-half' : 'is-full mr-3 mt-4'"
+            >
+              <time
+                :datetime="blog.publishDate"
+              >{{ formatDate(blog.publishDate) }}
+              </time>
+            </div>
+          </div>
         </div>
 
         <footer
@@ -121,8 +178,9 @@ import BlogModal from '@organisms/Modal/BlogModal/blog-modal.vue'
 
 import { $formatDate } from '@/helpers/date-time/date-time'
 import { IApiDeleteResponse } from '@/lib/types'
-import { IBlog } from '@/lib/types/models/Blog'
+import { Blog } from '@/lib/types/models/Blog'
 import { IApiError } from '@/lib/types/errors'
+import { IncludeElements } from '@/lib/types/general/IncludeElements'
 
 export default Vue.extend({
   name: 'card-blog',
@@ -132,7 +190,7 @@ export default Vue.extend({
   },
   props: {
     blog: {
-      type: Object as () => IBlog
+      type: Object as () => Blog
     },
     includeFooter: {
       type: Boolean,
@@ -141,6 +199,20 @@ export default Vue.extend({
     clickable: {
       type: Boolean,
       default: false
+    },
+    includeElements: {
+      type: Object as () => IncludeElements,
+      default: () => new IncludeElements({
+        title: {},
+        author: {},
+        authorImage: {},
+        content: {},
+        summary: {},
+        image: {},
+        imageCaption: {},
+        publishDate: {},
+        tags: {}
+      })
     }
   },
   data() {
@@ -166,8 +238,6 @@ export default Vue.extend({
       return false
     },
     async handleEdit() {
-      // const response: IApiBlogResponse | IApiBlogResponseError = await this.$store.dispatch('editBlog', this.blog.id, newBlog)
-      // this.$emit('edit', this.blog)
       this.showEditModal = true
     },
     async handleDelete() {
@@ -192,29 +262,36 @@ export default Vue.extend({
 <style lang="scss">
 .blog {
 
-  * {
-    overflow: hidden;
-  }
+.card {
+  background-color: rgba(var(--background-color-flipped-rgb), 0.15);
+}
 
-  p {
-    color: var(--black) !important;
+  p,
+  .title,
+  &__summary,
+  &__content,
+  &__publish-date {
+    color: var(--primary-text-color);
   }
 
   &__title,
   &__author {
     text-align: left;
+    overflow: hidden;
   }
 
-  &__content-container {
+  &__summary-container {
     @include flex($dir: column);
   }
 
-  &__summary {
-    align-self: flex-start;
+  &__content {
+    text-align: left;
+    max-height: 400px;
+    overflow-y: auto;
   }
 
-  &__publish-date {
-    align-self: flex-end;
+  ::-webkit-scrollbar {
+    width: 10px;
   }
 }
 </style>

@@ -45,6 +45,10 @@ export interface IApiBlogResponse {
   blog: IBlog
   success: true
 }
+export interface IApiBlogsResponse {
+  blogs: Blog[]
+  success: true
+}
 export interface IBlog {
   id: string
   uid: IBlogUser
@@ -75,3 +79,4 @@ export type IBlogIndexType =
 | 'image'
 | 'imageCaption'
 | 'tags'
+| 'publishDate'

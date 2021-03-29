@@ -3,4 +3,4 @@ import advancedFormat from 'dayjs/plugin/advancedFormat'
 
 dayjs.extend(advancedFormat)
 
-export const $formatDate = (date: Date, format = 'MMMM Do YYYY'): string => dayjs(date).format(format)
+export const $formatDate = (date: Date, format = 'MMMM Do'): string => dayjs(date).format(format)

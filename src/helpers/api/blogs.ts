@@ -67,3 +67,10 @@ export const $editBlog = async (blog: Blog) => await BASE_URL.patch(`/blogs/${bl
   * @returns Promise
   */
 export const $deleteBlog = async (blogId: string) => await BASE_URL.delete(`/blogs/${blogId}`)
+
+/**
+ *
+ * @param userId
+ * @returns
+ */
+export const $getBlogsByUserId = async (userId: string) => await BASE_URL.get(`/blogs/find?user=${userId}`)

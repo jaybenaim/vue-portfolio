@@ -1,118 +1,143 @@
 <template>
-  <div class="account">
-    <section class="section is-medium">
-      <div class="media ml-1 mt-4 mb-4">
-        <div class="media-left">
-          <b-image
-            v-if="formProps.image"
-            :src="formProps.image"
-            alt="profile image"
-            rounded
-            class="is-256x256"
-          />
+  <div class="account is-flex columns">
+    <section class="account__info column is-half-desktop">
+      <div class="section is-medium">
+        <div class="media">
+          <div class="media-left mb-5">
+            <b-image
+              v-if="formProps.image"
+              :src="formProps.image"
+              alt="profile image"
+              rounded
+              class="is-256x256"
+            />
 
-          <div v-else>
-            <p class="image is-128x128">
-              <b-skeleton
-                circle
-                width="128px"
-                height="128px"
-              ></b-skeleton>
-            </p>
+            <div v-else>
+              <p class="image is-128x128">
+                <b-skeleton
+                  circle
+                  width="128px"
+                  height="128px"
+                ></b-skeleton>
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="media-right is-flex is-align-items-flex-start"
+          >
+            <b-icon
+              :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
+              class="edit-icon is-flex is-align-self-flex-start"
+              icon="pencil"
+              @click.native="toggleUploader"
+            />
+
+            <div
+              v-if="!isDisabled.image"
+              class="upload ml-3 is-flex is-align-items-flex-start"
+            >
+              <UploadDragAndDrop
+                :showLabel="false"
+                @uploaded="handleUpload"
+                height="20px"
+              />
+            </div>
           </div>
         </div>
 
-        <div
-          class="media-right is-flex is-align-items-flex-start"
-        >
-          <b-icon
-            :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
-            class="edit-icon is-flex is-align-self-flex-start"
-            icon="pencil"
-            @click.native="toggleUploader"
-          />
+        <b-field grouped>
+          <b-field>
+            <template #label>
+              <label for="username">
+                Username
+                <b-icon
+                  :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
+                  class="edit-icon"
+                  icon="pencil"
+                  @click.native="handleEdit('username')"
+                />
+              </label>
+            </template>
 
-          <div
-            v-if="!isDisabled.image"
-            class="upload ml-3 is-flex is-align-items-flex-start"
-          >
-            <UploadDragAndDrop
-              :showLabel="false"
-              @uploaded="handleUpload"
-              height="20px"
+            <b-input
+              v-if="user.username"
+              type="name"
+              v-model="formProps.username"
+              :disabled="isDisabled.username"
             />
-          </div>
+
+            <b-skeleton
+              v-else
+              width="40%"
+              :animated="true"
+              :active="loading"
+              size="is-large"
+            />
+          </b-field>
+
+          <b-field label="Email">
+            <template #label>
+              <label for="email">
+                Email
+                <b-icon
+                  :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
+                  class="edit-icon"
+                  icon="pencil"
+                  @click.native="handleEdit('email')"
+                />
+              </label>
+            </template>
+
+            <b-input
+              v-if="user.email"
+              type="email"
+              v-model="formProps.email"
+              :disabled="isDisabled.email"
+            />
+
+            <b-skeleton
+              v-else
+              width="40%"
+              :animated="true"
+              :active="loading"
+              size="is-large"
+            />
+          </b-field>
+        </b-field>
+
+        <ButtonDefault
+          v-if="!isDisabled.username || !isDisabled.email || !isDisabled.image"
+          @click.native="handleSave"
+          classname="is-flex is-align-justify-content-flex-start is-success"
+          class="save-button"
+        >
+          Save
+        </ButtonDefault>
+      </div>
+    </section>
+
+    <section class="section is-medium account__blogs column is-half-desktop">
+      <h2 class="title">
+        Blogs
+      </h2>
+
+      <div class="columns">
+        <div
+          v-for="(blog, index) of blogs"
+          :key="index"
+          class="column p-5 is-half-desktop"
+        >
+          <CardBlog
+            :blog="blog"
+            includeFooter
+            @blog-updated="getBlogs"
+            @blog-deleted-successfully="getBlogs"
+            :includeElements="includedElements"
+          />
         </div>
       </div>
 
-      <b-field grouped>
-        <b-field>
-          <template #label>
-            <label for="username">
-              Username
-              <b-icon
-                :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
-                class="edit-icon"
-                icon="pencil"
-                @click.native="handleEdit('username')"
-              />
-            </label>
-          </template>
-
-          <b-input
-            v-if="user.username"
-            type="name"
-            v-model="formProps.username"
-            :disabled="isDisabled.username"
-          />
-
-          <b-skeleton
-            v-else
-            width="40%"
-            :animated="true"
-            :active="loading"
-            size="is-large"
-          />
-        </b-field>
-
-        <b-field label="Email">
-          <template #label>
-            <label for="email">
-              Email
-              <b-icon
-                :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
-                class="edit-icon"
-                icon="pencil"
-                @click.native="handleEdit('email')"
-              />
-            </label>
-          </template>
-
-          <b-input
-            v-if="user.email"
-            type="email"
-            v-model="formProps.email"
-            :disabled="isDisabled.email"
-          />
-
-          <b-skeleton
-            v-else
-            width="40%"
-            :animated="true"
-            :active="loading"
-            size="is-large"
-          />
-        </b-field>
-      </b-field>
-
-      <ButtonDefault
-        v-if="!isDisabled.username || !isDisabled.email || !isDisabled.image"
-        @click.native="handleSave"
-        classname="is-flex is-align-justify-content-flex-start is-success"
-        class="save-button"
-      >
-        Save
-      </ButtonDefault>
     </section>
   </div>
 </template>
@@ -125,13 +150,18 @@ import { IApiError } from '@/lib/types/errors'
 import { IApiUserUpdateResponse, IUser } from '@/lib/types/models/User'
 import Theme from '@/mixins/Theme'
 import UploadDragAndDrop from '@/components/organisms/input/UploadDragAndDrop/upload-drag-and-drop.vue'
+import CardBlog from '@organisms/Card/Blog/card-blog.vue'
+
 import { $urlToBase64 } from '@/helpers'
 import { $getImage } from '@/helpers/api/getImage'
+import { Blog, IApiBlogsResponse } from '@/lib/types/models/Blog'
+import { IncludeElements } from '@/lib/types/general/IncludeElements'
 
 export default Auth.extend(Theme).extend({
   components: {
     ButtonDefault,
-    UploadDragAndDrop
+    UploadDragAndDrop,
+    CardBlog
   },
   name: 'account',
   data() {
@@ -147,13 +177,24 @@ export default Auth.extend(Theme).extend({
         email: true,
         image: true
       },
-      previewImage: ''
+      previewImage: '',
+      blogs: [] as Blog[],
+      includedElements: new IncludeElements({
+        title: {},
+        author: {},
+        publishDate: {},
+        preview: {}
+      })
     }
   },
-  created() {
-    this.formProps.username = this.user.username
-    this.formProps.email = this.user.email
-    this.formProps.image = this.user.image
+  async mounted() {
+    this.formProps.username = this.user.username || ''
+    this.formProps.email = this.user.email || ''
+    this.formProps.image = this.user.image || ''
+
+    if (this.user.id) {
+      await this.getBlogs()
+    }
   },
   methods: {
     toggleUploader() {
@@ -175,6 +216,7 @@ export default Auth.extend(Theme).extend({
         //   name: 'Account'
         // })
         // this.$router.go(0)
+
         console.log(updatedProfile)
       }
     },
@@ -184,6 +226,13 @@ export default Auth.extend(Theme).extend({
       const imageUrl: string = await $getImage(base64String)
 
       this.formProps.image = imageUrl
+    },
+    async getBlogs() {
+      const blogsResponse: IApiBlogsResponse = await this.$store.dispatch('getBlogsByUserId', this.user.id)
+
+      if (blogsResponse.success) {
+        this.blogs = blogsResponse.blogs
+      }
     }
   }
 })
@@ -209,5 +258,30 @@ export default Auth.extend(Theme).extend({
       color: rgba(var(--black-rgb), 0.8);
     }
   }
+
+  &__info {
+    .media {
+      margin-top: 50px;
+
+      .media-left {
+        width: 50%;
+      }
+    }
+  }
+
+  // Blogs
+  .title {
+    color: var(--primary-text-color) !important;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    .media,
+    .field {
+      justify-content: center;
+    }
+  }
 }
+
 </style>

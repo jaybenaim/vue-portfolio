@@ -1,7 +1,11 @@
 import { ActionContext } from 'vuex'
-import { $deleteBlog, $editBlog, $getBlogById } from '@/helpers/api/blogs'
+import {
+ $deleteBlog, $editBlog, $getBlogById, $getBlogsByUserId
+} from '@/helpers/api/blogs'
 import { IApiDeleteResponse } from '@/lib/types'
-import { Blog, IApiBlogResponse, IBlog } from '@/lib/types/models/Blog'
+import {
+ Blog, IApiBlogResponse, IApiBlogsResponse, IBlog
+} from '@/lib/types/models/Blog'
 import { IApiBlogResponseError } from '@/lib/types/errors'
 
 const state = {
@@ -57,6 +61,23 @@ const actions = {
     return await $deleteBlog(blogId).then(() => ({ success: true } as IApiDeleteResponse)).catch((err) => {
       commit('error', err)
       return { success: false, error: err } as IApiDeleteResponse
+    })
+  },
+  async getBlogsByUserId({ commit }: ActionContext<any, any>, userId: string) {
+    return await $getBlogsByUserId(userId).then((response) => {
+      const blogs: Blog[] = response.data.blogs
+
+      return {
+        success: true,
+        blogs
+      } as IApiBlogsResponse
+    }).catch((error) => {
+      console.log(error)
+      commit('error', error)
+      return {
+        success: false,
+        error
+      } as IApiBlogResponseError
     })
   }
 }
