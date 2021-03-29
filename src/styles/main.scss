@@ -64,7 +64,7 @@ html {
   background-color: var(--primary) !important;
 
   * {
-    color: var(--primary-text-color-flipped);
+    color: var(--primary-text-color-flipped) !important;
     font-weight: 600;
   }
 

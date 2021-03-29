@@ -50,7 +50,7 @@
 
     <template #end>
       <div
-        class="navbar__auth is-flex is-flex-direction-row is-align-items-center"
+        class="navbar__auth"
         v-if="withAuth"
       >
         <div v-if="isLoggedIn">
@@ -58,9 +58,17 @@
             label="Account"
             class="account-label"
           >
-            <!-- <div class="navbar__is-logged-in is-flex is-flex-direction-row"> -->
             <b-navbar-item
               class="navbar__item"
+              tag="router-link"
+              to="/account"
+            >
+              Account Details
+            </b-navbar-item>
+
+            <b-navbar-item
+              class="navbar__item"
+              tag="div"
               v-if="isLoggedIn && user && showSignedInAs"
             >
               Signed in as, {{ user.username }}
@@ -74,7 +82,6 @@
             >
               Logout
             </ButtonDefault>
-            <!-- </div> -->
           </b-navbar-dropdown>
         </div>
 
@@ -105,51 +112,6 @@
             Sign Up
           </ButtonDefault>
         </div>
-        <!-- <div
-          class="logged-out-buttons is-flex is-flex-direction-row"
-          v-if="!isLoggedIn"
-        >
-          <ButtonDefault
-            class="navbar__item m-3"
-            tag="router-link"
-            :to="{
-              name: 'Login'
-            }"
-            @click.native="$emit('close')"
-          >
-            Login
-          </ButtonDefault>
-
-          <ButtonDefault
-            class="navbar__item m-3"
-            tag="router-link"
-            :to="{
-              name: 'SignUp'
-            }"
-            type="is-primary"
-            @click.native="$emit('close')"
-          >
-            Sign Up
-          </ButtonDefault>
-        </div>
-
-        <div class="navbar__is-logged-in is-flex is-flex-direction-row">
-          <b-navbar-item
-            class="navbar__item"
-            v-if="isLoggedIn && user && showSignedInAs"
-          >
-            Signed in as, {{ user.username }}
-          </b-navbar-item>
-
-          <ButtonDefault
-            class="navbar__item m-3"
-            v-if="isLoggedIn"
-            type="is-secondary"
-            @click.native="handleLogout"
-          >
-            Logout
-          </ButtonDefault>
-        </div> -->
       </div>
 
       <div class="navbar__dark-mode-toggle m-3 is-flex is-flex-align-items-center">
@@ -248,19 +210,66 @@ export default Auth.extend({
 
   &__toggle {
     @include flex($align: center);
+
+    .mdi-menu::before {
+      color: var(--primary-text-color);
+    }
   }
 
   &__item, .navbar-item {
     color: var(--primary-text-color);
     font-size: 18px;
-  }
-
-  .account-label a {
-    color: var(--primary-text-color);
 
     &:hover {
       color: var(--primary-text-color-flipped);
     }
+  }
+
+  .account-label {
+    color: var(--primary-text-color-flipped) !important;
+
+    a {
+      color: var(--primary-text-color) !important;
+
+      &:hover,
+      &:active,
+      &:focus {
+        color: var(--primary-text-color-flipped) !important;
+      }
+    }
+
+    &:hover .navbar-link:not(.is-arrowless)::after,
+    &:active .navbar-link:not(.is-arrowless)::after,
+    &:focus .navbar-link:not(.is-arrowless)::after {
+      border-color: var(--black);
+    }
+
+    div {
+      color: var(--black);
+    }
+  }
+
+  .account-label.is-active {
+    a {
+      color: var(--primary-text-color-flipped) !important;
+    }
+
+    .navbar-link:not(.is-arrowless)::after {
+      border-color: var(--black);
+    }
+
+  }
+  // dropdown arrow
+  .navbar-link:not(.is-arrowless)::after {
+    border-color: rgba(var(--secondary-rgb), 0.7);
+
+    &:hover {
+      border-color: var(--black) !important;
+    }
+  }
+
+  .button {
+    color: var(--primary-text-color-flipped) !important;
   }
 
   @media (max-width: 992px) {
@@ -268,6 +277,20 @@ export default Auth.extend({
       width: 100%;
       @include flex($justify: space-between);
     }
+  }
+}
+
+[data-theme="light"] {
+  .navbar-item:hover {
+    color: var(--black);
+  }
+
+  .account-label a:hover {
+    color: var(--black) !important;
+  }
+
+  .button {
+    color: var(--black) !important;
   }
 }
 

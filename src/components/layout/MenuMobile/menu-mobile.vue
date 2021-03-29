@@ -49,58 +49,83 @@
             to="/contact"
             @click.native="$emit('close')"
             class="menu-mobile__link menu-mobile__link__contact"
-            icon="phone"
           />
+
+          <b-menu-list
+            v-if="withAuth"
+            class="menu-mobile__auth p-4"
+          >
+            <b-menu-list v-if="isLoggedIn">
+              <b-menu-item
+                class="account-label"
+                :expanded.sync="showAccountDropdown"
+                icon="account-cog"
+              >
+                <template #label>
+                  Account
+                  <b-icon
+                    class="is-pulled-right"
+                    :icon="showAccountDropdown ? 'menu-down' : 'menu-up'"
+                  ></b-icon>
+                </template>
+
+                <BMenuItem
+                  label="Account Details"
+                  class="dropdown__item"
+                  tag="router-link"
+                  to="/account"
+                  @click.native="$emit('close')"
+                  icon="cogs"
+                />
+
+                <BMenuItem
+                  v-if="isLoggedIn && user && showSignedInAs"
+                  :label="`Signed in as, ${user.username}`"
+                  class="dropdown__item pl-3 mt-3"
+                  disabled
+                />
+
+                <ButtonDefault
+                  class="dropdown__item m-3"
+                  v-if="isLoggedIn"
+                  type="is-secondary"
+                  @click.native="handleLogout"
+                >
+                  Logout
+                </ButtonDefault>
+              </b-menu-item>
+            </b-menu-list>
+
+            <div
+              v-else
+              class="logged-out-buttons is-flex is-flex-direction-row is-align-items-center"
+            >
+              <ButtonDefault
+                class="dropdown__item m-3 login-btn"
+                tag="router-link"
+                :to="{
+                  name: 'Login'
+                }"
+                @click.native="$emit('close')"
+              >
+                Login
+              </ButtonDefault>
+
+              <ButtonDefault
+                class="dropdown__item m-3"
+                tag="router-link"
+                :to="{
+                  name: 'SignUp'
+                }"
+                type="is-primary"
+                @click.native="$emit('close')"
+              >
+                Sign Up
+              </ButtonDefault>
+            </div>
+          </b-menu-list>
         </BMenuList>
       </BMenu>
-    </div>
-
-    <div
-      class="menu-mobile__auth p-4"
-      v-if="withAuth"
-    >
-      <div
-        class="logged-out-buttons"
-        v-if="!isLoggedIn"
-      >
-        <ButtonDefault
-          tag="router-link"
-          to="/login"
-          @click.native="$emit('close')"
-          class="m-2 menu-item"
-        >
-          Login
-        </ButtonDefault>
-
-        <ButtonDefault
-          tag="router-link"
-          to="/sign-up"
-          type="is-primary"
-          @click.native="$emit('close')"
-          class="m-2"
-          @close="$emit('close')"
-        >
-          Sign Up
-        </ButtonDefault>
-      </div>
-
-      <div class="menu-mobile__is-logged-in is-flex is-flex-direction-column">
-        <div
-          class="menu-mobile__item"
-          v-if="isLoggedIn && user && showSignedInAs"
-        >
-          Signed in as, {{ user.username }}
-        </div>
-
-        <ButtonDefault
-          v-if="isLoggedIn"
-          :type="`is-${theme}`"
-          @click.native="handleLogout"
-          class="menu-mobile__item"
-        >
-          Logout
-        </ButtonDefault>
-      </div>
     </div>
 
     <div class="m-3 p-2">
@@ -172,11 +197,21 @@ export default Auth.extend({
     },
     showSignedInAs: {
       type: Boolean,
-      default: false
+      default: true
     },
     withAuth: {
       type: Boolean,
       default: false
+    }
+  },
+  data() {
+    return {
+      showAccountDropdown: false,
+    }
+  },
+  methods: {
+    toggleDropdown() {
+      this.showAccountDropdown = !this.showAccountDropdown
     }
   }
 })
@@ -197,6 +232,10 @@ export default Auth.extend({
     padding: 1em;
   }
 
-  @include scrollbar();
+.menu-list {
+  a {
+    color: var(--primary-text-color);
+  }
+}
 }
 </style>

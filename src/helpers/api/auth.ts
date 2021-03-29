@@ -1,6 +1,6 @@
 import BASE_URL from '../api-base-url'
 import {
- ILoginData, ISignUpData,
+ ILoginData, ISignUpData, IUser,
 } from '@/lib/types/models/User'
 
 /**
@@ -54,3 +54,5 @@ export const $logout = () => {
     console.log('User signed out.')
   })
 }
+
+export const $updateProfile = async (newProfileData: IUser) => await BASE_URL.patch(`users/${newProfileData.id}`, newProfileData)

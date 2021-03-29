@@ -47,17 +47,14 @@ export interface IUser {
   password?: string
   password2?: string
 }
-export interface IUserResponse {
-    data: IApiUserResponse
-  }
 
-export interface IApiUserResponse {
-    id: string
-    name: string
-    email: string
-    createdOn: string
-    isAuthenticated: boolean
+export interface IApiUserUpdateResponse {
     success: true
+    user: IUser
+  }
+export interface IApiUserResponse {
+    success: true
+    user: IUser
   }
 
 export type IApiUserErrorType = 'name' | 'email' | 'password' | 'password2'

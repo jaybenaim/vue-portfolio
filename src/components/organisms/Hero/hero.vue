@@ -17,9 +17,6 @@
 
     <slot name="body">
       <div class="hero-body hero__body">
-        <div class="box pl-5 ml-5">
-          <ButtonDefault> Click me </ButtonDefault>
-        </div>
       </div>
     </slot>
   </div>
@@ -31,7 +28,6 @@ import Vue from 'vue'
 import Responsive from '@mixins/Responsive'
 
 import Particles from '@atoms/Particles/particles.vue'
-import ButtonDefault from '@atoms/ButtonDefault/button-default.vue'
 
 export default Vue.extend({
   name: 'hero',
@@ -52,8 +48,7 @@ export default Vue.extend({
     }
   },
   components: {
-    Particles,
-    ButtonDefault
+    Particles
   }
 })
 </script>

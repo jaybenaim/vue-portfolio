@@ -31,7 +31,7 @@
           <div class="media-left">
             <figure class="image is-48x48">
               <img
-                v-if="blog.uid.image"
+                v-if="blog.uid && blog.uid.image"
                 :src="blog.uid.image"
                 alt="Author profile image"
               >

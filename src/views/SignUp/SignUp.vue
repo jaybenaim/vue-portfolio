@@ -149,7 +149,7 @@ export default Auth.extend({
       const userResponse: IApiUserResponse | IApiUserError = await this.$store.dispatch('signUp', user)
 
       if (userResponse) {
-        if (userResponse.success && userResponse.isAuthenticated) {
+        if (userResponse.success && userResponse.user.isAuthenticated) {
           this.handleClose()
         }
 

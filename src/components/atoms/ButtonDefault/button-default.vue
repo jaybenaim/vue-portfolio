@@ -1,6 +1,7 @@
 <template>
   <b-button
     class="button-default"
+    :class="$attrs.classname"
     v-bind="$attrs"
     @click="$emit('clicked')"
   >

@@ -15,6 +15,7 @@
         :theme="`is-${theme}`"
         fixed-top
         :withAuth="showAuth"
+        showSignedInAs
       />
 
       <Navbar

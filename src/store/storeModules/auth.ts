@@ -1,75 +1,75 @@
 import {
- $login, $logout, $signUp, $verifyToken
+ $login, $logout, $signUp, $updateProfile, $verifyToken
 } from '@/helpers/api/auth'
 import {
  ApiUserError, IApiLoginError, IApiTokenError, IApiUserError
 } from '@/lib/types/errors'
 import {
   IApiLoginResponse,
- IApiUserResponse, ILoginData, ISignUpData, IUser, IUserState, User
+ IApiUserResponse, IApiUserUpdateResponse, ILoginData, ISignUpData, IUser, IUserState, User
 } from '@/lib/types/models/User'
 import { AxiosError } from 'axios'
 import { ActionContext } from 'vuex'
 
-const state = {
-  errors: {},
-  isLoggedIn: false,
-  user: {} as User,
-  googleUser: {} as gapi.auth2.GoogleUser,
-  jwtToken: localStorage.getItem('jvp-token'),
-  googleIsLoaded: false,
-  signedInWithGoogle: false
-}
+export default {
 
-const getters = {
-  getErrors: (state: any) => state.errors,
-  isLoggedIn: (state: any) => state.isLoggedIn,
-  getUser: (state: any) => state.user,
-  getGoogleUser: (state: any) => state.googleUser,
-  isGoogleLoaded: (state: any) => state.googleIsLoaded,
-  getJwtToken: (state: any) => state.jwtToken,
-  isSignedInWithGoogle: (state: any) => state.signedInWithGoogle
-}
-
-const mutations = {
-  setUser(state: any, {
+  state: () => ({
+    errors: {},
+    isLoggedIn: false,
+    user: {} as User,
+    googleUser: {} as gapi.auth2.GoogleUser,
+    jwtToken: localStorage.getItem('jvp-token'),
+    googleIsLoaded: false,
+    signedInWithGoogle: false
+  }),
+  getters: {
+    getErrors: (state: any) => state.errors,
+    isLoggedIn: (state: any) => state.isLoggedIn,
+    getUser: (state: any) => state.user,
+    getGoogleUser: (state: any) => state.googleUser,
+    isGoogleLoaded: (state: any) => state.googleIsLoaded,
+    getJwtToken: (state: any) => state.jwtToken,
+    isSignedInWithGoogle: (state: any) => state.signedInWithGoogle
+  },
+  mutations: {
+    setUser(state: any, {
       user,
       googleUser,
       isLoggedIn = true
       }: IUserState) {
-    state.user = user
-    state.isLoggedIn = isLoggedIn
+      state.user = user
+      state.isLoggedIn = isLoggedIn
 
-    if (googleUser) {
-      const gUser = googleUser as gapi.auth2.GoogleUser
+      if (googleUser) {
+        const gUser = googleUser as gapi.auth2.GoogleUser
 
-      state.googleUser = gUser
-      state.googleIsLoaded = true
-      state.isLoggedIn = !!gUser.getAuthResponse()
-    }
-  },
-  setLoginStatus(state: any, value: boolean) {
-    state.isLoggedIn = value
-  },
-  setJwtToken(state: any, token: string) {
-    localStorage.setItem('jvp-token', token)
+        state.googleUser = gUser
+        state.googleIsLoaded = true
+        state.isLoggedIn = !!gUser.getAuthResponse()
+      }
+    },
+    setLoginStatus(state: any, value: boolean) {
+      state.isLoggedIn = value
+    },
+    setJwtToken(state: any, token: string) {
+      localStorage.setItem('jvp-token', token)
 
-    state.jwtToken = token
+      state.jwtToken = token
+    },
+    googleIsLoaded(state: any, value: boolean) {
+      state.googleIsLoaded = value
+    },
+    signedInWithGoogle(state: any, value = true) {
+      state.signedInWithGoogle = value
+    },
+    error(state: any, errors: any) {
+      state.errors = errors
+      if (process.env.NODE_ENV === 'development') {
+        console.log(errors)
+      }
+    },
   },
-  googleIsLoaded(state: any, value: boolean) {
-    state.googleIsLoaded = value
-  },
-  signedInWithGoogle(state: any, value = true) {
-    state.signedInWithGoogle = value
-  },
-  error(state: any, errors: any) {
-    state.errors = errors
-    if (process.env.NODE_ENV === 'development') {
-      console.log(errors)
-    }
-  },
-}
-const actions = {
+  actions: {
     /**
      * Sign up a new user
      *
@@ -80,15 +80,18 @@ const actions = {
      * @returns IApiUserResponse
      *
      */
-  async signUp({ commit }: ActionContext<any, any>, user: ISignUpData) {
-    return await $signUp(user)
-      .then(async ({ data }) => {
+    async signUp({ commit, dispatch }: ActionContext<any, any>, user: ISignUpData) {
+      return await $signUp(user)
+      .then(({ data }) => {
         commit('setUser', { user: new User(data.user) })
 
         // Get Token after initial sign up
-        await dispatchEvent(new Event('login', data.user))
+        const loginSuccess = dispatch('login', user)
 
-        return { ...data.user as IApiUserResponse, success: true }
+        return {
+          success: !!loginSuccess,
+          user: data.user as IApiUserResponse
+        }
       })
       .catch((err: AxiosError) => {
         const error = err.response?.data as IApiUserError
@@ -96,7 +99,7 @@ const actions = {
 
         return new ApiUserError(error)
       })
-  },
+    },
     /**
      * Sign in the user
      *
@@ -107,9 +110,10 @@ const actions = {
      * @returns IApiUserResponse
      *
      */
-  async login({ commit }: ActionContext<any, any>, user: ILoginData) {
-    return await $login(user)
+    async login({ commit }: ActionContext<any, any>, user: ILoginData) {
+      return await $login(user)
         .then(({ data, data: { user, token } }) => {
+          console.log(token)
           commit('setUser', { user: new User(user) })
           commit('setJwtToken', token.replace('Bearer ', ''))
 
@@ -120,7 +124,7 @@ const actions = {
 
           return new ApiUserError(error)
         })
-  },
+    },
     /**
      * Check if a user is authenticated via JWT
      *
@@ -131,14 +135,14 @@ const actions = {
      * @query token - Bearer token
      *
      */
-  async checkToken({ commit, state, state: { jwtToken: token } }: ActionContext<any, any>) {
+    async checkToken({ commit, state, state: { jwtToken: token } }: ActionContext<any, any>) {
       // if (state.signedInWithGoogle) {
       //   const googleUser = state.googleUser.getAuthResponse()
       //   console.log(googleUser)
       // }
 
-    if (token && (token !== 'undefined' || token !== undefined)) {
-      await $verifyToken(token)
+      if (token && (token !== 'undefined' || token !== undefined)) {
+        await $verifyToken(token)
         .then(async ({ data: userResponse }) => {
              // eslint-disable-next-line
         const user = new User(userResponse as IUser)
@@ -152,32 +156,45 @@ const actions = {
 
           return err.response?.data as IApiTokenError
         })
-    } else {
-      const error = {
-        error: {
-          name: 'MissingToken',
-          message: 'Please login.'
-        },
-        success: false
-      } as IApiTokenError
+      } else {
+        const error = {
+          error: {
+            name: 'MissingToken',
+            message: 'Please login.'
+          },
+          success: false
+        } as IApiTokenError
 
-      commit('error', error)
+        commit('error', error)
+        commit('setJwtToken', undefined)
+        commit('setLoginStatus', false)
+
+        return error
+      }
+      return state.jwtToken
+    },
+    async updateProfile({ commit }: ActionContext<any, any>, newProfileData: IUser) {
+      return await $updateProfile(newProfileData).then((response) => {
+        const userResponse = response.data as IApiUserUpdateResponse
+
+        commit('setUser', {
+          user: userResponse.user
+        })
+
+        return userResponse as IApiUserUpdateResponse
+      }).catch((err) => {
+        commit('error', err)
+      })
+    },
+    logout({ commit, state }: ActionContext<any, any>) {
+      if (state.signedInWithGoogle) $logout()
+
       commit('setJwtToken', undefined)
-      commit('setLoginStatus', false)
-
-      return error
-    }
-    return state.jwtToken
-  },
-  logout({ commit, state }: ActionContext<any, any>) {
-    if (state.signedInWithGoogle) $logout()
-
-    commit('setJwtToken', undefined)
-    commit('setUser', {
-      user: undefined,
-      isLoggedIn: false
-    })
-  },
+      commit('setUser', {
+        user: undefined,
+        isLoggedIn: false
+      })
+    },
     // /**
     //  * Initiate Google Auth and set the user to the vuex store
     //  *
@@ -274,11 +291,12 @@ const actions = {
     //     // return false
     //   })
     // }
+  }
 }
 
-export default {
-  state,
-  getters,
-  actions,
-  mutations
-}
+// export default {
+//   state,
+//   getters,
+//   actions,
+//   mutations
+// }
