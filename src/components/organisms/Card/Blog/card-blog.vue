@@ -75,21 +75,6 @@
                   {{ blog.title }}
                 </span>
               </div>
-
-              <div
-                v-if="includeElements.elements.tags"
-                class="blog__tags"
-              >
-                <b-taglist>
-                  <b-tag
-                    type="is-info is-light"
-                    v-for="(tag, index) of blog.tags"
-                    :key="index"
-                  >
-                    {{tag}}
-                  </b-tag>
-                </b-taglist>
-              </div>
             </div>
 
             <div
@@ -101,7 +86,22 @@
               </p>
             </div>
 
+            <div
+              v-if="includeElements.elements.tags"
+              class="blog__tags mt-4 mb-4"
+            >
+              <b-taglist>
+                <b-tag
+                  type="is-info is-light"
+                  v-for="(tag, index) of blog.tags"
+                  :key="index"
+                >
+                  {{ tag }}
+                </b-tag>
+              </b-taglist>
+            </div>
           </div>
+
         </div>
 
         <div class="content">
@@ -305,16 +305,6 @@ export default Vue.extend({
   &__author {
     text-align: left;
     overflow: hidden;
-  }
-
-  &__tags {
-    position: absolute;
-    right: 35px;
-    width: 50%;
-
-    .tags {
-      justify-content: flex-end;
-    }
   }
 
   &__summary-container {
