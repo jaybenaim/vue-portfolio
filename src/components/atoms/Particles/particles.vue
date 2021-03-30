@@ -84,19 +84,12 @@ export default Vue.extend({
   data() {
     return {
       config: new Particles(),
-      theme: this.$store.getters.getTheme,
       cmpKey: 0
     }
   },
   created() {
     this.config = new Particles(this.$props)
     this.updateParticlesConfig()
-  },
-  watch: {
-    /// watch theme
-    '$store.getters.getTheme': function watcher() {
-      this.updateParticlesConfig()
-    }
   },
   methods: {
     forceRerender() {
@@ -119,7 +112,6 @@ export default Vue.extend({
         })
       }
 
-      this.theme = activeTheme
       this.forceRerender()
     }
   }

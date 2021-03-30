@@ -1,5 +1,6 @@
-export interface IGetResponse {
-    data: IApiStatusResponse
+export interface IApiResponse {
+    success: true
+    data: any
   }
 
 export interface IApiStatusResponse {

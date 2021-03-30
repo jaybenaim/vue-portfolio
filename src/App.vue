@@ -34,14 +34,13 @@
 
 <script lang="ts">
 import Responsive from '@mixins/Responsive'
-import { $get } from '@/helpers/api/get'
 
 // import * from '@types/gapi.auth2/index'
 
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
-import { IApiStatusResponse, IApiTokenResponse } from './lib/types/api'
-import { IApiTokenError } from './lib/types/errors'
+import { IApiResponse, IApiTokenResponse } from './lib/types/api'
+import { IApiError, IApiTokenError } from './lib/types/errors'
 import Auth from './mixins/Auth'
 
 export default Auth.extend(Responsive).extend({
@@ -71,15 +70,15 @@ export default Auth.extend(Responsive).extend({
   },
   async created() {
     // Wake up heroku
-    if (!this.dbIsReady) {
-      const response: IApiStatusResponse | void = await $get()
 
-      if (response && response.status === 'success') {
-        this.dbIsReady = true
-      } else {
-        this.dbIsReady = false
-        this.$store.commit('error', response)
-      }
+    const statusResponse: boolean = this.$store.getters.getDbStatus
+
+    console.log(statusResponse)
+
+    if (!statusResponse) {
+      const response: IApiResponse | IApiError = await this.$store.dispatch('getDbStatus')
+
+      this.dbIsReady = response.success
     }
   },
   async mounted() {

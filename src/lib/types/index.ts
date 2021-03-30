@@ -15,3 +15,11 @@ export interface IApiDeleteResponse {
 export interface IIndexedArray {
   [index: number]: string
 }
+
+export interface IAnimation {
+  name: string
+  duration?: string | number
+  count?: string | number
+  fill?: string
+  delay?: string | number
+}

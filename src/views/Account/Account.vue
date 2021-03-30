@@ -1,152 +1,157 @@
 <template>
-  <div class="account is-flex columns">
-    <section class="account__info column is-half-desktop">
-      <div class="section is-medium">
-        <div class="media">
-          <div class="media-left mb-5">
-            <b-image
-              v-if="formProps.image"
-              :src="formProps.image"
-              alt="profile image"
-              rounded
-              class="is-256x256"
-            />
+  <div class="container p-2">
+    <div class="account is-flex columns">
+      <section class="account__info column is-half-tablet">
+        <div class="section is-medium">
+          <div class="media">
+            <div class="media-left mb-5">
+              <b-image
+                v-if="formProps.image"
+                :src="formProps.image"
+                alt="profile image"
+                rounded
+                class="is-256x256"
+              />
 
-            <div v-else>
-              <p class="image is-128x128">
-                <b-skeleton
-                  circle
-                  width="128px"
-                  height="128px"
-                ></b-skeleton>
-              </p>
+              <div v-else>
+                <p class="image is-128x128">
+                  <b-skeleton
+                    circle
+                    width="128px"
+                    height="128px"
+                  ></b-skeleton>
+                </p>
+              </div>
             </div>
-          </div>
-
-          <div
-            class="media-right is-flex is-align-items-flex-start"
-          >
-            <b-icon
-              :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
-              class="edit-icon is-flex is-align-self-flex-start"
-              icon="pencil"
-              @click.native="toggleUploader"
-            />
 
             <div
-              v-if="!isDisabled.image"
-              class="upload ml-3 is-flex is-align-items-flex-start"
+              class="media-right is-flex is-align-items-flex-start"
             >
-              <UploadDragAndDrop
-                :showLabel="false"
-                @uploaded="handleUpload"
-                height="20px"
+              <b-icon
+                :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
+                class="edit-icon is-flex is-align-self-flex-start"
+                icon="pencil"
+                @click.native="toggleUploader"
               />
+
+              <div
+                v-if="!isDisabled.image"
+                class="upload ml-3 is-flex is-align-items-flex-start"
+              >
+                <UploadDragAndDrop
+                  :showLabel="false"
+                  @uploaded="handleUpload"
+                  height="20px"
+                />
+              </div>
             </div>
+          </div>
+
+          <b-field grouped>
+            <b-field>
+              <template #label>
+                <label for="username">
+                  Username
+                  <b-icon
+                    :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
+                    class="edit-icon"
+                    icon="pencil"
+                    @click.native="handleEdit('username')"
+                  />
+                </label>
+              </template>
+
+              <b-input
+                v-if="user.username"
+                type="name"
+                v-model="formProps.username"
+                :disabled="isDisabled.username"
+              />
+
+              <b-skeleton
+                v-else
+                width="40%"
+                :animated="true"
+                :active="loading"
+                size="is-large"
+              />
+            </b-field>
+
+            <b-field label="Email">
+              <template #label>
+                <label for="email">
+                  Email
+                  <b-icon
+                    :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
+                    class="edit-icon"
+                    icon="pencil"
+                    @click.native="handleEdit('email')"
+                  />
+                </label>
+              </template>
+
+              <b-input
+                v-if="user.email"
+                type="email"
+                v-model="formProps.email"
+                :disabled="isDisabled.email"
+              />
+
+              <b-skeleton
+                v-else
+                width="40%"
+                :animated="true"
+                :active="loading"
+                size="is-large"
+              />
+            </b-field>
+          </b-field>
+
+          <ButtonDefault
+            v-if="!isDisabled.username || !isDisabled.email || !isDisabled.image"
+            @click.native="handleSave"
+            classname="is-flex is-align-justify-content-flex-start is-success"
+            class="save-button"
+          >
+            Save
+          </ButtonDefault>
+        </div>
+      </section>
+
+      <section class="section is-medium account__blogs column is-half-tablet">
+        <h2 class="title">
+          Blogs
+        </h2>
+
+        <div class="account__blogs columns">
+          <div
+            v-for="(blog, index) of blogs"
+            :key="index"
+            class="column is-half-desktop"
+          >
+            <CardBlog
+              :blog="blog"
+              includeFooter
+              :clickable="false"
+              @blog-updated="getBlogs"
+              @blog-deleted="getBlogs"
+              :includeElements="includedElements"
+              :animation="{
+                delay: index
+              }"
+            />
           </div>
         </div>
 
-        <b-field grouped>
-          <b-field>
-            <template #label>
-              <label for="username">
-                Username
-                <b-icon
-                  :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
-                  class="edit-icon"
-                  icon="pencil"
-                  @click.native="handleEdit('username')"
-                />
-              </label>
-            </template>
-
-            <b-input
-              v-if="user.username"
-              type="name"
-              v-model="formProps.username"
-              :disabled="isDisabled.username"
-            />
-
-            <b-skeleton
-              v-else
-              width="40%"
-              :animated="true"
-              :active="loading"
-              size="is-large"
-            />
-          </b-field>
-
-          <b-field label="Email">
-            <template #label>
-              <label for="email">
-                Email
-                <b-icon
-                  :type="`is-${theme === 'light' ? 'dark' : 'light'}`"
-                  class="edit-icon"
-                  icon="pencil"
-                  @click.native="handleEdit('email')"
-                />
-              </label>
-            </template>
-
-            <b-input
-              v-if="user.email"
-              type="email"
-              v-model="formProps.email"
-              :disabled="isDisabled.email"
-            />
-
-            <b-skeleton
-              v-else
-              width="40%"
-              :animated="true"
-              :active="loading"
-              size="is-large"
-            />
-          </b-field>
-        </b-field>
-
-        <ButtonDefault
-          v-if="!isDisabled.username || !isDisabled.email || !isDisabled.image"
-          @click.native="handleSave"
-          classname="is-flex is-align-justify-content-flex-start is-success"
-          class="save-button"
-        >
-          Save
-        </ButtonDefault>
-      </div>
-    </section>
-
-    <section class="section is-medium account__blogs column is-half-desktop">
-      <h2 class="title">
-        Blogs
-      </h2>
-
-      <div class="columns">
         <div
-          v-for="(blog, index) of blogs"
-          :key="index"
-          class="column p-5 is-half-desktop"
+          class="account__new-blog"
         >
-          <CardBlog
-            :blog="blog"
-            includeFooter
-            :clickable="false"
-            @blog-updated="getBlogs"
-            @blog-deleted="getBlogs"
-            :includeElements="includedElements"
+          <NewBlog
+            @blog-added="getBlogs"
           />
         </div>
-      </div>
-
-      <div
-        class="account__new-blog"
-      >
-        <NewBlog
-          @blog-added="getBlogs"
-        />
-      </div>
-    </section>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -193,7 +198,6 @@ export default Auth.extend(Theme).extend({
         title: {},
         author: {},
         publishDate: {},
-        summary: {},
         tags: {},
         preview: {}
       })
@@ -275,6 +279,10 @@ export default Auth.extend(Theme).extend({
     &:hover {
       color: rgba(var(--black-rgb), 0.8);
     }
+  }
+
+  &__blogs {
+    flex-wrap: wrap;
   }
 
   &__info {

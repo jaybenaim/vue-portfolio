@@ -1,5 +1,8 @@
 <template>
-  <div class="blog">
+  <div
+    class="blog"
+    :style="`--delay: ${animation.delay / 3}s`"
+  >
     <div class="card">
       <div
         v-if="includeElements.elements.image"
@@ -195,7 +198,7 @@ import ButtonDefault from '@/components/atoms/ButtonDefault/button-default.vue'
 import BlogModal from '@organisms/Modal/BlogModal/blog-modal.vue'
 
 import { $formatDate } from '@/helpers/date-time/date-time'
-import { IApiDeleteResponse } from '@/lib/types'
+import { IAnimation, IApiDeleteResponse } from '@/lib/types'
 import { Blog } from '@/lib/types/models/Blog'
 import { IApiError } from '@/lib/types/errors'
 import { IncludeElements } from '@/lib/types/general/IncludeElements'
@@ -224,7 +227,6 @@ export default Vue.extend({
         title: {},
         author: {},
         authorImage: {},
-        content: {},
         summary: {},
         image: {},
         imageCaption: {},
@@ -235,6 +237,13 @@ export default Vue.extend({
     includeTagList: {
       type: Boolean,
       default: true
+    },
+    animation: {
+      type: Object as () => IAnimation,
+      default: () => ({
+        name: 'rotate-vert-center',
+        delay: '1s'
+      })
     }
   },
   data() {
@@ -279,13 +288,43 @@ export default Vue.extend({
     }
   }
 })
+/* eslint-disable */
 </script>
 
+
 <style lang="scss">
+@keyframes scale-up-ver-top {
+  0% {
+    -webkit-transform: scaleY(0.4);
+    transform: scaleY(0.4);
+    -webkit-transform-origin: 100% 0;
+    transform-origin: 100% 0;
+  }
+  100% {
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+    -webkit-transform-origin: 100% 0;
+    transform-origin: 100% 0;
+  }
+}
+
+@keyframes rotate-vert-center {
+  0% {
+    -webkit-transform: rotateY(0);
+    transform: rotateY(0);
+  }
+  100% {
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+}
+
+
 .blog {
 
   .card {
     background-color: rgba(var(--background-color-flipped-rgb), 0.15);
+    @include animate($duration: 2s, $name: rotate-vert-center, $delay: var(--delay));
   }
 
   p,

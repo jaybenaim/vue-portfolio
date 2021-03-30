@@ -14,10 +14,13 @@
       >
         <CardBlog
           :blog="blog"
-          :includeFooter="isLoggedIn"
+          :includeFooter="false"
           clickable
           @blog-updated="refreshBlogs"
           @blog-deleted="refreshBlogs"
+          :animation="{
+            delay: index
+          }"
         />
       </li>
     </ul>
