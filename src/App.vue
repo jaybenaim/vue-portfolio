@@ -96,11 +96,11 @@ export default Auth.extend(Responsive).extend({
 
       if (tokenStatus && tokenStatus.success) {
           // awesome user login in with token
-        if (this.$route.path.includes('login')) {
-          this.$router.push({
-            name: 'Home'
-          })
-        }
+        // if (this.$route.path.includes('login')) {
+        //   this.$router.push({
+        //     name: 'Home'
+        //   })
+        // }
       } else {
           // failed to login with token
         this.$router.push({

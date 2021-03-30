@@ -93,9 +93,7 @@ export default Vue.extend({
      * Handle modal close
      */
     handleClose() {
-      this.$router.push({
-        name: 'Blogs'
-      })
+      this.$router.go(-1)
     },
     handleLogout() {
       this.$store.dispatch('logout')

@@ -199,7 +199,7 @@ export default Auth.extend(Theme).extend({
     }
   },
   async mounted() {
-    if (this.user) {
+    if (this.user.id) {
       const { username, email, image } = this.user
 
       this.formProps.username = username
@@ -236,7 +236,6 @@ export default Auth.extend(Theme).extend({
       this.formProps.image = imageUrl
     },
     async getBlogs() {
-      console.log('deletered')
       const blogsResponse: IApiBlogsResponse = await this.$store.dispatch('getBlogsByUserId', this.user.id)
 
       if (blogsResponse.success) {
