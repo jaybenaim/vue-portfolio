@@ -131,6 +131,7 @@
           <CardBlog
             :blog="blog"
             includeFooter
+            :clickable="false"
             @blog-updated="getBlogs"
             @blog-deleted="getBlogs"
             :includeElements="includedElements"
@@ -199,8 +200,12 @@ export default Auth.extend(Theme).extend({
     }
   },
   async mounted() {
-    if (this.user.id) {
-      const { username, email, image } = this.user
+    const user = this.$store.getters.getUser
+
+    await this.$nextTick()
+
+    if (user && user.id) {
+      const { username, email, image = '' } = this.user
 
       this.formProps.username = username
       this.formProps.email = email

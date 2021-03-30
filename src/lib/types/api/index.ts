@@ -1,12 +1,12 @@
 export interface IGetResponse {
-    data: IStatusResponse
+    data: IApiStatusResponse
   }
 
-export interface IStatusResponse {
+export interface IApiStatusResponse {
     status: string
   }
 
-export interface ITokenResponse {
+export interface IApiTokenResponse {
   isAuthenticated: true
   name: string
   email: string

@@ -2,12 +2,14 @@ import {
  $login, $logout, $signUp, $updateProfile, $verifyToken
 } from '@/helpers/api/auth'
 import {
- ApiUserError, IApiLoginError, IApiTokenError, IApiUserError
+ ApiUserError, IApiError, IApiLoginError, IApiTokenError, IApiUserError
 } from '@/lib/types/errors'
 import {
   IApiLoginResponse,
  IApiUserResponse, IApiUserUpdateResponse, ILoginData, ISignUpData, IUser, IUserState, User
 } from '@/lib/types/models/User'
+import { IApiTokenResponse } from '@/lib/types/api'
+
 import { AxiosError } from 'axios'
 import { ActionContext } from 'vuex'
 
@@ -141,36 +143,41 @@ export default {
       //   console.log(googleUser)
       // }
 
-      if (token && (token !== 'undefined' || token !== undefined)) {
-        await $verifyToken(token)
-        .then(async ({ data: userResponse }) => {
-             // eslint-disable-next-line
-        const user = new User(userResponse as IUser)
+      if (token && token !== 'undefined') {
+        return await $verifyToken(token)
+        .then(({ data: tokenResponse }) => {
+          // eslint-disable-next-line
+          const user = new User(tokenResponse.user as IUser)
+
           commit('setUser', { user })
           commit('setJwtToken', token.replace('Bearer ', ''))
+
+          return {
+            success: true
+          } as IApiTokenResponse
         })
         .catch((err: AxiosError) => {
           commit('error', err.response?.data as IApiTokenError)
           commit('setJwtToken', undefined)
           commit('setUser', { user: {}, isLoggedIn: false })
 
-          return err.response?.data as IApiTokenError
+          return err.response?.data as IApiError
         })
-      } else {
-        const error = {
-          error: {
-            name: 'MissingToken',
-            message: 'Please login.'
-          },
-          success: false
-        } as IApiTokenError
-
-        commit('error', error)
-        commit('setJwtToken', undefined)
-        commit('setLoginStatus', false)
-
-        return error
       }
+      const error = {
+        error: {
+          name: 'MissingToken',
+          message: 'Please login.'
+        },
+        success: false
+      } as IApiTokenError
+
+      commit('error', error)
+      commit('setJwtToken', undefined)
+      commit('setLoginStatus', false)
+
+      return error
+
       return state.jwtToken
     },
     async updateProfile({ commit }: ActionContext<any, any>, newProfileData: IUser) {

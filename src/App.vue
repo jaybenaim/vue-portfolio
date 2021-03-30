@@ -40,7 +40,7 @@ import { $get } from '@/helpers/api/get'
 
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
-import { IStatusResponse, ITokenResponse } from './lib/types/api'
+import { IApiStatusResponse, IApiTokenResponse } from './lib/types/api'
 import { IApiTokenError } from './lib/types/errors'
 import Auth from './mixins/Auth'
 
@@ -72,7 +72,7 @@ export default Auth.extend(Responsive).extend({
   async created() {
     // Wake up heroku
     if (!this.dbIsReady) {
-      const response: IStatusResponse | void = await $get()
+      const response: IApiStatusResponse | void = await $get()
 
       if (response && response.status === 'success') {
         this.dbIsReady = true
@@ -85,43 +85,22 @@ export default Auth.extend(Responsive).extend({
   async mounted() {
     // Set Theme
     this.$store.commit('setInitialTheme')
-    // this.$store.dispatch('googleInit')
 
     // Check if user is signed in
-    // if (this.$route.fullPath.includes('/blogs')) {
     const token = localStorage.getItem('jvp-token')
+    const currentUser = Object.keys(this.$store.getters.getUser).length > 0
 
-    if (token !== 'undefined') {
-      const tokenStatus: ITokenResponse | IApiTokenError = await this.$store.dispatch('checkToken')
+    await this.$nextTick()
+
+    if (!currentUser && token && token !== 'undefined') {
+      const tokenStatus: IApiTokenResponse | IApiTokenError = await this.$store.dispatch('checkToken')
 
       if (tokenStatus && tokenStatus.success) {
-          // awesome user login in with token
-        // if (this.$route.path.includes('login')) {
-        //   this.$router.push({
-        //     name: 'Home'
-        //   })
-        // }
+        console.log('Signed in with token.')
       } else {
-          // failed to login with token
-        this.$router.push({
-          name: 'Login'
-        })
+        console.log('Failed to login with token.')
       }
     }
-    // }
-
-    // await this.$store.dispatch('checkToken')
-
-    // Load google to setup google sign in
-
-    // if (this.$route.fullPath.includes('/blogs')) {
-    //   this.toggleAuth()
-    // }
-  },
-  updated() {
-    // if (this.$route.fullPath.includes('/blogs')) {
-    //   this.toggleAuth()
-    // }
   },
   methods: {
     /**
@@ -137,24 +116,6 @@ export default Auth.extend(Responsive).extend({
         this.showAuth = false
       }
     },
-  //   /**
-  //    * Listener method for sign-out live value.
-  //    *
-  //    * @param {boolean} val the updated signed out state.
-  //    */
-  //   signinChanged(val: boolean) {
-  //     console.log('Signin state changed to ', val)
-  //     return val
-  //   },
-  //   /**
-  //  * Listener method for when the user changes.
-  //  *
-  //  * @param {GoogleUser} user the updated user.
-  //  */
-  //   userChanged(user: gapi.auth2.GoogleUser) {
-  //     console.log(user)
-  //     this.$store.commit('setUser', { user })
-  //   }
   },
   components: {
     MenuMobile,
