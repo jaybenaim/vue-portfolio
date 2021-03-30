@@ -1,3 +1,5 @@
+import { IIndexedArray } from '..'
+
 export class Blog {
   id: string
 
@@ -23,7 +25,7 @@ export class Blog {
 
   updated?: string
 
-  tags?: string[]
+  tags?: IIndexedArray[]
 
   constructor(blog: IBlog) {
     this.id = blog.id
@@ -34,7 +36,7 @@ export class Blog {
     this.summary = blog.summary
     this.image = blog.image
     this.imageCaption = blog.imageCaption
-    this.publishDate = blog.publishDate ? blog.publishDate : new Date(blog.created as string)
+    this.publishDate = blog.publishDate ? new Date(blog.publishDate) : new Date(blog.created as string)
     this.created = blog.created
     this.updated = blog.updated
     this.tags = blog.tags
@@ -62,7 +64,7 @@ export interface IBlog {
   publishDate?: Date
   created?: string
   updated?: string
-  tags?: string[]
+  tags?: IIndexedArray[]
 }
 export interface IBlogUser {
   id: string

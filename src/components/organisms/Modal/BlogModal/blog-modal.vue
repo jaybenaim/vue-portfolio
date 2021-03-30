@@ -74,7 +74,6 @@
 
               <b-field
                 label="Content"
-                :label-position="labelPosition"
                 :message="errors.content"
                 :type="{ 'is-danger': errors.content }"
               >
@@ -91,6 +90,7 @@
                 v-if="formProps.image"
               >
                 <span>Preview: </span>
+
                 <img
                   :src="formProps.image"
                   class="preview__image m-5"
@@ -113,8 +113,10 @@
               </b-field>
 
               <Sortable
+                class="mb-5"
                 :label-position="labelPosition"
                 @tags-updated="(currentTags) => formProps.tags = currentTags"
+                :currentTags="formProps.tags"
               />
 
               <b-field label="Publish Date">
@@ -163,6 +165,7 @@ import {
 import { IApiBlogError, IApiBlogErrorType, IApiBlogResponseError } from '@/lib/types/errors'
 
 import { $urlToBase64 } from '@/helpers'
+import { IIndexedArray } from '@/lib/types'
 
 export default Vue.extend({
   name: 'blog-modal',
@@ -201,37 +204,19 @@ export default Vue.extend({
         image: '',
         imageCaption: '',
         publishDate: new Date(),
-        tags: [] as string[]
+        tags: [] as IIndexedArray[]
       } as IBlog
     }
   },
   created() {
     if (this.editProps) {
-      const newBlog = {} as any
-
-      // for (const field of Object.keys(this.formProps)) {
-      newBlog.id = this.editProps.id
-      newBlog.title = this.editProps.title
-      newBlog.author = this.editProps.author
-      newBlog.summary = this.editProps.summary
-      newBlog.content = this.editProps.content
-      newBlog.image = this.editProps.image
-      newBlog.imageCaption = this.editProps.imageCaption
-      if (this.editProps.publishDate) {
-        newBlog.publishDate = new Date(this.editProps.publishDate)
-      }
-      newBlog.tags = this.editProps.tags
-
-      //   if (field === 'publishDate' && this.editProps.publishDate) {
-      //     this.formProps.publishDate = new Date(this.editProps.publishDate)
-      //   } else {
-      //     newBlog[field] = this.editProps[field as IBlogIndexType]
-      //   }
-      // }
-
-      this.formProps = newBlog as IBlog
+      this.formProps = new Blog(this.editProps)
     } else {
-      this.formProps.uid = this.$store.getters.getUser.id
+      const user = this.$store.getters.getUser
+      const { username } = user
+
+      this.formProps.uid = user
+      this.formProps.author = username
     }
   },
   methods: {

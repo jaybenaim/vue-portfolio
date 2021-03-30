@@ -104,7 +104,7 @@ export default Auth.extend(Responsive).extend({
       } else {
           // failed to login with token
         this.$router.push({
-          name: 'SignUp'
+          name: 'Login'
         })
       }
     }

@@ -15,11 +15,22 @@
       </b-taginput>
     </b-field>
 
-    <div class="content tags__added">
+    <div
+      v-if="includeTagList"
+      class="content tags__added"
+    >
       <b>Tags:</b>
 
       <ul class="tags__list">
-        {{ tags }}
+        <b-taglist>
+          <b-tag
+            type="is-info is-light"
+            v-for="(tag, index) of tags"
+            :key="index"
+          >
+            {{tag}}
+          </b-tag>
+        </b-taglist>
       </ul>
     </div>
   </section>
@@ -29,6 +40,7 @@
     /* eslint no-underscore-dangle: 0 */
     import Vue from 'vue'
     import Sortable from 'sortablejs'
+    import { IIndexedArray } from '@/lib/types'
 
     const createSortable = (el: any, options: any, vnode: any) => Sortable.create(el, {
       ...options,
@@ -85,6 +97,13 @@
             'inside',
             'on-border'
           ].indexOf(value) > -1
+        },
+        includeTagList: {
+          type: Boolean,
+          default: false
+        },
+        currentTags: {
+          type: Array as () => IIndexedArray[]
         }
       },
       watch: {
@@ -98,7 +117,16 @@
             chosenClass: 'is-primary',
             draggable: '.tag'
           },
-          tags: []
+          tags: [] as IIndexedArray[],
+        }
+      },
+      created() {
+        if (this.currentTags) {
+          for (const tag of Object.keys(this.currentTags)) {
+            if (tag) {
+              this.tags.push(this.currentTags[Number(tag)])
+            }
+          }
         }
       }
     })

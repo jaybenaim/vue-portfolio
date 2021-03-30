@@ -17,7 +17,7 @@
           :includeFooter="isLoggedIn"
           clickable
           @blog-updated="refreshBlogs"
-          @blog-deleted-successfully="refreshBlogs"
+          @blog-deleted="refreshBlogs"
         />
       </li>
     </ul>
@@ -83,12 +83,11 @@ export default Auth.extend({
     async getBlogs() {
       const blogs: void | Blog[] = await $getBlogs()
 
-      if (blogs && Object.keys(blogs).length > 0) {
-        this.blogs = blogs
-        this.isReady = true
-      }
+      this.blogs = blogs || []
+      this.isReady = true
     },
     async refreshBlogs() {
+      console.log('refresh')
       await this.getBlogs()
     }
   },

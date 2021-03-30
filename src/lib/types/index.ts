@@ -11,3 +11,7 @@ export interface IApiDeleteResponse {
   success: boolean,
   error: IApiErrorMessage
 }
+
+export interface IIndexedArray {
+  [index: number]: string
+}

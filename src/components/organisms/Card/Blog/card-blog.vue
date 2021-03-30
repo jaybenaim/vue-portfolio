@@ -35,7 +35,7 @@
             v-if="includeElements.elements.authorImage"
             class="media-left"
           >
-            <figure class="image is-128x128">
+            <figure class="image is-64x64">
               <img
                 v-if="blog.uid && blog.uid.image"
                 :src="blog.uid.image"
@@ -51,36 +51,56 @@
           </div>
 
           <div class="media-content">
-            <p
+            <div
               v-if="includeElements.elements.title"
-              class="is-4 blog__title"
+              class="media-content__details"
             >
-              <router-link
-                v-if="clickable"
-                :to="{
-                  path: `${blog.id}`,
-                  query: blog
-                }"
-                append
-                class="title"
-              >
-                {{ blog.title }}
-              </router-link>
+              <div class="blog__title">
+                <router-link
+                  v-if="clickable"
+                  :to="{
+                    path: `${blog.id}`,
+                    query: blog
+                  }"
+                  append
+                  class="title"
+                >
+                  {{ blog.title }}
+                </router-link>
 
-              <span
-                v-else
-                class="title"
-              >
-                {{ blog.title }}
-              </span>
-            </p>
+                <span
+                  v-else
+                  class="title"
+                >
+                  {{ blog.title }}
+                </span>
+              </div>
 
-            <p
+              <div
+                v-if="includeElements.elements.tags"
+                class="blog__tags"
+              >
+                <b-taglist>
+                  <b-tag
+                    type="is-info is-light"
+                    v-for="(tag, index) of blog.tags"
+                    :key="index"
+                  >
+                    {{tag}}
+                  </b-tag>
+                </b-taglist>
+              </div>
+            </div>
+
+            <div
               v-if="includeElements.elements.author"
-              class="subtitle is-6 blog__author"
+              class="blog__author"
             >
-              By: {{ blog.author }}
-            </p>
+              <p class="subtitle is-6">
+                By: {{ blog.author }}
+              </p>
+            </div>
+
           </div>
         </div>
 
@@ -104,7 +124,7 @@
           </div>
 
           <div
-            class="blog__bottom-section columns"
+            class="blog__bottom-section columns mt-4"
           >
             <div
               v-if="includeElements.elements.preview"
@@ -119,10 +139,8 @@
                   query: blog
                 }"
                 tag="router-link"
-              >
-                Preview
-
-              </ButtonDefault>
+                label="Preview"
+              />
             </div>
 
             <div
@@ -213,6 +231,10 @@ export default Vue.extend({
         publishDate: {},
         tags: {}
       })
+    },
+    includeTagList: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -244,7 +266,7 @@ export default Vue.extend({
       const response: IApiDeleteResponse | IApiError = await this.$store.dispatch('deleteBlog', this.blog.id)
 
       if (response.success) {
-        this.$emit('blog-deleted-successfully')
+        this.$emit('blog-deleted')
       } else {
         this.$store.commit('error', {
 
@@ -262,22 +284,37 @@ export default Vue.extend({
 <style lang="scss">
 .blog {
 
-.card {
-  background-color: rgba(var(--background-color-flipped-rgb), 0.15);
-}
+  .card {
+    background-color: rgba(var(--background-color-flipped-rgb), 0.15);
+  }
 
   p,
   .title,
+  strong,
   &__summary,
   &__content,
   &__publish-date {
     color: var(--primary-text-color);
+
+    &:hover {
+      color: var(--primary-text-color-hover) !important;
+    }
   }
 
   &__title,
   &__author {
     text-align: left;
     overflow: hidden;
+  }
+
+  &__tags {
+    position: absolute;
+    right: 35px;
+    width: 50%;
+
+    .tags {
+      justify-content: flex-end;
+    }
   }
 
   &__summary-container {

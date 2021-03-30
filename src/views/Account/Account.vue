@@ -132,12 +132,19 @@
             :blog="blog"
             includeFooter
             @blog-updated="getBlogs"
-            @blog-deleted-successfully="getBlogs"
+            @blog-deleted="getBlogs"
             :includeElements="includedElements"
           />
         </div>
       </div>
 
+      <div
+        class="account__new-blog"
+      >
+        <NewBlog
+          @blog-added="getBlogs"
+        />
+      </div>
     </section>
   </div>
 </template>
@@ -156,12 +163,14 @@ import { $urlToBase64 } from '@/helpers'
 import { $getImage } from '@/helpers/api/getImage'
 import { Blog, IApiBlogsResponse } from '@/lib/types/models/Blog'
 import { IncludeElements } from '@/lib/types/general/IncludeElements'
+import NewBlog from '@/components/atoms/NewBlog/new-blog.vue'
 
 export default Auth.extend(Theme).extend({
   components: {
     ButtonDefault,
     UploadDragAndDrop,
-    CardBlog
+    CardBlog,
+    NewBlog
   },
   name: 'account',
   data() {
@@ -183,16 +192,20 @@ export default Auth.extend(Theme).extend({
         title: {},
         author: {},
         publishDate: {},
+        summary: {},
+        tags: {},
         preview: {}
       })
     }
   },
   async mounted() {
-    this.formProps.username = this.user.username || ''
-    this.formProps.email = this.user.email || ''
-    this.formProps.image = this.user.image || ''
+    if (this.user) {
+      const { username, email, image } = this.user
 
-    if (this.user.id) {
+      this.formProps.username = username
+      this.formProps.email = email
+      this.formProps.image = image
+
       await this.getBlogs()
     }
   },
@@ -212,12 +225,7 @@ export default Auth.extend(Theme).extend({
       })
 
       if (updatedProfile.success) {
-        // this.$router.push({
-        //   name: 'Account'
-        // })
-        // this.$router.go(0)
-
-        console.log(updatedProfile)
+        this.resetDisabled()
       }
     },
     async handleUpload(file: File) {
@@ -228,10 +236,16 @@ export default Auth.extend(Theme).extend({
       this.formProps.image = imageUrl
     },
     async getBlogs() {
+      console.log('deletered')
       const blogsResponse: IApiBlogsResponse = await this.$store.dispatch('getBlogsByUserId', this.user.id)
 
       if (blogsResponse.success) {
         this.blogs = blogsResponse.blogs
+      }
+    },
+    resetDisabled() {
+      for (const item of Object.keys(this.isDisabled)) {
+        this.isDisabled[item as 'username' | 'email' | 'image'] = true
       }
     }
   }
@@ -265,6 +279,7 @@ export default Auth.extend(Theme).extend({
 
       .media-left {
         width: 50%;
+        margin-right: 0;
       }
     }
   }

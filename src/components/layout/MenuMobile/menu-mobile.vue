@@ -232,10 +232,14 @@ export default Auth.extend({
     padding: 1em;
   }
 
-.menu-list {
-  a {
-    color: var(--primary-text-color);
+  .menu-list {
+    a {
+      color: var(--primary-text-color);
+    }
   }
-}
+
+  .login-btn span {
+    color: var(--black);
+  }
 }
 </style>
