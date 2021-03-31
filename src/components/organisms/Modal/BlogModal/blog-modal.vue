@@ -250,7 +250,6 @@ export default Vue.extend({
         const newBlogResponse: IApiBlogResponse | IApiBlogResponseError
         = await this.$store.dispatch('editBlog', new Blog(this.formProps))
 
-        console.log(newBlogResponse)
         const errors = !newBlogResponse.success ? newBlogResponse.error as IApiBlogError : undefined
 
         if (!errors) {

@@ -58,7 +58,10 @@ const actions = {
    * @returns
    */
   async deleteBlog({ commit }: ActionContext<any, any>, blogId: string) {
-    return await $deleteBlog(blogId).then(() => ({ success: true } as IApiDeleteResponse)).catch((err) => {
+    console.log(blogId)
+    return await $deleteBlog(blogId)
+    .then(() => ({ success: true } as IApiDeleteResponse))
+    .catch((err) => {
       commit('error', err)
       return { success: false, error: err } as IApiDeleteResponse
     })

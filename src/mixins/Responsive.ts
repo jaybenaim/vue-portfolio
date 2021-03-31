@@ -1,7 +1,6 @@
-import Theme from './Theme'
+import Vue from 'vue'
 
-export default Theme.extend({
-  mixins: [Theme],
+export default Vue.extend({
   computed: {
     windowWidth() {
       return this.$store.getters.getWindowSize

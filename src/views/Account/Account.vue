@@ -1,7 +1,7 @@
 <template>
-  <div class="container p-2">
-    <div class="account is-flex columns">
-      <section class="account__info column is-half-tablet">
+  <div class="account container p-2">
+    <div class="is-flex columns">
+      <div class="account__info column is-half-tablet">
         <div class="section is-medium">
           <div class="media">
             <div class="media-left mb-5">
@@ -116,7 +116,7 @@
             Save
           </ButtonDefault>
         </div>
-      </section>
+      </div>
 
       <section class="section is-medium account__blogs column is-half-tablet">
         <h2 class="title">
@@ -203,22 +203,26 @@ export default Auth.extend(Theme).extend({
       })
     }
   },
-  async mounted() {
-    const user = this.$store.getters.getUser
-
-    await this.$nextTick()
-
-    if (user && user.id) {
-      const { username, email, image = '' } = this.user
-
-      this.formProps.username = username
-      this.formProps.email = email
-      this.formProps.image = image
-
-      await this.getBlogs()
+  watch: {
+    async user() {
+      this.setupUser()
     }
   },
+  mounted() {
+    this.setupUser()
+  },
   methods: {
+    async setupUser() {
+      if (this.user && this.user.id) {
+        const { username, email, image = '' } = this.user
+
+        this.formProps.username = username
+        this.formProps.email = email
+        this.formProps.image = image
+
+        await this.getBlogs()
+      }
+    },
     toggleUploader() {
       this.isDisabled.image = !this.isDisabled.image
     },
@@ -262,6 +266,8 @@ export default Auth.extend(Theme).extend({
 
 <style lang="scss">
 .account {
+  @include theme();
+
   label {
     text-align: left;
     color: var(--primary-text-color);

@@ -11,9 +11,9 @@
 
 <script lang="ts">
 import { Particles } from '@/lib/types/Particles'
-import Vue from 'vue'
+import Theme from '@/mixins/Theme'
 
-export default Vue.extend({
+export default Theme.extend({
   name: 'particles',
   props: {
     className: {
@@ -85,6 +85,11 @@ export default Vue.extend({
     return {
       config: new Particles(),
       cmpKey: 0
+    }
+  },
+  watch: {
+    theme() {
+      this.updateParticlesConfig()
     }
   },
   created() {

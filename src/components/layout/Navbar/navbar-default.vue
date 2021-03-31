@@ -228,13 +228,23 @@ export default Auth.extend({
   .account-label {
     color: var(--primary-text-color-flipped) !important;
 
+    .navbar-link {
+      color: var(--primary-text-color);
+
+      &:hover,
+      &:active,
+      &:focus  {
+        color: var(--black);
+      }
+    }
+
     a {
-      color: var(--primary-text-color) !important;
+      // color: var(--primary-text-color) !important;
 
       &:hover,
       &:active,
       &:focus {
-        color: var(--primary-text-color-flipped) !important;
+        color: var(--black);
       }
     }
 
@@ -251,7 +261,7 @@ export default Auth.extend({
 
   .account-label.is-active {
     a {
-      color: var(--primary-text-color-flipped) !important;
+      color: var(--black) !important;
     }
 
     .navbar-link:not(.is-arrowless)::after {

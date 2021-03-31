@@ -1,11 +1,12 @@
 <template>
   <section
-    class="blog-details section is-large theme-colors mt-6"
+    class="blog-details section is-medium"
     v-if="Object.keys(currentBlog).length > 0"
   >
     <CardBlog
       :blog="currentBlog"
       :withRouterLink="false"
+      :includeElements="includeElements"
     />
   </section>
 </template>
@@ -13,6 +14,7 @@
 <script lang="ts">
 import CardBlog from '@/components/organisms/Card/Blog/card-blog.vue'
 import { IApiBlogResponseError } from '@/lib/types/errors'
+import { IncludeElements } from '@/lib/types/general/IncludeElements'
 import { Blog, IApiBlogResponse } from '@/lib/types/models/Blog'
 import Vue from 'vue'
 
@@ -28,37 +30,49 @@ export default Vue.extend({
      */
     id: {
       type: String
-    }
+    },
+    includeElements: {
+      type: Object as () => IncludeElements,
+      default: () => new IncludeElements({
+        title: {},
+        author: {},
+        authorImage: {},
+        summary: {},
+        content: {},
+        image: {},
+        imageCaption: {},
+        publishDate: {},
+        tags: {}
+      })
+    },
   },
   data() {
     return {
-      currentBlog: {} as Blog
+      currentBlog: {} as Blog,
     }
   },
   async created() {
-    const blog = this.$route.query as any
+    const blogId = this.$route.params.id
 
-    if (!blog.id
-    && !this.blog
-    && Object.keys(this.currentBlog).length === 0
-    ) {
-      const blogId = this.id
+    if (this.blog) {
+      this.currentBlog = this.blog
+    } else {
       const blogResponse: IApiBlogResponse | IApiBlogResponseError = await this.$store.dispatch('getBlogById', blogId)
 
       if (blogResponse.success) {
         this.currentBlog = blogResponse.blog
-      } else {
-        this.$store.commit('error', 'Error getting the current blog.')
       }
-    } else if (Object.keys(blog).length > 0) {
-      this.currentBlog = new Blog(blog)
-    } else {
-      this.$store.commit('error', 'Error getting the current blog.')
     }
   }
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.blog-details {
 
+  .card {
+    max-width: 550px;
+    margin: 0 auto;
+  }
+}
 </style>

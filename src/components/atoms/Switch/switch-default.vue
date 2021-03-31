@@ -11,13 +11,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Theme from '@/mixins/Theme'
 
-export default Vue.extend({
+export default Theme.extend({
   name: 'switch-default',
   data() {
     return {
-      darkMode: this.$store.getters.getTheme !== 'light'
+      darkMode: this.theme === 'dark'
+    }
+  },
+  watch: {
+    theme() {
+      return this.$store.getters.getTheme
     }
   }
 })
@@ -39,6 +44,10 @@ export default Vue.extend({
 
   input[type=checkbox] + .check {
     background: var(--secondary) !important;
+  }
+
+  .control-label {
+    color: var(--primary-text-color);
   }
 }
 </style>

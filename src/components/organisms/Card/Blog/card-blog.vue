@@ -58,14 +58,16 @@
               v-if="includeElements.elements.title"
               class="media-content__details"
             >
-              <div class="blog__title">
+              <div class="blog__title pb-3">
                 <router-link
                   v-if="clickable"
                   :to="{
-                    path: `${blog.id}`,
-                    query: blog
+                    name: 'BlogDetails',
+                    params: {
+                      blog,
+                      id: blog.id
+                    }
                   }"
-                  append
                   class="title"
                 >
                   {{ blog.title }}
@@ -138,8 +140,12 @@
             >
               <ButtonDefault
                 :to="{
-                  path: `blogs/${blog.id}`,
-                  query: blog
+                  name: 'BlogDetails',
+                  params: {
+                    blog,
+                    id: blog.id,
+                    includeElements: detailsEls
+                  }
                 }"
                 tag="router-link"
                 label="Preview"
@@ -200,8 +206,8 @@ import BlogModal from '@organisms/Modal/BlogModal/blog-modal.vue'
 import { $formatDate } from '@/helpers/date-time/date-time'
 import { IAnimation, IApiDeleteResponse } from '@/lib/types'
 import { Blog } from '@/lib/types/models/Blog'
-import { IApiError } from '@/lib/types/errors'
 import { IncludeElements } from '@/lib/types/general/IncludeElements'
+import { IApiError } from '@/lib/types/errors'
 
 export default Vue.extend({
   name: 'card-blog',
@@ -249,7 +255,18 @@ export default Vue.extend({
   data() {
     return {
       showFooter: false,
-      showEditModal: false
+      showEditModal: false,
+      detailsEls: new IncludeElements({
+        title: {},
+        author: {},
+        authorImage: {},
+        summary: {},
+        content: {},
+        image: {},
+        imageCaption: {},
+        publishDate: {},
+        tags: {}
+      })
     }
   },
   created() {
@@ -272,18 +289,11 @@ export default Vue.extend({
       this.showEditModal = true
     },
     async handleDelete() {
+      // console.log(this.blog.id)
       const response: IApiDeleteResponse | IApiError = await this.$store.dispatch('deleteBlog', this.blog.id)
 
       if (response.success) {
         this.$emit('blog-deleted')
-      } else {
-        this.$store.commit('error', {
-
-          error: {
-            name: 'UnknownError',
-            message: 'Something went wrong'
-          }
-        } as IApiError)
       }
     }
   }
@@ -324,7 +334,7 @@ export default Vue.extend({
 
   .card {
     background-color: rgba(var(--background-color-flipped-rgb), 0.15);
-    @include animate($duration: 2s, $name: rotate-vert-center, $delay: var(--delay));
+    @include animate($duration: 1s, $name: rotate-vert-center, $delay: var(--delay));
   }
 
   p,
@@ -354,6 +364,14 @@ export default Vue.extend({
     text-align: left;
     max-height: 400px;
     overflow-y: auto;
+ 
+    // Truncate text while keeping tags 
+    span { 
+      display: -webkit-box;
+      -webkit-line-clamp: 7;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
   }
 
   ::-webkit-scrollbar {
