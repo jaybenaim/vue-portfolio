@@ -1,11 +1,11 @@
 <template>
   <div class="switch">
     <b-switch
-      v-model="darkMode"
+      :v-model="darkMode"
       passive-type="is-dark"
       @click.native="$store.commit('toggleTheme')"
     >
-      {{ darkMode ? "Dark Mode" : "Light Mode" }}
+      {{ modeText ? "Dark Mode" : "Light Mode" }}
     </b-switch>
   </div>
 </template>
@@ -15,16 +15,16 @@ import Theme from '@/mixins/Theme'
 
 export default Theme.extend({
   name: 'switch-default',
-  data() {
-    return {
-      darkMode: this.theme === 'dark'
+  computed: {
+    modeText() {
+      return this.$store.getters.getTheme === 'dark'
     }
   },
-  watch: {
-    theme() {
-      return this.$store.getters.getTheme
+  data() {
+    return {
+      darkMode: this.$store.getters.getTheme === 'dark'
     }
-  }
+  },
 })
 </script>
 

@@ -12,7 +12,12 @@ const actions = {
 
 const mutations = {
   setInitialTheme(state: any) {
-    const currentTheme = localStorage.getItem('theme') || 'dark'
+    let currentTheme = localStorage.getItem('theme')
+
+    if (!currentTheme) {
+      localStorage.setItem('theme', 'dark')
+      currentTheme = 'dark'
+    }
 
     state.theme = currentTheme
 

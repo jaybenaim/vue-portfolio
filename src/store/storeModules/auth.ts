@@ -115,7 +115,6 @@ export default {
     async login({ commit }: ActionContext<any, any>, user: ILoginData) {
       return await $login(user)
         .then(({ data, data: { user, token } }) => {
-          console.log(token)
           commit('setUser', { user: new User(user) })
           commit('setJwtToken', token.replace('Bearer ', ''))
 
