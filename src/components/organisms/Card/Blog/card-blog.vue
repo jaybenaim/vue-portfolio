@@ -365,12 +365,8 @@ export default Vue.extend({
     max-height: 400px;
     overflow-y: auto;
  
-    // Truncate text while keeping tags 
     span { 
-      display: -webkit-box;
-      -webkit-line-clamp: 7;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+     @include truncate(); 
     }
   }
 

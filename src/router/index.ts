@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -8,7 +7,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: () => import(/* wepackChunkName: "Home" */ '../views/Home/Home.vue'),
   },
   {
     path: '/sign-up',
@@ -50,7 +49,8 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "account" */ '../views/Account/Account.vue'),
   },
   {
-    path: '*', component: Home
+    path: '*',
+    component: () => import(/* wepackChunkName: "Home" */ '../views/Home/Home.vue'),
   }
 ]
 

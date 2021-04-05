@@ -71,12 +71,14 @@
 }
 
 @mixin scrollbar(
-  $width: 17px,
+  $width: 14px,
   $track: rgba(var(--background-color-rgb), 0.8) !important,
   $thumb: rgba(var(--secondary-rgb), 0.7) !important,
   $hover: rgba(var(--background-color-rgb), 0.5) !important,
   $radius: 15px
 ) {
+  overflow-y: auto;
+
   ::-webkit-scrollbar {
     width: $width;
   }
@@ -104,4 +106,12 @@
     -webkit-transform: rotateY(360deg);
     transform: rotateY(360deg);
   }
+}
+
+// Truncate text while keeping tags
+@mixin truncate($lines: 7) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

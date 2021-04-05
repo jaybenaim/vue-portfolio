@@ -27,7 +27,6 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable  */
 import Responsive from '@mixins/Responsive'
 
 import Particles from '@atoms/Particles/particles.vue'
@@ -56,7 +55,7 @@ export default Responsive.extend(Theme).extend({
     }
   },
   computed: {
-    setBackground() {
+    setBackground(): string {
       return `--background-url: ${this.background}`
     }
   },
@@ -78,13 +77,13 @@ export default Responsive.extend(Theme).extend({
     Particles
   }
 })
-
+/* eslint-disable */
 </script>
 
 <style lang="scss">
 
 @keyframes text-pop-up-tr {
-  0% { 
+  0% {
     -webkit-transform:translateY(0) translateX(0);
     transform:translateY(0) translateX(0);
     -webkit-transform-origin:50% 50%;
@@ -108,14 +107,14 @@ export default Responsive.extend(Theme).extend({
   }
 }
 
- [data-theme="light"] { 
-   .hero h1 { 
+ [data-theme="light"] {
+   .hero h1 {
       text-shadow:0 1px 0 #ccc,0 2px 0 #ccc,0 3px 0 #ccc,0 4px 0 #ccc,0 5px 0 #ccc,0 6px 0 #ccc,0 7px 0 #ccc,0 8px 0 #ccc,0 9px 0 #ccc,0 50px 30px rgba(0,0,0,.3);
     }
   }
 
-  [data-theme="dark"] { 
-   .hero h1 { 
+  [data-theme="dark"] {
+   .hero h1 {
       text-shadow: -2px 45px 18px rgba(250, 247, 247, 0.3);
     }
   }
@@ -126,7 +125,7 @@ export default Responsive.extend(Theme).extend({
   h1 {
     color: var(--primary-text-color);
     position: absolute;
-    top: 40px; 
+    top: 40px;
     font-size: 52px;
     z-index: 6;
     animation-name: text-pop-up-tr;

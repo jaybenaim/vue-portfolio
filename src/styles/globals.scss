@@ -1,0 +1,76 @@
+// Scrollbar
+// @include scrollbar();
+
+// Main Content
+html.has-navbar-fixed-top,
+body.has-navbar-fixed-top {
+  padding-top: 0;
+}
+
+body,
+html {
+  @include theme();
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+// Theme
+.theme-colors {
+  background: var(--background-color) !important;
+  color: var(--primary-text-color) !important;
+
+  p,
+  span h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  label,
+  strong {
+    color: var(--primary-text-color) !important;
+  }
+
+  &:hover {
+    color: var(--primary-text-color-hover) !important;
+  }
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(var(--background-color-rgb), 0.5) !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--secondary-rgb), 0.7) !important;
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--background-color-rgb), 0.5) !important;
+}
+
+// Buefy/Bulma overrides
+
+.is-primary {
+  background-color: var(--primary) !important;
+
+  * {
+    color: var(--primary-text-color-flipped) !important;
+    font-weight: 600;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: rgba(var(--primary-rgb), 0.9) !important;
+  }
+}
+
+.button {
+  font-size: 16px;
+  font-weight: 600;
+}
