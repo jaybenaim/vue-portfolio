@@ -28,7 +28,10 @@
       />
     </div>
 
-    <div class="app__loader">
+    <div
+      v-if="isLoading"
+      class="app__loader"
+    >
       <Loader :isLoading="isLoading"/>
     </div>
     <!-- Routes -->

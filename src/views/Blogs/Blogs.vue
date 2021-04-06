@@ -13,24 +13,27 @@
       Sign up to create a blog post. You can come back and edit it anytime!
     </div>
 
-    <ul class="blogs__list columns is-flex is-flex-wrap-wrap">
-      <li
-        v-for="(blog, index) in blogs"
-        :key="index"
-        class="column is-one-third-tablet is-one-quarter-desktop"
-      >
-        <CardBlog
-          :blog="blog"
-          :includeFooter="false"
-          clickable
-          @blog-updated="refreshBlogs"
-          @blog-deleted="refreshBlogs"
-          :animation="{
-            delay: index
-          }"
-        />
-      </li>
-    </ul>
+    <div class="container pt-5">
+      <ul class="blogs__list columns is-flex is-flex-wrap-wrap">
+        <li
+          v-for="(blog, index) in blogs"
+          :key="index"
+          class="column is-one-third-tablet is-one-quarter-desktop"
+        >
+          <CardBlog
+            :blog="blog"
+            :includeFooter="false"
+            clickable
+            @blog-updated="refreshBlogs"
+            @blog-deleted="refreshBlogs"
+            :animation="{
+              delay: index
+            }"
+            :includeElements="includeElements"
+          />
+        </li>
+      </ul>
+    </div>
 
     <div
       v-if="isLoggedIn"
@@ -52,6 +55,7 @@ import NewBlog from '@atoms/NewBlog/new-blog.vue'
 
 import { $getBlogs } from '@/helpers/api/blogs'
 import Auth from '@/mixins/Auth'
+import { IncludeElements } from '@/lib/types/general/IncludeElements'
 
 export default Auth.extend({
   name: 'blogs',
@@ -65,7 +69,19 @@ export default Auth.extend({
         'inside',
         'on-border'
       ].indexOf(value) > -1
-    }
+    },
+    includeElements: {
+      type: Object as () => IncludeElements,
+      default: () => new IncludeElements({
+        title: {},
+        author: {},
+        summary: {},
+        image: {},
+        imageCaption: {},
+        publishDate: {},
+        tags: {}
+      })
+    },
   },
   data() {
     return {
@@ -129,6 +145,13 @@ export default Auth.extend({
 
   .media-content {
     overflow: hidden;
+  }
+
+  // Card
+  .blog {
+    &__publish-date {
+      justify-content: flex-start !important;
+    }
   }
 }
 </style>

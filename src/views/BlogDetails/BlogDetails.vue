@@ -36,7 +36,6 @@ export default Vue.extend({
       default: () => new IncludeElements({
         title: {},
         author: {},
-        authorImage: {},
         summary: {},
         content: {},
         image: {},

@@ -39,11 +39,12 @@
             class="media-left"
           >
             <figure class="image is-64x64">
-              <img
+              <b-image
                 v-if="blog.uid && blog.uid.image"
                 :src="blog.uid.image"
                 alt="Author profile image"
-              >
+                rounded
+              />
 
               <img
                 v-else
@@ -106,13 +107,12 @@
               </b-taglist>
             </div>
           </div>
-
         </div>
 
         <div class="content">
           <div
             v-if="includeElements.elements.summary"
-            class="blog__summary is-flex"
+            class="blog__summary is-flex mb-3"
           >
             <span
               v-html="blog.summary"
@@ -129,7 +129,7 @@
           </div>
 
           <div
-            class="blog__bottom-section columns mt-4"
+            class="blog__bottom-section columns mt-3"
           >
             <div
               v-if="includeElements.elements.preview"
@@ -232,7 +232,6 @@ export default Vue.extend({
       default: () => new IncludeElements({
         title: {},
         author: {},
-        authorImage: {},
         summary: {},
         image: {},
         imageCaption: {},
@@ -344,7 +343,9 @@ export default Vue.extend({
   &__content,
   &__publish-date {
     color: var(--primary-text-color);
+  }
 
+  .title { 
     &:hover {
       color: var(--primary-text-color-hover) !important;
     }
@@ -356,8 +357,8 @@ export default Vue.extend({
     overflow: hidden;
   }
 
-  &__summary-container {
-    @include flex($dir: column);
+  &__summary {
+    text-align: left; 
   }
 
   &__content {
