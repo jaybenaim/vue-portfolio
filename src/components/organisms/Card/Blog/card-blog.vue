@@ -32,7 +32,7 @@
         </figure>
       </div>
 
-      <div class="card-content">
+      <div class="card-content pr-2">
         <div class="media">
           <div
             v-if="includeElements.elements.authorImage"
