@@ -6,6 +6,13 @@
       Blogs
     </h1>
 
+    <div
+      v-if="!user || !user.isAuthenticated"
+      class="subtitle p-3 primary-text"
+    >
+      Sign up to create a blog post. You can come back and edit it anytime!
+    </div>
+
     <ul class="blogs__list columns is-flex is-flex-wrap-wrap">
       <li
         v-for="(blog, index) in blogs"
