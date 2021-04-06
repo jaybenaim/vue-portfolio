@@ -32,7 +32,7 @@
         </figure>
       </div>
 
-      <div class="card-content pr-2">
+      <div class="card-content">
         <div class="media">
           <div
             v-if="includeElements.elements.authorImage"
@@ -440,6 +440,7 @@ export default Vue.extend({
 
   &__options-toggle { 
     color: var(--primary-text-color); 
+    margin-right: -1rem !important; 
 
     &:hover { 
       color: var(--primary-text-color-hover); 
