@@ -80,6 +80,48 @@
                 >
                   {{ blog.title }}
                 </span>
+
+                <div
+                  v-if="includeElements.elements.optionsToggle"
+                  class="blog__options-toggle"
+                >
+                  <b-dropdown
+                    aria-role="list"
+                    class="is-pulled-right"
+                    position="is-bottom-left"
+                  >
+                    <template #trigger>
+                      <b-icon icon="dots-vertical"></b-icon>
+                    </template>
+
+                    <span v-if="user.id === blog.uid.id">
+                      <b-dropdown-item
+                        aria-role="listitem"
+                        @click.native="handleEdit"
+                      >
+                        Edit
+                        <b-icon icon="lead-pencil"></b-icon>
+                      </b-dropdown-item>
+
+                      <b-dropdown-item
+                        aria-role="listitem"
+                        @click.native="handleDelete"
+                      >
+                        Delete
+                        <b-icon icon="trash-can-outline"></b-icon>
+                      </b-dropdown-item>
+                    </span>
+
+                    <span v-else>
+                      <b-dropdown-item aria-role="listitem">
+                        <b-icon
+                          icon="heart-outline"
+                          type="is-danger"
+                        ></b-icon>
+                      </b-dropdown-item>
+                    </span>
+                  </b-dropdown>
+                </div>
               </div>
             </div>
 
@@ -268,6 +310,11 @@ export default Vue.extend({
       })
     }
   },
+  computed: {
+    user() {
+      return this.$store.getters.getUser
+    }
+  },
   created() {
     if (this.includeFooter) {
       this.showFooter = this.checkUserId()
@@ -365,10 +412,30 @@ export default Vue.extend({
     }
   }
 
+  &__title { 
+    @include flex($justify: space-between, $align: flex-start); 
+  }
+
+  &__options-toggle { 
+    color: var(--primary-text-color); 
+
+    &:hover { 
+      color: var(--primary-text-color-hover); 
+    }
+
+    .dropdown-menu { 
+      min-width: 100%; 
+
+      .dropdown-item { 
+        text-align: right;
+        padding: 0 1em; 
+      }
+    }
+  }
+
   &__title,
   &__author {
     text-align: left;
-    overflow: hidden;
   }
 
   &__summary {

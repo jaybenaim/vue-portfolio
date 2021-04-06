@@ -1,6 +1,6 @@
 <template>
   <section
-    class="blogs section is-medium"
+    class="blogs section is-small mt-5 pt-6"
   >
     <h1 class="title">
       Blogs
@@ -11,6 +11,13 @@
       class="subtitle p-3 primary-text"
     >
       Sign up to create a blog post. You can come back and edit it anytime!
+    </div>
+
+    <div
+      v-else
+      class="subtitle p-3 primary-text"
+    >
+      Have any cool tricks? Leave em below. You can come back and edit it anytime!
     </div>
 
     <div class="container pt-5">
@@ -79,7 +86,8 @@ export default Auth.extend({
         image: {},
         imageCaption: {},
         publishDate: {},
-        tags: {}
+        tags: {},
+        optionsToggle: {}
       })
     },
   },
@@ -141,10 +149,6 @@ export default Auth.extend({
     position: fixed;
     bottom: 25px;
     right: 25px;
-  }
-
-  .media-content {
-    overflow: hidden;
   }
 
   // Card
