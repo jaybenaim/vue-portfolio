@@ -63,7 +63,7 @@
               tag="router-link"
               to="/account"
             >
-              Account Details
+              My Account
             </b-navbar-item>
 
             <b-navbar-item

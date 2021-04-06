@@ -70,7 +70,7 @@
                 </template>
 
                 <BMenuItem
-                  label="Account Details"
+                  label="My Account"
                   class="dropdown__item"
                   tag="router-link"
                   to="/account"

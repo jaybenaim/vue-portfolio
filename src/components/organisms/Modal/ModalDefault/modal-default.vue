@@ -22,13 +22,17 @@
                 >
                   <b-button
                     label="X"
+                    :type="`is-${theme}`"
                     @click="$emit('close')"
                   />
                 </div>
               </slot>
             </header>
 
-            <section class="modal-card-body modal-card__body p-6">
+            <section
+              class="modal-card-body modal-card__body"
+              :class="bodyClasses"
+            >
               <slot>
               </slot>
             </section>
@@ -38,7 +42,6 @@
                  p-3 mb-5 is-flex is-justify-content-space-between"
             >
               <slot name="footer">
-
               </slot>
             </footer>
           </div>
@@ -49,9 +52,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Theme from '@/mixins/Theme'
 
-export default Vue.extend({
+export default Theme.extend({
   name: 'modal-default',
   props: {
     data: {
@@ -69,6 +72,10 @@ export default Vue.extend({
     handleSubmit: {
       type: Function,
       default: (event: any) => event
+    },
+    bodyClasses: {
+      type: String,
+      default: 'pl-6 pr-6'
     }
   },
   data() {

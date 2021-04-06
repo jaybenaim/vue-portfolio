@@ -396,14 +396,11 @@ export default Vue.extend({
 
 .blog {
 
-
- 
-
   .card {
     background-color: rgba(var(--background-color-flipped-rgb), 0.15);
-    @include animate($name: fade-in); 
+    @include animate($name: fade-in, $duration: 0.7s); 
 
-    &, * { 
+    & { 
       position: relative;
       z-index: 1;
     }
@@ -425,7 +422,6 @@ export default Vue.extend({
   .card-image img { 
     transition: transform .5s ease-in-out;
     object-fit: cover;
-
   }
 
   .card-image:hover img { 
