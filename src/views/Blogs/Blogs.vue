@@ -140,6 +140,17 @@ export default Auth.extend({
 </script>
 
 <style lang="scss">
+  @keyframes rotate-vert-center {
+  0% {
+    -webkit-transform: rotateY(0);
+    transform: rotateY(0);
+  }
+  100% {
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+}
+
 .blogs {
   .title {
     color: var(--primary-text-color);
@@ -149,6 +160,10 @@ export default Auth.extend({
     position: fixed;
     bottom: 25px;
     right: 25px;
+  }
+
+  .card {
+    @include animate($duration: 1s, $name: rotate-vert-center, $delay: var(--delay));
   }
 
   // Card

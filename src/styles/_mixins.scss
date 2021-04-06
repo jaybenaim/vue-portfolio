@@ -25,11 +25,12 @@
   $ease: ease-in-out,
   $fill: forwards,
   $count: 1,
-  $delay: 0,
+  $delay: 0s,
   $play: running,
   $direction: normal
 ) {
-  animation: $duration $ease $delay $direction $fill $count $play $name;
+  // animation: $duration $ease $delay $direction $fill $count $play $name;
+  animation: $name $duration $ease $fill $count $delay $play $direction;
 }
 
 @mixin slideRight($duration: 3s, $fill: forwards) {

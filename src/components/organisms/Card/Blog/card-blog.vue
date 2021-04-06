@@ -380,7 +380,7 @@ export default Vue.extend({
 
   .card {
     background-color: rgba(var(--background-color-flipped-rgb), 0.15);
-    @include animate($duration: 1s, $name: rotate-vert-center, $delay: var(--delay));
+    @include animate($name: fade-in); 
   }
 
   p,

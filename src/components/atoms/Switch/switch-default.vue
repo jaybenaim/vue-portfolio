@@ -1,7 +1,7 @@
 <template>
   <div class="switch">
     <b-switch
-      :v-model="darkMode"
+      :value.sync="darkMode"
       passive-type="is-dark"
       @click.native="$store.commit('toggleTheme')"
     >
