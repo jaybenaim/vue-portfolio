@@ -13,6 +13,6 @@ export interface IIncludeObject {
 export interface IIncludeData {
   element?: string
   text?: string
-  tag?: string
+  as?: string
   className?: string
 }

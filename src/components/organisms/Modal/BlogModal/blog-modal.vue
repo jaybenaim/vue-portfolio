@@ -320,7 +320,7 @@ export default Vue.extend({
 
   @media (max-width: 1200px) {
     .form {
-    margin-top: 5rem !important;
+      margin-top: 5rem !important;
     }
   }
 }

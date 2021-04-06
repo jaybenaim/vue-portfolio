@@ -14,15 +14,17 @@
           <div class="modal-card">
             <header class="modal-card-head modal-card__head">
               <slot name="header">
-                <p class="modal-card-title">
-                  Sign Up
-                </p>
+              </slot>
 
-                <button
-                  type="button"
-                  class="delete"
-                  @click="$emit('close')"
-                />
+              <slot name="close">
+                <div
+                  class="modal__close is-flex is-justify-content-flex-end"
+                >
+                  <b-button
+                    label="X"
+                    @click="$emit('close')"
+                  />
+                </div>
               </slot>
             </header>
 
@@ -36,17 +38,7 @@
                  p-3 mb-5 is-flex is-justify-content-space-between"
             >
               <slot name="footer">
-                <b-button
-                  label="Cancel"
-                  @click="$emit('close')"
-                />
 
-                <b-button
-                  label="Sign Up"
-                  type="is-primary"
-                  class="is-align-self-flex-end"
-                  @click.prevent="handleSubmit"
-                />
               </slot>
             </footer>
           </div>
@@ -73,6 +65,10 @@ export default Vue.extend({
     canCancel: {
       type: Boolean,
       default: true
+    },
+    handleSubmit: {
+      type: Function,
+      default: (event: any) => event
     }
   },
   data() {
@@ -96,6 +92,13 @@ export default Vue.extend({
     &__footer,
     .modal-card-title {
       @include theme()
+    }
+  }
+
+  .modal {
+    &__close {
+      @include flex($justify: flex-end);
+      width: 100%;
     }
   }
 }

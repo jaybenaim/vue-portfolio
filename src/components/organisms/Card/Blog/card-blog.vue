@@ -180,18 +180,27 @@
                 && includeElements.elements.publishDate)
                 ? 'is-half' : 'is-full'"
             >
-              <ButtonDefault
-                :to="{
-                  name: 'BlogDetails',
-                  params: {
-                    blog,
-                    id: blog.id,
-                    includeElements: detailsEls
-                  }
-                }"
-                tag="router-link"
-                label="Preview"
-              />
+              <div v-if="includeElements.elements.preview.as === 'router-link'">
+                <ButtonDefault
+                  :to="{
+                    name: 'BlogDetails',
+                    params: {
+                      blog,
+                      id: blog.id,
+                      includeElements: detailsEls
+                    }
+                  }"
+                  tag="router-link"
+                  label="Preview"
+                />
+              </div>
+
+              <div v-if="includeElements.elements.preview.as === 'modal'">
+                <ButtonDefault
+                  label="Preview"
+                  @click.native="previewIsOpen = !previewIsOpen"
+                />
+              </div>
             </div>
 
             <div
@@ -228,14 +237,20 @@
       </div>
     </div>
 
-    <div v-if="showEditModal">
-      <BlogModal
-        :isOpen.sync="showEditModal"
-        @close="showEditModal = false"
-        @blog-updated="$emit('blog-updated')"
-        :editProps="blog"
-      />
-    </div>
+    <BlogModal
+      v-if="showEditModal"
+      :isOpen.sync="showEditModal"
+      @close="showEditModal = false"
+      @blog-updated="$emit('blog-updated')"
+      :editProps="blog"
+    />
+
+    <BlogPreview
+      v-if="previewIsOpen"
+      :blog="blog"
+      :isOpen="previewIsOpen"
+      @close="previewIsOpen = false"
+    />
   </div>
 </template>
 
@@ -244,6 +259,7 @@ import Vue from 'vue'
 
 import ButtonDefault from '@/components/atoms/ButtonDefault/button-default.vue'
 import BlogModal from '@organisms/Modal/BlogModal/blog-modal.vue'
+import BlogPreview from '../../Modal/BlogPreview/blog-preview.vue'
 
 import { $formatDate } from '@/helpers/date-time/date-time'
 import { IAnimation, IApiDeleteResponse } from '@/lib/types'
@@ -255,7 +271,8 @@ export default Vue.extend({
   name: 'card-blog',
   components: {
     ButtonDefault,
-    BlogModal
+    BlogModal,
+    BlogPreview
   },
   props: {
     blog: {
@@ -297,6 +314,7 @@ export default Vue.extend({
     return {
       showFooter: false,
       showEditModal: false,
+      previewIsOpen: false,
       detailsEls: new IncludeElements({
         title: {},
         author: {},
@@ -378,9 +396,17 @@ export default Vue.extend({
 
 .blog {
 
+
+ 
+
   .card {
     background-color: rgba(var(--background-color-flipped-rgb), 0.15);
     @include animate($name: fade-in); 
+
+    &, * { 
+      position: relative;
+      z-index: 1;
+    }
   }
 
   p,

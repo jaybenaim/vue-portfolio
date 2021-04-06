@@ -199,7 +199,9 @@ export default Auth.extend(Theme).extend({
         author: {},
         publishDate: {},
         tags: {},
-        preview: {}
+        preview: {
+          as: 'modal'
+        }
       })
     }
   },
