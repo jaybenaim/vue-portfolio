@@ -6,18 +6,23 @@ import { ActionContext } from 'vuex'
 
 export default {
   state: () => ({
-    dbIsReady: false
+    dbIsReady: false,
+    isLoading: false
   }),
   getters: {
-    getDbStatus: (state: DbState) => state.dbIsReady
+    getDbStatus: (state: GeneralState) => state.dbIsReady,
+    isLoading: (state: GeneralState) => state.isLoading
   },
   mutations: {
-    setDbStatus(state: DbState, status: boolean) {
+    setDbStatus(state: GeneralState, status: boolean) {
       state.dbIsReady = status
+    },
+    isLoading(state: GeneralState, status: boolean) {
+      state.isLoading = status
     }
   },
   actions: {
-    async getDbStatus({ commit }: ActionContext<DbState, any>) {
+    async getDbStatus({ commit }: ActionContext<GeneralState, any>) {
       return await $getDbStatus()
       .then(({ data }) => {
         commit('setDbStatus', true)
@@ -39,6 +44,7 @@ export default {
   }
 }
 
-interface DbState {
+interface GeneralState {
   dbIsReady: boolean
+  isLoading: boolean
 }

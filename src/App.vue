@@ -1,6 +1,7 @@
 <template>
   <div
     id="app"
+    class="app"
   >
     <MenuMobile
       :open.sync="open"
@@ -27,21 +28,27 @@
       />
     </div>
 
+    <div class="app__loader">
+      <Loader :isLoading="isLoading"/>
+    </div>
     <!-- Routes -->
     <router-view />
   </div>
 </template>
 
 <script lang="ts">
+import Auth from './mixins/Auth'
+
 import Responsive from '@mixins/Responsive'
 
 // import * from '@types/gapi.auth2/index'
 
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
+import Loader from '@atoms/Loader/loader.vue'
+
 import { IApiResponse, IApiTokenResponse } from './lib/types/api'
 import { IApiError, IApiTokenError } from './lib/types/errors'
-import Auth from './mixins/Auth'
 
 export default Auth.extend(Responsive).extend({
   name: 'App',
@@ -67,19 +74,21 @@ export default Auth.extend(Responsive).extend({
     user() {
       return this.$store.getters.getUser
     },
+    isLoading() {
+      return this.$store.getters.isLoading
+    }
   },
   async created() {
     // Wake up heroku
-
     const statusResponse: boolean = this.$store.getters.getDbStatus
-
-    console.log(statusResponse)
 
     if (!statusResponse) {
       const response: IApiResponse | IApiError = await this.$store.dispatch('getDbStatus')
 
       this.dbIsReady = response.success
     }
+
+    this.dbIsReady = statusResponse
   },
   async mounted() {
     // Set Theme
@@ -118,7 +127,8 @@ export default Auth.extend(Responsive).extend({
   },
   components: {
     MenuMobile,
-    Navbar
+    Navbar,
+    Loader
   }
 })
 </script>
@@ -129,7 +139,17 @@ export default Auth.extend(Responsive).extend({
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: var(--primary-text-color);
 }
 
+.app {
+  position: relative;
+
+  &__loader {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    @include flex();
+  }
+}
 </style>

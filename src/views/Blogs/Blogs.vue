@@ -79,7 +79,14 @@ export default Auth.extend({
       }
     }
   },
+  computed: {
+    isLoading(): boolean {
+      return this.$store.getters.isLoading
+    }
+  },
   async created() {
+    this.$store.commit('isLoading', true)
+
     await this.getBlogs()
   },
   methods: {
@@ -88,9 +95,9 @@ export default Auth.extend({
 
       this.blogs = blogs || []
       this.isReady = true
+      this.$store.commit('isLoading', false)
     },
     async refreshBlogs() {
-      console.log('refresh')
       await this.getBlogs()
     }
   },
