@@ -1,3 +1,5 @@
+@import "./_animations.scss";
+
 @mixin flex($flex: flex, $dir: row, $wrap: nowrap, $justify: center, $align: center) {
   display: -webkit-box;
   display: -moz-box;
@@ -35,13 +37,6 @@
 
 @mixin slideRight($duration: 3s, $fill: forwards) {
   animation: slide-right $duration $fill;
-}
-
-@keyframes slide-right {
-  100% {
-    left: -10%;
-    transform: translateX(10%);
-  }
 }
 
 @mixin theme() {
