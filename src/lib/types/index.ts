@@ -23,3 +23,8 @@ export interface IAnimation {
   fill?: string
   delay?: string | number
 }
+
+export interface ITab {
+  label: string
+  icon?: string
+}

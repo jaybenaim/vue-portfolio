@@ -10,11 +10,33 @@
         {{ letter }}
       </span>
     </div>
+
+    <div class="columns">
+
+      <section class="section is-small column">
+        <div class="about__filters">
+          <Tabs
+            :tabs="tabList"
+            @tab-selected="(filter) => handleFilterChange(filter)"
+          />
+        </div>
+      </section>
+
+      <section class="section is-small column">
+        <div v-if="selectedFilter === 'repos'">
+          Repos
+        </div>
+      </section>
+    </div>
+
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import Tabs from '@atoms/Tabs/tabs.vue'
+
+import { ITab } from '@/lib/types'
 
 export default Vue.extend({
   name: 'About',
@@ -23,6 +45,33 @@ export default Vue.extend({
       type: String,
       default: 'Where it all began...'
     },
+  },
+  components: {
+    Tabs
+  },
+  data() {
+    return {
+      selectedFilter: 'repos',
+      tabList: [
+        {
+          label: 'Repos',
+          icon: 'folder-multiple-outline'
+        },
+        {
+          label: 'Images',
+          icon: 'image-search-outline'
+        },
+        {
+          label: 'Code Snippets',
+          icon: 'code-tags'
+        }
+      ] as ITab[]
+    }
+  },
+  methods: {
+    handleFilterChange(filter: string) {
+      this.selectedFilter = filter
+    }
   }
 })
 </script>
