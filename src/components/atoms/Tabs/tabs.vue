@@ -3,6 +3,7 @@
     size="is-large"
     class="block tabs"
     vertical
+    :animated="false"
     @input="handleInputChange"
   >
     <b-tab-item
@@ -11,7 +12,9 @@
       :label="tab.label"
       :value="tab.label"
       :icon="tab.icon"
-    />
+    >
+      <slot></slot>
+    </b-tab-item>
   </b-tabs>
 </template>
 

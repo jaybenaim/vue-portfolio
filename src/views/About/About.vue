@@ -11,24 +11,35 @@
       </span>
     </div>
 
-    <div class="columns">
+    <section class="section is-medium">
+      <div class="about__filters">
+        <Tabs
+          :tabs="tabList"
+          @tab-selected="(filter) => handleFilterChange(filter)"
+        >
+          <div
+            v-if="selectedFilter === 'Repos'"
+            class="about__filter--content"
+          >
+            <RepoSection />
+          </div>
 
-      <section class="section is-small column">
-        <div class="about__filters">
-          <Tabs
-            :tabs="tabList"
-            @tab-selected="(filter) => handleFilterChange(filter)"
-          />
-        </div>
-      </section>
+          <div
+            v-if="selectedFilter === 'Images'"
+            class="about__filter--content"
+          >
+            Images
+          </div>
 
-      <section class="section is-small column">
-        <div v-if="selectedFilter === 'repos'">
-          Repos
-        </div>
-      </section>
-    </div>
-
+          <div
+            v-if="selectedFilter === 'Code Snippets'"
+            class="about__filter--content"
+          >
+            Code Snippets
+          </div>
+        </Tabs>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -37,6 +48,7 @@ import Vue from 'vue'
 import Tabs from '@atoms/Tabs/tabs.vue'
 
 import { ITab } from '@/lib/types'
+import RepoSection from './components/repo-section.vue'
 
 export default Vue.extend({
   name: 'About',
@@ -47,11 +59,12 @@ export default Vue.extend({
     },
   },
   components: {
-    Tabs
+    Tabs,
+    RepoSection
   },
   data() {
     return {
-      selectedFilter: 'repos',
+      selectedFilter: 'Repos',
       tabList: [
         {
           label: 'Repos',
@@ -88,6 +101,25 @@ export default Vue.extend({
       @include animate($name: hand-drawn, $delay: var(--delay), $ease: ease-in, $duration: 1s);
       min-height: 56px;
     }
+  }
+
+  &__filters {
+
+    .tab-content {
+      padding: 40px;
+    }
+
+    .tab-item {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  &__filter--content {
+    @include animate($name: fade-in, $duration: 0.8s);
+    background-color: rgba(var(--background-color-flipped-rgb), 0.1);
+    height: 100%;
+    width: 100%;
   }
 }
 
