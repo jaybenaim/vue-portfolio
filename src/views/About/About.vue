@@ -20,7 +20,6 @@
           <div
             v-if="selectedFilter === 'Repos'"
             class="about__filter--content"
-            v-once
           >
             <RepoSection />
           </div>
@@ -49,7 +48,7 @@ import Vue from 'vue'
 import Tabs from '@atoms/Tabs/tabs.vue'
 
 import { ITab } from '@/lib/types'
-import RepoSection from './components/repo-section.vue'
+import RepoSection from './components/RepoSection/repo-section.vue'
 
 export default Vue.extend({
   name: 'About',
@@ -107,7 +106,8 @@ export default Vue.extend({
   &__filters {
 
     .tab-content {
-      padding: 40px;
+      overflow: auto;
+      flex-basis: 40%;
     }
 
     .tab-item {
@@ -118,7 +118,7 @@ export default Vue.extend({
 
   &__filter--content {
     @include animate($name: fade-in, $duration: 0.8s);
-    background-color: rgba(var(--background-color-flipped-rgb), 0.1);
+    // background-color: rgba(var(--background-color-flipped-rgb), 0.1);
     height: 100%;
     width: 100%;
   }

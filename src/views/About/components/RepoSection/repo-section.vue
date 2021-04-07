@@ -1,17 +1,32 @@
 <template>
   <div class="repo-section">
-    Repos
+    <ul class="repo-section__repos">
+      <li
+        v-for="(blog, index) in repos"
+        :key="index"
+        class="repo-section__repo"
+      >
+        <CardRepo
+          :blog="blog"
+        />
+      </li>
+    </ul>
+
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import CardRepo from '@organisms/Card/Repo/card-repo.vue'
 
 import { GithubData } from '@/helpers/github'
 import { IGithubRepo, IGithubUser } from '@/lib/types'
 
 export default Vue.extend({
   name: 'repo-section',
+  components: {
+    CardRepo
+  },
   computed: {
     userData(): IGithubUser {
       return this.$store.getters.getUserInfo
@@ -30,7 +45,14 @@ export default Vue.extend({
 
 <style lang="scss">
 .repo-section {
+  .card {
+    margin: 0 20px;
 
+    &:first-of-type {
+      margin-left: 0;
+    }
+
+  }
 }
 
 </style>

@@ -40,4 +40,13 @@ export interface IGithubUser {
 
 export interface IGithubRepo {
   [index: string]: any
+  id: number
+  name: string
+  homepage?: string
+  htmlUrl?: string
+  cloneUrl?: string
+  createdAt?: string
+  updatedAt?: string
+  description?: string
+  language?: string
 }

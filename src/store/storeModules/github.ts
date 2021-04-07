@@ -31,8 +31,6 @@ export default {
   },
   actions: {
     async getUserInfo({ state, commit }: ActionContext<IGithubState, any>) {
-      commit('isLoading', true)
-
       return await $getUserInfo().then(({ data }) => {
         const userData = {
           publicRepos: data.public_repos,
@@ -51,7 +49,6 @@ export default {
         return results
       })
       .catch((error) => {
-        commit('isLoading', false)
         commit('error', error)
 
         return {
@@ -61,24 +58,31 @@ export default {
       })
     },
     async getRepos({ state, commit }: ActionContext<IGithubState, any>) {
-      commit('isLoading', true)
-
       if (!state.repos || (state.repos && state.repos.length < 1)) {
         return await $getRepos().then(({ data }) => {
-          state.repos = data
+          const repos = data.map((repo: any) => ({
+            id: repo.id,
+            name: repo.name,
+            homepage: repo.homepage,
+            htmlUrl: repo.html_url,
+            cloneUrl: repo.clone_url,
+            createdAt: repo.created_at,
+            updatedAt: repo.updated_at,
+            description: repo.description,
+            language: repo.language
+          } as IGithubRepo))
+
+          state.repos = repos
 
           const results = {
             success: true,
-            repos: state.repos
+            repos
           } as IApiGithubRepos
-
-          commit('isLoading', false)
 
           return results
         })
         .catch((error) => {
           commit('error', error)
-          commit('isLoading', false)
 
           return {
             success: false,
@@ -86,8 +90,6 @@ export default {
           } as IApiError
         })
       }
-
-      commit('isLoading', false)
 
       return state.repos
     }

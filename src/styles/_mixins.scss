@@ -70,7 +70,7 @@
   $width: 14px,
   $track: rgba(var(--background-color-rgb), 0.8) !important,
   $thumb: rgba(var(--secondary-rgb), 0.7) !important,
-  $hover: rgba(var(--background-color-rgb), 0.5) !important,
+  $hover: rgba(var(--secondary-rgb), 0.5) !important,
   $radius: 15px
 ) {
   overflow-y: auto;
