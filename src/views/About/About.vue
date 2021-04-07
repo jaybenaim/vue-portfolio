@@ -105,9 +105,18 @@ export default Vue.extend({
 
   &__filters {
 
+    .tabs {
+      flex-basis: 20%;
+      overflow: hidden;
+    }
+
+    .tabs ul {
+      border-bottom: none;
+    }
+
     .tab-content {
       overflow: auto;
-      flex-basis: 40%;
+      flex-basis: 80%;
     }
 
     .tab-item {

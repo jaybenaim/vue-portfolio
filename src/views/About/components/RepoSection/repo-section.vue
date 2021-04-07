@@ -2,12 +2,13 @@
   <div class="repo-section">
     <ul class="repo-section__repos">
       <li
-        v-for="(blog, index) in repos"
+        v-for="(repo, index) in repos"
         :key="index"
         class="repo-section__repo"
       >
         <CardRepo
-          :blog="blog"
+          :repo="repo"
+          :animationDelay="index"
         />
       </li>
     </ul>
@@ -45,13 +46,15 @@ export default Vue.extend({
 
 <style lang="scss">
 .repo-section {
+
   .card {
+    @include animate($name: tilt-in-tr, $duration: 1.5s, $delay: var(--delay));
+    opacity: 0;
     margin: 0 20px;
 
     &:first-of-type {
       margin-left: 0;
     }
-
   }
 }
 
