@@ -1,10 +1,9 @@
 <template>
-  <div class="card-repo">
-    <div
-      class="card"
-      :style="`--delay: ${animationDelay / 5}s`"
-    >
-      <!-- <div class="card-image">
+  <div
+    class="card card-repo"
+    :style="`--delay: ${animationDelay / 5}s`"
+  >
+    <!-- <div class="card-image">
         <figure class="image is-64by64">
           <img
             src="https://bulma.io/images/placeholders/64x64.png"
@@ -13,7 +12,8 @@
         </figure>
       </div> -->
 
-      <div class="card-content">
+    <div class="card-content">
+      <div class="content">
         <Tooltip
           v-if="repo.name.length > maxTitleLength"
           :label="repo.name"
@@ -21,29 +21,35 @@
           type="default"
           multilined
         >
-          <p class="title is-4">
+          <p class="title is-4 card-repo__title">
             {{ truncate(repo.name, maxTitleLength) }}
           </p>
         </Tooltip>
 
         <p
           v-else
-          class="title is-4"
+          class="title is-4 card-repo__title"
         >
           {{ repo.name }}
         </p>
 
-        <p class="subtitle is-6">
+        <p class="subtitle is-6 card-repo__subtitle">
           {{ repo.language }}
         </p>
 
-        <div class="content">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-          <a href="#">#css</a> <a href="#">#responsive</a>
-          <br>
-          <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+        <div class="card-repo__description">
+          <span v-html="repo.description"/>
         </div>
+
+        <a :href="repo.htmlUrl">View on Github</a>
+
+        <a href="#">#css</a>
+
+        <a href="#">#responsive</a>
+
+        <br>
+
+        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
       </div>
     </div>
   </div>
@@ -73,14 +79,8 @@ export default Theme.extend({
       default: 13
     }
   },
-  data() {
-    return {
-      active: false
-    }
-  },
   methods: {
     truncate(text: string, length: number): string {
-      console.log(text.substring(0, length))
       return $truncate(text, length)
     }
   }
@@ -88,26 +88,34 @@ export default Theme.extend({
 </script>
 
 <style lang="scss">
+$maxWidth: 250px;
+
 .card-repo {
-  .card {
-    max-width: 250px;
-    min-height: 340px;
-    max-height: 340px;
+  width: $maxWidth;
+  min-height: 340px;
+  max-height: 340px;
+  // overflow: auto;
 
-    .card-content {
-      overflow-x: hidden;
+  &__title {
+    text-transform: capitalize;
+  }
 
-      .title {
-        text-transform: capitalize;
-      }
-    }
+  &__content {
+    // overflow-x: hidden;
+  }
 
-    .tooltip-content {
-      background: rgba(var(--background-color-rgb), 0.8);
-      color: var(--primary-text-color);
-      font-size: 16px;
-      text-transform: capitalize;
-    }
+  &__description {
+    // @include flex($wrap: wrap);
+    // max-width: $maxWidth;
+    // overflow: hidden;
+
+  }
+
+  .tooltip-content {
+    background: rgba(var(--background-color-rgb), 0.8);
+    color: var(--primary-text-color);
+    font-size: 16px;
+    text-transform: capitalize;
   }
 }
 </style>

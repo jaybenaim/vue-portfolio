@@ -47,7 +47,7 @@ export default Vue.extend({
 <style lang="scss">
 .repo-section {
 
-  .card {
+  .card-repo {
     @include animate($name: tilt-in-tr, $duration: 1.5s, $delay: var(--delay));
     opacity: 0;
     margin: 0 20px;
