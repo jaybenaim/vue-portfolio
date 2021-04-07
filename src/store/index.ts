@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import {
- auth, responsive, theme, blogs, general
+ auth, responsive, theme, blogs, general, github
 } from './storeModules'
 
 Vue.use(Vuex)
@@ -14,7 +14,8 @@ export const store = new Vuex.Store({
     auth,
     responsive,
     theme,
-    blogs
+    blogs,
+    github
   }
 })
 

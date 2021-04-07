@@ -28,3 +28,16 @@ export interface ITab {
   label: string
   icon?: string
 }
+
+export interface IGithubData {
+  user?: IGithubUser
+  repos?: IGithubRepo[]
+}
+export interface IGithubUser {
+  publicRepos: number
+  htmlUrl: string
+}
+
+export interface IGithubRepo {
+  [index: string]: any
+}

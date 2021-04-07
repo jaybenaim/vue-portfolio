@@ -20,6 +20,7 @@
           <div
             v-if="selectedFilter === 'Repos'"
             class="about__filter--content"
+            v-once
           >
             <RepoSection />
           </div>

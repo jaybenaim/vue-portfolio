@@ -5,6 +5,7 @@
     vertical
     :animated="false"
     @input="handleInputChange"
+    destroy-on-hide
   >
     <b-tab-item
       v-for="(tab, index) of tabs"
@@ -13,7 +14,7 @@
       :value="tab.label"
       :icon="tab.icon"
     >
-      <slot></slot>
+      <slot v-once></slot>
     </b-tab-item>
   </b-tabs>
 </template>
