@@ -16,6 +16,7 @@
         <Tabs
           :tabs="tabList"
           @tab-selected="(filter) => handleFilterChange(filter)"
+          expanded
         >
           <div
             v-if="selectedFilter === 'Repos'"
@@ -90,6 +91,13 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+// [theme="light"] {
+//   .tabs .is-active a {
+//     color: $primary !important;
+//     border-bottom-color: $primary !important;
+//   }
+// }
+
 .about {
 
   &__title {
@@ -120,10 +128,22 @@ export default Vue.extend({
       border-bottom: none;
     }
 
-    .tabs a {
-      &:hover {
-        color: rgba(var(--primary-text-color-rgb), 0.8);
-        border-bottom-color: rgba(var(--primary-text-color-rgb), 0.8);
+    .tabs {
+
+      a {
+        color: rgba(var(--primary-text-color-rgb), 0.4);
+        border-bottom-color: rgba(var(--primary-text-color-rgb), 0.4);
+
+        &:hover {
+          color: rgba(var(--primary-text-color-rgb), 1);
+          border-bottom-color: rgba(var(--primary-text-color-rgb), 1);
+        }
+      }
+
+      // Active
+      .is-active a {
+        color: rgba(var(--primary-rgb), 1);
+        border-bottom-color: rgba(var(--primary-rgb), 1);
       }
     }
 

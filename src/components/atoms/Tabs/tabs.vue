@@ -1,11 +1,12 @@
 <template>
   <b-tabs
-    size="is-large"
     class="block tabs"
-    vertical
+    size="is-large"
+    v-bind="$attrs"
     :animated="false"
-    @input="handleInputChange"
     destroy-on-hide
+    vertical
+    @input="handleInputChange"
   >
     <b-tab-item
       v-for="(tab, index) of tabs"
