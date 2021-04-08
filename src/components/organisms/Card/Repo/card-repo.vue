@@ -7,11 +7,13 @@
       v-if="repo.image"
       #card-image
     >
-      <ImageDefault
-        :src="repo.image.src"
-        class="is-2by1"
-        objectFit="contain"
-      />
+      <div class="p-2">
+        <ImageDefault
+          :src="repo.image.src"
+          class="is-2by1"
+          objectFit="contain"
+        />
+      </div>
     </template>
 
     <Tooltip
@@ -88,7 +90,7 @@ export default Theme.extend({
     },
     maxTitleLength: {
       type: Number,
-      default: 18
+      default: 20
     }
   },
   methods: {
@@ -103,10 +105,11 @@ export default Theme.extend({
 </script>
 
 <style lang="scss">
-$maxWidth: 250px;
+$maxWidth: 280px;
 
 .card-repo {
-  height: 360px;
+  height: 400px;
+  width: 100%;
   background-color: rgba(var(--background-color-flipped-rgb), 0.15);
 
   &, *, a {

@@ -1,12 +1,18 @@
 <template>
   <div class="card card-blank">
-    <div class="card-image">
+    <div
+      v-if="includeElements.elements.cardImage"
+      class="card-image"
+    >
       <slot name="card-image">
       </slot>
     </div>
 
     <div class="card-content">
-      <div class="media">
+      <div
+        v-if="includeElements.elements.media"
+        class="media"
+      >
         <slot name="media">
           <div class="media-left">
             <slot name="media-left"></slot>
@@ -18,11 +24,17 @@
         </slot>
       </div>
 
-      <div class="content">
+      <div
+        v-if="includeElements.elements.content"
+        class="content"
+      >
         <slot></slot>
       </div>
 
-      <div class="card-footer">
+      <div
+        v-if="includeElements.elements.footer"
+        class="card-footer"
+      >
         <slot name="footer"></slot>
       </div>
     </div>
@@ -30,10 +42,20 @@
 </template>
 
 <script lang="ts">
+import { IncludeElements } from '@/lib/types/general/IncludeElements'
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'card-blank'
+  name: 'card-blank',
+  props: {
+    includeElements: {
+      type: Object as () => IncludeElements,
+      default: () => (new IncludeElements({
+        cardImage: {},
+        content: {}
+      }))
+    }
+  }
 })
 </script>
 
