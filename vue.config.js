@@ -7,6 +7,7 @@ module.exports = {
       scss: {
         data: `
           @import "@/styles/_variables.scss";
+          @import "@/styles/_animations.scss";
           @import "@/styles/_mixins.scss";
         `
       }

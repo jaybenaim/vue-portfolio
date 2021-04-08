@@ -105,8 +105,6 @@ export const $imageBuilder = (name: string, lang?: string, filter?: string) => {
 
   const matchedImage = images[key as IImageType] || images[filter as IImageType]
 
-  console.log(name, matchedImage)
-
   if (!matchedImage) {
     return {
       // Place holder or random image

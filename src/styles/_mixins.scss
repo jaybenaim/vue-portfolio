@@ -31,12 +31,17 @@
   $play: running,
   $direction: normal
 ) {
-  // animation: $duration $ease $delay $direction $fill $count $play $name;
   animation: $name $duration $ease $fill $count $delay $play $direction;
 }
 
-@mixin slideRight($duration: 3s, $fill: forwards) {
-  animation: slide-right $duration $fill;
+@mixin slideRight($duration: 3s, $fill: "forwards", $distance: 10%) {
+  @keyframes slide-right-custom {
+    100% {
+      margin-left: 5px;
+    }
+  }
+
+  @include animate($name: slide-right-custom, $duration: $duration, $fill: $fill);
 }
 
 @mixin theme() {
@@ -110,4 +115,9 @@
   -webkit-line-clamp: $lines;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+@mixin transform($transformation) {
+  -webkit-transform: $transformation;
+  transform: $transformation;
 }

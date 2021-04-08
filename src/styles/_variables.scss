@@ -27,6 +27,7 @@ $primary-rgb: 0, 240, 112;
   --background-color-flipped-rgb: var(--white-rgb);
   --background-color-hover: rgba(var(--black-rgb), 0.8);
   --primary-text-color: var(--white);
+  --primary-text-color-rgb: var(--white-rgb);
   --primary-text-color-flipped: var(--black);
   --primary-text-color-hover: rgba(var(--white-rgb), 0.8);
 }
@@ -42,6 +43,7 @@ $primary-rgb: 0, 240, 112;
   --background-color-flipped-rgb: var(--black-rgb);
   --background-color-hover: rgba(var(--black-rgb), 0.1);
   --primary-text-color: var(--black);
+  --primary-text-color-rgb: var(--black-rgb);
   --primary-text-color-flipped: var(--white);
   --primary-text-color-hover: rgba(var(--black-rgb), 0.8);
 }

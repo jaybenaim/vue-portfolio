@@ -4,7 +4,6 @@
  * See http://animista.net/license for more info.
  * w: http://animista.net, t: @cssanimista
  * ---------------------------------------------- */
-
 @-webkit-keyframes tracking-in-contract {
   0% {
     letter-spacing: 1em;
@@ -214,6 +213,7 @@
 @keyframes slide-right {
   100% {
     left: -10%;
+    -webkit-transform: translateX(10%);
     transform: translateX(10%);
   }
 }
