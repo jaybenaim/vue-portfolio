@@ -12,6 +12,7 @@ html {
   @include theme();
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {
@@ -37,6 +38,12 @@ body {
 
   &:hover {
     color: var(--primary-text-color-hover) !important;
+  }
+}
+
+[data-theme="light"] {
+  ::-webkit-scrollbar-track {
+    background: rgba(var(--background-color-flipped-rgb), 0.5) !important;
   }
 }
 

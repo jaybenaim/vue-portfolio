@@ -15,6 +15,7 @@ import Theme from '@/mixins/Theme'
 
 export default Theme.extend({
   name: 'switch-default',
+  mixins: [Theme],
   computed: {
     modeText() {
       return this.$store.getters.getTheme === 'dark'
@@ -49,5 +50,10 @@ export default Theme.extend({
   .control-label {
     color: var(--primary-text-color);
   }
+
+  .check.is-dark-passive:hover {
+    box-shadow: 0px 0px 8px 0px rgba(var(--primary-text-color-rgb), 0.5);
+  }
+
 }
 </style>

@@ -19,6 +19,7 @@
         <ButtonDefault
           icon-left="arrow-right-bold-outline"
           size="is-large"
+          :type="`is-${theme}`"
           @clicked="loadMore"
         />
       </li>
@@ -27,15 +28,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import CardRepo from '@organisms/Card/Repo/card-repo.vue'
 
 import { GithubData } from '@/helpers/github'
 import { IGithubRepo, IGithubUser } from '@/lib/types'
 import ButtonDefault from '@/components/atoms/ButtonDefault/button-default.vue'
+import Theme from '@/mixins/Theme'
 
-export default Vue.extend({
+export default Theme.extend({
   name: 'repo-section',
+  mixins: [Theme],
   components: {
     CardRepo,
     ButtonDefault
@@ -96,8 +98,9 @@ export default Vue.extend({
   &__load-more {
     @include animate($name: fade-in, $duration: 1.5s, $delay: 1s);
     opacity: 0;
+    min-width: 100px;
 
-    &:hover {
+    &:hover .button {
       box-shadow: 0px 0px 10px 0px rgba(var(--primary-text-color-rgb), 0.5);
 
       .icon {

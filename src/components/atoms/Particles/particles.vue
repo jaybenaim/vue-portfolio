@@ -15,6 +15,7 @@ import Theme from '@/mixins/Theme'
 
 export default Theme.extend({
   name: 'particles',
+  mixins: [Theme],
   props: {
     className: {
       type: String,

@@ -56,6 +56,7 @@ import Theme from '@/mixins/Theme'
 
 export default Theme.extend({
   name: 'modal-default',
+  mixins: [Theme],
   props: {
     data: {
       type: Object,

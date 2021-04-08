@@ -42,6 +42,7 @@
     </div>
 
     <a
+      class="card-repo__link"
       :href="repo.htmlUrl"
       target="_blank"
     >
@@ -69,12 +70,13 @@ import ImageDefault from '@/components/atoms/Image/image-default.vue'
 import { $formatDate } from '@/helpers/date-time/date-time'
 
 export default Theme.extend({
+  name: 'card-repo',
+  mixins: [Theme],
   components: {
     Tooltip,
     CardBlank,
     ImageDefault
   },
-  name: 'card-repo',
   props: {
     repo: {
       type: Object as () => IGithubRepo,
@@ -105,7 +107,11 @@ $maxWidth: 250px;
 
 .card-repo {
   height: 360px;
-  // min-height: 340px;
+  background-color: rgba(var(--background-color-flipped-rgb), 0.15);
+
+  &, *, a {
+    color: var(--primary-text-color);
+  }
 
   &__title {
     text-transform: capitalize;

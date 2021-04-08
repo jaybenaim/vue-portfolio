@@ -105,6 +105,12 @@ export default Vue.extend({
 
   &__filters {
 
+    &, * {
+      ::-webkit-scrollbar {
+        height: 22px;
+      }
+    }
+
     .tabs {
       flex-basis: 20%;
       overflow: hidden;
@@ -114,10 +120,18 @@ export default Vue.extend({
       border-bottom: none;
     }
 
+    .tabs a {
+      &:hover {
+        color: rgba(var(--primary-text-color-rgb), 0.8);
+        border-bottom-color: rgba(var(--primary-text-color-rgb), 0.8);
+      }
+    }
+
     .tab-content {
       overflow: auto;
-      flex-basis: 80%;
+      flex-basis: 25%;
       padding: 2rem;
+      margin: 0 5rem;
     }
 
     .tab-item {
