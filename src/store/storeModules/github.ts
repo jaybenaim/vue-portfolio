@@ -1,5 +1,6 @@
 import { $getRepos } from '@/helpers/github/getRepos'
 import { $getUserInfo } from '@/helpers/github/getUserInfo'
+import { $imageBuilder } from '@/helpers/images/repoImageBuilder'
 import { IGithubRepo, IGithubUser } from '@/lib/types'
 import { IApiError } from '@/lib/types/errors'
 
@@ -69,7 +70,8 @@ export default {
             createdAt: repo.created_at,
             updatedAt: repo.updated_at,
             description: repo.description,
-            language: repo.language
+            language: repo.language,
+            image: $imageBuilder(repo.name, repo.language)
           } as IGithubRepo))
 
           state.repos = repos

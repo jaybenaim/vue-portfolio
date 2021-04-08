@@ -1,10 +1,10 @@
 <template>
   <div class="repo-section">
-    <ul class="repo-section__repos">
+    <ul class="repo-section__repos columns">
       <li
         v-for="(repo, index) in repos"
         :key="index"
-        class="repo-section__repo"
+        class="repo-section__repo column"
       >
         <CardRepo
           :repo="repo"
@@ -12,7 +12,6 @@
         />
       </li>
     </ul>
-
   </div>
 </template>
 

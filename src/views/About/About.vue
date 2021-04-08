@@ -11,7 +11,7 @@
       </span>
     </div>
 
-    <section class="section is-medium">
+    <section class="section is-small">
       <div class="about__filters">
         <Tabs
           :tabs="tabList"
@@ -117,6 +117,7 @@ export default Vue.extend({
     .tab-content {
       overflow: auto;
       flex-basis: 80%;
+      padding: 2rem;
     }
 
     .tab-item {
@@ -127,7 +128,6 @@ export default Vue.extend({
 
   &__filter--content {
     @include animate($name: fade-in, $duration: 0.8s);
-    // background-color: rgba(var(--background-color-flipped-rgb), 0.1);
     height: 100%;
     width: 100%;
   }

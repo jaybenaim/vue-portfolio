@@ -49,4 +49,5 @@ export interface IGithubRepo {
   updatedAt?: string
   description?: string
   language?: string
+  image?: IImage
 }
