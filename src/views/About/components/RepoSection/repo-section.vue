@@ -8,7 +8,7 @@
       >
         <CardRepo
           :repo="repo"
-          :animationDelay="index"
+          :animationDelay="getAnimationDelay(index)"
         />
       </li>
 
@@ -19,6 +19,7 @@
         <ButtonDefault
           icon-left="arrow-right-bold-outline"
           size="is-large"
+          @clicked="loadMore"
         />
       </li>
     </ul>
@@ -50,9 +51,30 @@ export default Vue.extend({
       return this.userData.publicRepos > this.repos.length
     }
   },
+  data() {
+    return {
+      githubData: {} as GithubData
+    }
+  },
   async created() {
     if (this.repos.length < 1) {
-      await new GithubData().init()
+      this.githubData = await new GithubData().init()
+    }
+  },
+  methods: {
+    async loadMore() {
+      await this.githubData.getRepos(this.repos.length)
+    },
+    getAnimationDelay(index: number): number {
+      if (index % 30 === 0) {
+        return 0
+      }
+
+      if (index > 30) {
+        return (Number(`${index.toString().slice(-1)}`) * 3) / 6
+      }
+
+      return index / 6
     }
   }
 })

@@ -58,9 +58,9 @@ export default {
         } as IApiError
       })
     },
-    async getRepos({ state, commit }: ActionContext<IGithubState, any>) {
-      if (!state.repos || (state.repos && state.repos.length < 1)) {
-        return await $getRepos().then(({ data }) => {
+    async getRepos({ state, commit }: ActionContext<IGithubState, any>, startAt: number) {
+      return await $getRepos(startAt)
+        .then(({ data }) => {
           const repos = data.map((repo: any) => ({
             id: repo.id,
             name: repo.name,
@@ -74,7 +74,7 @@ export default {
             image: $imageBuilder(repo.name, repo.language)
           } as IGithubRepo))
 
-          state.repos = repos
+          state.repos = state.repos.concat(repos)
 
           const results = {
             success: true,
@@ -91,9 +91,6 @@ export default {
             error
           } as IApiError
         })
-      }
-
-      return state.repos
     }
   }
 }

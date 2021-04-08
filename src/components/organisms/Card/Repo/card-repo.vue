@@ -1,7 +1,7 @@
 <template>
   <CardBlank
     class="card-repo"
-    :style="`--delay: ${animationDelay / 5}s`"
+    :style="`--delay: ${animationDelay}s`"
   >
     <template
       v-if="repo.image"

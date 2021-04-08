@@ -12,10 +12,10 @@ export class GithubData {
   }
 
   async init() {
-    return {
+    return new GithubData({
       user: await this.getUserInfo(),
       repos: await this.getRepos()
-    }
+    })
   }
 
   async getUserInfo() {
@@ -30,12 +30,11 @@ export class GithubData {
     return {} as IGithubUser
   }
 
-  async getRepos() {
-    const repoResponse = await store.dispatch('getRepos')
+  async getRepos(startAt?: number) {
+    const repoResponse = await store.dispatch('getRepos', startAt)
 
     if (repoResponse.success) {
-      console.log(repoResponse)
-      this.repos = repoResponse.repos
+      this.repos = this.repos?.concat(repoResponse.repos)
 
       return this.repos
     }
