@@ -12,7 +12,6 @@ export default Vue.extend({
       return this.$store.getters.isMobile
     },
   },
-
   created() {
     window.addEventListener('resize', this.handleResize)
   },

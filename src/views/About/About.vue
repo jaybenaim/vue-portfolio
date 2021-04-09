@@ -16,7 +16,8 @@
         <Tabs
           :tabs="tabList"
           @tab-selected="(filter) => handleFilterChange(filter)"
-          expanded
+          :tabProps="tabProps"
+          className="about-filters__side-filters"
         >
           <div
             v-if="selectedFilter === 'Projects'"
@@ -57,6 +58,7 @@ import Tabs from '@atoms/Tabs/tabs.vue'
 
 import { ITab } from '@/lib/types'
 import RepoSection from './components/RepoSection/repo-section.vue'
+import { ITabProps } from '@/lib/types/components/tabs'
 
 export default Vue.extend({
   name: 'About',
@@ -72,11 +74,11 @@ export default Vue.extend({
   },
   data() {
     return {
-      selectedFilter: 'Projects',
+      selectedFilter: 'Repos',
       tabList: [
         {
           label: 'Projects',
-          icon: 'projector-screen'
+          icon: 'presentation-play'
         },
         {
           label: 'Repos',
@@ -90,7 +92,14 @@ export default Vue.extend({
           label: 'Code Snippets',
           icon: 'code-tags'
         }
-      ] as ITab[]
+      ] as ITab[],
+      tabProps: {
+        vertical: true,
+        destroyOnHide: true,
+        expanded: true,
+        animated: false,
+        size: 'is-large'
+      } as ITabProps
     }
   },
   methods: {
@@ -133,8 +142,6 @@ export default Vue.extend({
     }
 
     .tabs {
-      min-height: 486px;
-
       a {
         color: rgba(var(--primary-text-color-rgb), 0.4);
         border-bottom-color: rgba(var(--primary-text-color-rgb), 0.4);
@@ -157,6 +164,7 @@ export default Vue.extend({
       flex-basis: 25%;
       padding: 2rem;
       margin: 0 5rem;
+      min-height: 486px;
     }
 
     .tab-item {

@@ -1,5 +1,12 @@
 <template>
   <div class="repo-section">
+    <FilterDefault
+      :filterData="filters"
+      :tabProps="tabProps"
+    >
+
+    </FilterDefault>
+
     <ul class="repo-section__repos columns">
       <li
         v-for="(repo, index) in repos"
@@ -34,13 +41,18 @@ import { GithubData } from '@/helpers/github'
 import { IGithubRepo, IGithubUser } from '@/lib/types'
 import ButtonDefault from '@/components/atoms/ButtonDefault/button-default.vue'
 import Theme from '@/mixins/Theme'
+import FilterDefault from '@/components/organisms/Filter/filter-default.vue'
+import Responsive from '@/mixins/Responsive'
+import { FilterData } from '@/lib/types/general/FilterList'
+import { ITabProps } from '@/lib/types/components/tabs'
 
-export default Theme.extend({
+export default Responsive.extend(Theme).extend({
   name: 'repo-section',
-  mixins: [Theme],
+  mixins: [Theme, Responsive],
   components: {
     CardRepo,
-    ButtonDefault
+    ButtonDefault,
+    FilterDefault
   },
   computed: {
     userData(): IGithubUser {
@@ -55,13 +67,42 @@ export default Theme.extend({
   },
   data() {
     return {
-      githubData: {} as GithubData
+      githubData: {} as GithubData,
+      filters: new FilterData(),
+      tabProps: {} as ITabProps
     }
   },
   async created() {
     if (this.repos.length < 1) {
       this.githubData = await new GithubData().init()
     }
+
+    this.filters.filters = [
+      {
+        name: 'Recent',
+        label: 'Recent',
+        icon: 'history'
+      },
+      {
+        name: 'Favourites',
+        label: 'Favourites',
+        icon: 'heart-outline'
+
+      },
+      {
+        name: 'Deployed',
+        label: 'Deployed',
+        icon: 'rocket-launch-outline'
+
+      }
+    ]
+
+    this.tabProps = {
+      vertical: false,
+      expanded: true,
+      type: this.isMobile ? 'is-toggle-rounded' : 'is-boxed',
+      destroyOnHide: false
+    } as ITabProps
   },
   methods: {
     async loadMore() {

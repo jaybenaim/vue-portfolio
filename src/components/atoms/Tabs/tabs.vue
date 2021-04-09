@@ -1,27 +1,26 @@
 <template>
   <b-tabs
-    class="block tabs"
-    size="is-large"
-    v-bind="$attrs"
-    :animated="false"
-    destroy-on-hide
-    vertical
+    class="block"
+    :class="className"
+    v-bind="tabProps"
+    :destroy-on-hide="tabProps.destroyOnHide"
     @input="handleInputChange"
   >
     <b-tab-item
-      v-for="(tab, index) of tabs"
+      v-for="(tab, index) in tabs"
       :key="index"
       :label="tab.label"
       :value="tab.label"
       :icon="tab.icon"
     >
-      <slot v-once></slot>
+      <slot></slot>
     </b-tab-item>
   </b-tabs>
 </template>
 
 <script lang="ts">
 import { ITab } from '@/lib/types'
+import { ITabProps } from '@/lib/types/components/tabs'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -30,6 +29,12 @@ export default Vue.extend({
     tabs: {
       type: Array as () => ITab[],
       required: true
+    },
+    tabProps: {
+      type: Object as () => ITabProps
+    },
+    className: {
+      type: String
     }
   },
   methods: {
