@@ -19,6 +19,13 @@
           expanded
         >
           <div
+            v-if="selectedFilter === 'Projects'"
+            class="about__filter--content"
+          >
+            Projects
+          </div>
+
+          <div
             v-if="selectedFilter === 'Repos'"
             class="about__filter--content"
           >
@@ -65,8 +72,12 @@ export default Vue.extend({
   },
   data() {
     return {
-      selectedFilter: 'Repos',
+      selectedFilter: 'Projects',
       tabList: [
+        {
+          label: 'Projects',
+          icon: 'projector-screen'
+        },
         {
           label: 'Repos',
           icon: 'folder-multiple-outline'
@@ -91,13 +102,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-// [theme="light"] {
-//   .tabs .is-active a {
-//     color: $primary !important;
-//     border-bottom-color: $primary !important;
-//   }
-// }
-
 .about {
 
   &__title {
@@ -129,6 +133,7 @@ export default Vue.extend({
     }
 
     .tabs {
+      min-height: 486px;
 
       a {
         color: rgba(var(--primary-text-color-rgb), 0.4);
