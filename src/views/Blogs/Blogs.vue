@@ -152,7 +152,8 @@ export default Auth.extend({
   }
 
   .card {
-    @include animate($duration: 1s, $name: tilt-in-tr, $delay: var(--delay));
+    @include animate($duration: .8s, $name: tilt-in-tr, $delay: var(--delay));
+    opacity: 0;
   }
 
   // Card

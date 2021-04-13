@@ -65,11 +65,11 @@
 import Theme from '@/mixins/Theme'
 import Tooltip from '@/components/atoms/Tooltip/tooltip.vue'
 
-import { IGithubRepo } from '@/lib/types'
 import { $truncate } from '@/helpers/text'
 import CardBlank from '@organisms/Card/Blank/card-blank.vue'
 import ImageDefault from '@/components/atoms/Image/image-default.vue'
 import { $formatDate } from '@/helpers/date-time/date-time'
+import { IGithubRepo } from '@/lib/types/models/Repo'
 
 export default Theme.extend({
   name: 'card-repo',
@@ -112,7 +112,7 @@ $maxWidth: 280px;
   width: 100%;
   background-color: rgba(var(--background-color-flipped-rgb), 0.15);
 
-  &, *, a {
+  &, *, a, div, span, p {
     color: var(--primary-text-color);
   }
 

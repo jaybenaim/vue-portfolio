@@ -1,13 +1,12 @@
 <template>
-  <div class="repo-section">
+  <div class="repo-section container">
     <FilterDefault
       :filterData="filters"
       :tabProps="tabProps"
-    >
+      @filter-changed="handleFilterChange"
+    />
 
-    </FilterDefault>
-
-    <ul class="repo-section__repos columns">
+    <ul class="repo-section__repos columns container">
       <li
         v-for="(repo, index) in repos"
         :key="index"
@@ -38,13 +37,14 @@
 import CardRepo from '@organisms/Card/Repo/card-repo.vue'
 
 import { GithubData } from '@/helpers/github'
-import { IGithubRepo, IGithubUser } from '@/lib/types'
 import ButtonDefault from '@/components/atoms/ButtonDefault/button-default.vue'
 import Theme from '@/mixins/Theme'
 import FilterDefault from '@/components/organisms/Filter/filter-default.vue'
 import Responsive from '@/mixins/Responsive'
 import { FilterData } from '@/lib/types/general/FilterList'
 import { ITabProps } from '@/lib/types/components/tabs'
+import { IGithubRepo, IGithubUser } from '@/lib/types/models/Repo'
+import { ITabSelectedFilter } from '@/lib/types'
 
 export default Responsive.extend(Theme).extend({
   name: 'repo-section',
@@ -62,22 +62,31 @@ export default Responsive.extend(Theme).extend({
       return this.$store.getters.getRepos
     },
     showLoadMore(): boolean {
-      return this.userData.publicRepos > this.repos.length
+      if (this.repos) {
+        return (this.githubData.totalRepoCount || 0) > this.repos.length
+      }
+
+      return false
     }
   },
   data() {
     return {
-      githubData: {} as GithubData,
+      githubData: new GithubData(),
       filters: new FilterData(),
       tabProps: {} as ITabProps
     }
   },
   async created() {
-    if (this.repos.length < 1) {
+    if (!this.repos || this.repos.length < 1) {
       this.githubData = await new GithubData().init()
     }
 
     this.filters.filters = [
+      {
+        name: 'All',
+        label: 'All',
+        icon: ''
+      },
       {
         name: 'Recent',
         label: 'Recent',
@@ -87,13 +96,34 @@ export default Responsive.extend(Theme).extend({
         name: 'Favourites',
         label: 'Favourites',
         icon: 'heart-outline'
-
       },
       {
         name: 'Deployed',
         label: 'Deployed',
         icon: 'rocket-launch-outline'
-
+      },
+      {
+        name: 'Languages',
+        label: 'Languages',
+        icon: 'arrow-down',
+        filterType: 'select',
+        filters: [
+          {
+            name: 'JavaScript',
+            label: 'JavaScript',
+            icon: 'language-javascript'
+          },
+          {
+            name: 'Python',
+            label: 'Python',
+            icon: 'language-python'
+          },
+          {
+            name: 'Ruby',
+            label: 'Ruby',
+            icon: 'language-ruby'
+          }
+        ]
       }
     ]
 
@@ -106,7 +136,9 @@ export default Responsive.extend(Theme).extend({
   },
   methods: {
     async loadMore() {
-      await this.githubData.getRepos(this.repos.length)
+      if (this.repos) {
+        await this.githubData.getRepos(this.repos.length)
+      }
     },
     getAnimationDelay(index: number): number {
       if (index % 30 === 0) {
@@ -118,6 +150,32 @@ export default Responsive.extend(Theme).extend({
       }
 
       return index / 6
+    },
+    async handleFilterChange(selectedFilter: ITabSelectedFilter) {
+      if (selectedFilter.relation
+        && selectedFilter.relation.parent === 'Languages') {
+        let repos: IGithubRepo[] | undefined
+        = await this.githubData.filterRepos(selectedFilter.filter.toLowerCase(), true)
+
+        let repos2: IGithubRepo[] | undefined
+        = await this.githubData.filterRepos(`language:${selectedFilter.filter}`, true)
+
+        if (!repos) {
+          repos = []
+        }
+
+        if (!repos2) {
+          repos2 = []
+        }
+
+        this.githubData.setRepos([...repos, ...repos2])
+      } else if (selectedFilter.filter !== 'Languages') {
+        if (selectedFilter.filter === 'All') {
+          await this.githubData.getRepos()
+        } else {
+          await this.githubData.filterRepos(selectedFilter.filter.toLowerCase())
+        }
+      }
     }
   }
 })
@@ -126,8 +184,18 @@ export default Responsive.extend(Theme).extend({
 <style lang="scss">
 .repo-section {
 
+  .filter-default {
+    position: fixed;
+    width: 59%;
+    z-index: 5;
+  }
+
+  &__repos {
+    padding-top: 65px;
+  }
+
   .card-repo {
-    @include animate($name: tilt-in-tr, $duration: 1.5s, $delay: var(--delay));
+    @include animate($name: tilt-in-tr, $duration: 1s, $delay: var(--delay));
     opacity: 0;
     margin: 0 20px;
 
@@ -138,6 +206,7 @@ export default Responsive.extend(Theme).extend({
 
   &__load-more {
     @include animate($name: fade-in, $duration: 1.5s, $delay: 1s);
+    @include flex();
     opacity: 0;
     min-width: 100px;
 
@@ -149,6 +218,7 @@ export default Responsive.extend(Theme).extend({
       }
     }
   }
+
 }
 
 </style>

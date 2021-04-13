@@ -1,4 +1,7 @@
-import { IGithubData, IGithubRepo, IGithubUser } from '@/lib/types'
+import { IApiError } from '@/lib/types/errors'
+import {
+ IApiGithubRepos, IGithubData, IGithubRepo, IGithubUser
+} from '@/lib/types/models/Repo'
 import { store } from '@/store'
 
 export class GithubData {
@@ -6,15 +9,19 @@ export class GithubData {
 
   repos?: IGithubRepo[]
 
+  totalRepoCount?: number
+
   constructor(data?: IGithubData) {
     this.user = data ? data.user : undefined
     this.repos = data ? data.repos : undefined
+    this.totalRepoCount = data?.totalRepoCount
   }
 
   async init() {
     return new GithubData({
       user: await this.getUserInfo(),
-      repos: await this.getRepos()
+      repos: await this.getRepos(),
+      totalRepoCount: this.repos?.length
     })
   }
 
@@ -30,15 +37,31 @@ export class GithubData {
     return {} as IGithubUser
   }
 
-  async getRepos(startAt?: number) {
-    const repoResponse = await store.dispatch('getRepos', startAt)
+  async getRepos(startAt = 0, sortBy?: string) {
+    const repoResponse: IApiGithubRepos | IApiError = await store.dispatch('getRepos', { startAt, sortBy })
 
     if (repoResponse.success) {
-      this.repos = this.repos?.concat(repoResponse.repos)
-
-      return this.repos
+      this.totalRepoCount = repoResponse.repos.length
     }
 
-    return [] as IGithubRepo[]
+    return this.repos
+  }
+
+  async filterRepos(filter: string, addResultsToRepos = false) {
+    const repoResponse: IApiGithubRepos | IApiError = await store.dispatch('filterRepos', {
+      filter,
+      addResultsToRepos
+    })
+
+    if (repoResponse.success) {
+      this.totalRepoCount = this.repos?.length
+    }
+
+    return repoResponse.success ? repoResponse.repos : undefined
+  }
+
+  async setRepos(repos: IGithubRepo[]) {
+    store.commit('setRepos', repos)
+    this.repos = repos
   }
 }

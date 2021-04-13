@@ -1,6 +1,6 @@
 <template>
-  <div class="about section is-small mt-5">
-    <div class="about__title">
+  <div class="about section is-small">
+    <div class="about__title mt-6">
       <span
         class="letter"
         v-for="(letter, index) of title"
@@ -11,7 +11,7 @@
       </span>
     </div>
 
-    <section class="section is-small">
+    <section class="section pt-3">
       <div class="about__filters">
         <Tabs
           :tabs="tabList"
@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Tabs from '@atoms/Tabs/tabs.vue'
+import Tabs from '@/components/atoms/Tabs/TabsDefault/tabs-default.vue'
 
 import { ITab } from '@/lib/types'
 import RepoSection from './components/RepoSection/repo-section.vue'
@@ -111,6 +111,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+
+html {
+  overflow-y: hidden;
+}
+
 .about {
 
   &__title {
@@ -134,7 +139,7 @@ export default Vue.extend({
 
     .tabs {
       flex-basis: 20%;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     .tabs ul {

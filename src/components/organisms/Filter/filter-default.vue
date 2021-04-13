@@ -1,7 +1,7 @@
 <template>
   <div class="filter-default">
     <section class="filter-default__filters">
-      <Tabs
+      <TabsFilter
         v-if="tabList"
         :tabs="tabList"
         @tab-selected="(filter) => handleFilterChange(filter)"
@@ -15,7 +15,7 @@
         >
              </li> -->
         <!-- </div> -->
-      </Tabs>
+      </TabsFilter>
 
     </section>
 
@@ -24,14 +24,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Tabs from '@atoms/Tabs/tabs.vue'
+import TabsFilter from '@/components/atoms/Tabs/TabsFilter/tabs-filter.vue'
 
 import { FilterData } from '@lib/types/general/FilterList'
-import { ITab } from '@/lib/types'
+import { ITabFilter } from '@/lib/types'
 import { ITabProps } from '@/lib/types/components/tabs'
 
 export default Vue.extend({
-  components: { Tabs },
+  components: { TabsFilter },
   name: 'filter-default',
   props: {
     filterData: {
@@ -43,7 +43,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      tabList: [] as ITab[],
+      tabList: [] as ITabFilter[],
       selectedFilter: '',
     }
   },
@@ -58,13 +58,16 @@ export default Vue.extend({
   methods: {
     handleFilterChange(filter: string) {
       this.selectedFilter = filter
+      this.$emit('filter-changed', filter)
     },
     generateFilters() {
       if (this.filterData.filters) {
         for (const filter of this.filterData.filters) {
           this.tabList.push({
             label: filter.label,
-            icon: filter.icon ? filter.icon : undefined
+            icon: filter.icon ? filter.icon : undefined,
+            filterType: filter.filterType,
+            filters: filter.filters
           })
         }
       }
@@ -103,6 +106,11 @@ $maxHeight: 70px !important;
   .is-active a {
     color: rgba(var(--primary-rgb), 1);
     background-color: var(--background-color) !important;
+  }
+
+  .dropdown-menu {
+    height: 0;
+
   }
 }
 </style>

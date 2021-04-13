@@ -24,7 +24,7 @@ import { ITabProps } from '@/lib/types/components/tabs'
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'tabs',
+  name: 'tabs-default',
   props: {
     tabs: {
       type: Array as () => ITab[],

@@ -21,6 +21,8 @@ export interface IFilter {
   name: string
   label: string
   icon?: string
+  filterType?: 'boxed' | 'select'
+  filters?: IFilter[]
 }
 
 export interface IFilterResult {

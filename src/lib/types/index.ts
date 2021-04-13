@@ -1,4 +1,5 @@
 import { IApiErrorMessage } from './errors'
+import { IFilter } from './general/FilterList'
 
 export interface IImage {
   src: string
@@ -28,26 +29,21 @@ export interface ITab {
   label: string
   icon?: string
 }
-
-export interface IGithubData {
-  user?: IGithubUser
-  repos?: IGithubRepo[]
-}
-export interface IGithubUser {
-  publicRepos: number
-  htmlUrl: string
+export interface ITabFilter {
+  label: string
+  icon?: string
+  filterType?: IInputType
+  filters?: IFilter[]
 }
 
-export interface IGithubRepo {
-  [index: string]: any
-  id: number
-  name: string
-  homepage?: string
-  htmlUrl?: string
-  cloneUrl?: string
-  createdAt?: string
-  updatedAt?: string
-  description?: string
-  language?: string
-  image?: IImage
+export type IInputType = 'select' | 'boxed'
+
+export interface ITabRelation {
+  child: boolean
+  parent: string
+}
+
+export interface ITabSelectedFilter {
+  filter: string
+  relation: ITabRelation
 }
