@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <b-loading
-      :is-full-page="isFullPage"
-      v-model="isLoading"
-      :can-cancel="canCancel"
-    ></b-loading>
-  </div>
+  <b-loading
+    class="loader-default"
+    :is-full-page="isFullPage"
+    v-model="isLoading"
+    :can-cancel="canCancel"
+  ></b-loading>
 </template>
 
 <script lang="ts">
@@ -33,3 +32,21 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang="scss">
+.loader-default {
+  @include flex();
+  height: 100%;
+  width: 100%;
+
+  .loading-background {
+    background: transparent;
+  }
+
+  .loading-icon::after {
+    border-color: var(--secondary);
+    border-right-color: transparent;
+    border-top-color: transparent;
+  }
+}
+</style>

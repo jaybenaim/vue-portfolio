@@ -9,6 +9,12 @@
     <div class="container">
 
       <ul class="repo-section__repos columns pt-5 pb-3">
+        <Loader
+          class="repo-section__loader"
+          :isLoading="isLoading"
+          :isFullPage="false"
+        />
+
         <li
           v-for="(repo, index) in repos"
           :key="index"
@@ -48,6 +54,7 @@ import { FilterData, IFilter } from '@/lib/types/general/FilterList'
 import { ITabProps } from '@/lib/types/components/tabs'
 import { IGithubRepo, IGithubUser } from '@/lib/types/models/Repo'
 import { ITabSelectedFilter } from '@/lib/types'
+import Loader from '@atoms/Loader/loader.vue'
 import repoFilters from './repoFilters'
 
 export default Responsive.extend(Theme).extend({
@@ -56,7 +63,8 @@ export default Responsive.extend(Theme).extend({
   components: {
     CardRepo,
     ButtonDefault,
-    FilterDefault
+    FilterDefault,
+    Loader
   },
   computed: {
     userData(): IGithubUser {
@@ -78,7 +86,8 @@ export default Responsive.extend(Theme).extend({
       githubData: undefined as any,
       filterData: undefined as any,
       selectedFilter: { filter: { name: 'All' } } as ITabSelectedFilter,
-      tabProps: {} as ITabProps
+      tabProps: {} as ITabProps,
+      isLoading: false
     }
   },
   async created() {
@@ -95,6 +104,8 @@ export default Responsive.extend(Theme).extend({
   },
   methods: {
     async loadMore() {
+      this.isLoading = true
+
       if (this.repos) {
         let typeOfQuery = ''
 
@@ -105,6 +116,8 @@ export default Responsive.extend(Theme).extend({
         }
 
         await this.githubData.loadMore(typeOfQuery, this.selectedFilter)
+
+        this.isLoading = false
       }
     },
     getAnimationDelay(index: number): number {
@@ -123,6 +136,8 @@ export default Responsive.extend(Theme).extend({
       return index / 8
     },
     async handleFilterChange(selectedFilter: ITabSelectedFilter) {
+      this.isLoading = true
+
       this.selectedFilter = selectedFilter
       const filter = selectedFilter.filter.name.toLowerCase()
 
@@ -132,28 +147,7 @@ export default Responsive.extend(Theme).extend({
         await this.githubData.filterRepos(selectedFilter)
       }
 
-      // if (selectedFilter.relation
-      //   && selectedFilter.relation.parent === 'Languages') {
-      //   // let repos: IGithubRepo[] | undefined
-      //   // = await this.githubData.filterRepos(filter.toLowerCase(), true)
-
-      //   // let repos2: IGithubRepo[] | undefined
-      //   // = await this.githubData.filterRepos(`language:${filter}`, true)
-
-      //   // if (!repos) {
-      //   //   repos = []
-      //   // }
-
-      //   // if (!repos2) {
-      //   //   repos2 = []
-      //   // }
-
-      //   // this.githubData.setRepos([...repos, ...repos2])
-      //     await this.githubData.filterRepos(selectedFilter)
-
-      // } else if (filter !== 'Languages') {
-
-      // }
+      this.isLoading = false
     }
   }
 })
@@ -167,15 +161,14 @@ export default Responsive.extend(Theme).extend({
     left: 0;
     z-index: 5;
     min-width: 100%;
-    // max-width: fit-content;
-    // // background-clip: border-box;
-    // width: max-content
+
   }
 
   &__repos {
     overflow: auto;
     max-width: 100%;
     margin: 0;
+    min-height: 482px;
 
     li:first-of-type {
       padding-left: 0;

@@ -99,7 +99,6 @@ export class GithubData {
 
     if (query.relation && query.relation.parent === 'Languages') {
       const filterName = query.filter.name
-      console.log('hiting lang filters')
       if (filterName !== 'Languages') {
         const repoResponseFromQuery: IApiGithubRepos | IApiError = await store.dispatch('filterRepos', {
           filter: query.relation.child.name.toLowerCase(),
@@ -141,7 +140,6 @@ export class GithubData {
         }
       }
     } else {
-      console.log('hitting filter as regular filter ')
       const repoResponseFromQuery: IApiGithubRepos | IApiError = await store.dispatch('filterRepos', {
         filter: query.filter.name.toLowerCase(),
         addResultsToRepos,
