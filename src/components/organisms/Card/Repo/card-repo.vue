@@ -45,7 +45,7 @@
 
     <a
       class="card-repo__link"
-      :href="repo.htmlUrl"
+      :href="repo.gitUrl"
       target="_blank"
     >
       View on Github
@@ -109,7 +109,7 @@ $maxWidth: 280px;
 
 .card-repo {
   height: 400px;
-  width: 100%;
+  width: 323px;
   background-color: rgba(var(--background-color-flipped-rgb), 0.15);
 
   &, *, a, div, span, p {

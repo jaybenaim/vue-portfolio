@@ -27,7 +27,7 @@ import Vue from 'vue'
 import TabsFilter from '@/components/atoms/Tabs/TabsFilter/tabs-filter.vue'
 
 import { FilterData } from '@lib/types/general/FilterList'
-import { ITabFilter } from '@/lib/types'
+import { ITabFilter, ITabSelectedFilter } from '@/lib/types'
 import { ITabProps } from '@/lib/types/components/tabs'
 
 export default Vue.extend({
@@ -44,10 +44,18 @@ export default Vue.extend({
   data() {
     return {
       tabList: [] as ITabFilter[],
-      selectedFilter: '',
+      selectedFilter: {} as ITabSelectedFilter,
     }
   },
   watch: {
+    // FilterData: {
+    //   // deep: true,
+    //   handler() {
+    //     if (this.filterData) {
+    //       this.generateFilters()
+    //     }
+    //   }
+    // }
     'filterData.filters': function watcher() {
       this.generateFilters()
     }
@@ -56,14 +64,16 @@ export default Vue.extend({
     this.generateFilters()
   },
   methods: {
-    handleFilterChange(filter: string) {
+    handleFilterChange(filter: ITabSelectedFilter) {
       this.selectedFilter = filter
       this.$emit('filter-changed', filter)
+      console.log('filter chaged')
     },
     generateFilters() {
       if (this.filterData.filters) {
         for (const filter of this.filterData.filters) {
           this.tabList.push({
+            name: filter.name,
             label: filter.label,
             icon: filter.icon ? filter.icon : undefined,
             filterType: filter.filterType,

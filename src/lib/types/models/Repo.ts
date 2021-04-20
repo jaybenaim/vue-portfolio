@@ -1,6 +1,10 @@
+import { IImage } from '..'
+
 export interface IApiRepoOptions {
   startAt: number
   sortBy: 'created' | 'updated' | 'pushed' |'full_name'
+  limit: number
+  page: number
 }
 
 export interface IGithubState {
@@ -16,16 +20,27 @@ export interface IApiGithubUser {
 export interface IApiGithubRepos {
   success: true
   repos: IGithubRepo[]
+  query: IQueryOptions
+  totalCount: number
+  currentPage: number
 }
 
 export interface IGithubData {
+  totalRepoCount: number
   user?: IGithubUser
   repos?: IGithubRepo[]
-  totalRepoCount?: number
+  query?: IQueryOptions
+}
+export interface IQueryOptions {
+  startAt?: number
+  limit?: number
+  page?: number
+  queryString?: string
+  sort?: string
 }
 export interface IGithubUser {
   publicRepos: number
-  htmlUrl: string
+  gitUrl: string
 }
 
 export interface IGithubRepo {
@@ -33,7 +48,7 @@ export interface IGithubRepo {
   id: number
   name: string
   homepage?: string
-  htmlUrl?: string
+  gitUrl?: string
   cloneUrl?: string
   createdAt?: string
   updatedAt?: string

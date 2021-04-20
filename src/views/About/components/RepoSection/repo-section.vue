@@ -1,35 +1,38 @@
 <template>
   <div class="repo-section container">
     <FilterDefault
-      :filterData="filters"
+      v-if="filterData"
+      :filterData="filterData"
       :tabProps="tabProps"
       @filter-changed="handleFilterChange"
     />
+    <div class="container">
 
-    <ul class="repo-section__repos columns container">
-      <li
-        v-for="(repo, index) in repos"
-        :key="index"
-        class="repo-section__repo column"
-      >
-        <CardRepo
-          :repo="repo"
-          :animationDelay="getAnimationDelay(index)"
-        />
-      </li>
+      <ul class="repo-section__repos columns pt-5 pb-3">
+        <li
+          v-for="(repo, index) in repos"
+          :key="index"
+          class="repo-section__repo column"
+        >
+          <CardRepo
+            :repo="repo"
+            :animationDelay="getAnimationDelay(index)"
+          />
+        </li>
 
-      <li
-        v-if="showLoadMore"
-        class="repo-section__load-more"
-      >
-        <ButtonDefault
-          icon-left="arrow-right-bold-outline"
-          size="is-large"
-          :type="`is-${theme}`"
-          @clicked="loadMore"
-        />
-      </li>
-    </ul>
+        <li
+          v-if="showLoadMore && repos.length > 0"
+          class="repo-section__load-more"
+        >
+          <ButtonDefault
+            icon-left="arrow-right-bold-outline"
+            size="is-large"
+            :type="`is-${theme}`"
+            @clicked="loadMore"
+          />
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -41,10 +44,11 @@ import ButtonDefault from '@/components/atoms/ButtonDefault/button-default.vue'
 import Theme from '@/mixins/Theme'
 import FilterDefault from '@/components/organisms/Filter/filter-default.vue'
 import Responsive from '@/mixins/Responsive'
-import { FilterData } from '@/lib/types/general/FilterList'
+import { FilterData, IFilter } from '@/lib/types/general/FilterList'
 import { ITabProps } from '@/lib/types/components/tabs'
 import { IGithubRepo, IGithubUser } from '@/lib/types/models/Repo'
 import { ITabSelectedFilter } from '@/lib/types'
+import repoFilters from './repoFilters'
 
 export default Responsive.extend(Theme).extend({
   name: 'repo-section',
@@ -59,73 +63,28 @@ export default Responsive.extend(Theme).extend({
       return this.$store.getters.getUserInfo
     },
     repos(): IGithubRepo[] {
-      return this.$store.getters.getRepos
+      return this.githubData.repos
     },
     showLoadMore(): boolean {
-      if (this.repos) {
-        return (this.githubData.totalRepoCount || 0) > this.repos.length
+      if (this.githubData) {
+        return this.repos.length < this.githubData.totalRepoCount
       }
 
       return false
-    }
+    },
   },
   data() {
     return {
-      githubData: new GithubData(),
-      filters: new FilterData(),
+      githubData: undefined as any,
+      filterData: undefined as any,
+      selectedFilter: { filter: { name: 'All' } } as ITabSelectedFilter,
       tabProps: {} as ITabProps
     }
   },
   async created() {
-    if (!this.repos || this.repos.length < 1) {
-      this.githubData = await new GithubData().init()
-    }
+    this.githubData = await new GithubData().init()
 
-    this.filters.filters = [
-      {
-        name: 'All',
-        label: 'All',
-        icon: ''
-      },
-      {
-        name: 'Recent',
-        label: 'Recent',
-        icon: 'history'
-      },
-      {
-        name: 'Favourites',
-        label: 'Favourites',
-        icon: 'heart-outline'
-      },
-      {
-        name: 'Deployed',
-        label: 'Deployed',
-        icon: 'rocket-launch-outline'
-      },
-      {
-        name: 'Languages',
-        label: 'Languages',
-        icon: 'arrow-down',
-        filterType: 'select',
-        filters: [
-          {
-            name: 'JavaScript',
-            label: 'JavaScript',
-            icon: 'language-javascript'
-          },
-          {
-            name: 'Python',
-            label: 'Python',
-            icon: 'language-python'
-          },
-          {
-            name: 'Ruby',
-            label: 'Ruby',
-            icon: 'language-ruby'
-          }
-        ]
-      }
-    ]
+    this.filterData = new FilterData(repoFilters as IFilter[])
 
     this.tabProps = {
       vertical: false,
@@ -137,45 +96,67 @@ export default Responsive.extend(Theme).extend({
   methods: {
     async loadMore() {
       if (this.repos) {
-        await this.githubData.getRepos(this.repos.length)
+        let typeOfQuery = ''
+
+        if (this.selectedFilter.filter.name.toLowerCase() === 'all') {
+          typeOfQuery = 'get'
+        } else {
+          typeOfQuery = 'filter'
+        }
+
+        await this.githubData.loadMore(typeOfQuery, this.selectedFilter)
       }
     },
     getAnimationDelay(index: number): number {
+      if (index === 0) {
+        return 0.01
+      }
+
       if (index % 30 === 0) {
-        return 0
+        return 0.01
       }
 
       if (index > 30) {
-        return (Number(`${index.toString().slice(-1)}`) * 3) / 6
+        return 0.4
       }
 
-      return index / 6
+      return index / 8
     },
     async handleFilterChange(selectedFilter: ITabSelectedFilter) {
-      if (selectedFilter.relation
-        && selectedFilter.relation.parent === 'Languages') {
-        let repos: IGithubRepo[] | undefined
-        = await this.githubData.filterRepos(selectedFilter.filter.toLowerCase(), true)
+      this.selectedFilter = selectedFilter
+      const filter = selectedFilter.filter.name.toLowerCase()
+      console.log('filter')
 
-        let repos2: IGithubRepo[] | undefined
-        = await this.githubData.filterRepos(`language:${selectedFilter.filter}`, true)
+      if (filter === 'all') {
+        console.log('filter all ')
 
-        if (!repos) {
-          repos = []
-        }
-
-        if (!repos2) {
-          repos2 = []
-        }
-
-        this.githubData.setRepos([...repos, ...repos2])
-      } else if (selectedFilter.filter !== 'Languages') {
-        if (selectedFilter.filter === 'All') {
-          await this.githubData.getRepos()
-        } else {
-          await this.githubData.filterRepos(selectedFilter.filter.toLowerCase())
-        }
+        await this.githubData.getRepos()
+      } else if (selectedFilter.filter.name !== 'Languages') {
+        await this.githubData.filterRepos(selectedFilter)
       }
+
+      // if (selectedFilter.relation
+      //   && selectedFilter.relation.parent === 'Languages') {
+      //   // let repos: IGithubRepo[] | undefined
+      //   // = await this.githubData.filterRepos(filter.toLowerCase(), true)
+
+      //   // let repos2: IGithubRepo[] | undefined
+      //   // = await this.githubData.filterRepos(`language:${filter}`, true)
+
+      //   // if (!repos) {
+      //   //   repos = []
+      //   // }
+
+      //   // if (!repos2) {
+      //   //   repos2 = []
+      //   // }
+
+      //   // this.githubData.setRepos([...repos, ...repos2])
+      //     await this.githubData.filterRepos(selectedFilter)
+
+      // } else if (filter !== 'Languages') {
+
+      // }
     }
   }
 })
@@ -185,13 +166,23 @@ export default Responsive.extend(Theme).extend({
 .repo-section {
 
   .filter-default {
-    position: fixed;
-    width: 59%;
+    position: sticky;
+    left: 0;
     z-index: 5;
+    min-width: 100%;
+    // max-width: fit-content;
+    // // background-clip: border-box;
+    // width: max-content
   }
 
   &__repos {
-    padding-top: 65px;
+    overflow: auto;
+    max-width: 100%;
+    margin: 0;
+
+    li:first-of-type {
+      padding-left: 0;
+    }
   }
 
   .card-repo {
@@ -201,24 +192,26 @@ export default Responsive.extend(Theme).extend({
 
     &:first-of-type {
       margin-left: 0;
+      padding-left: 0;
     }
   }
 
   &__load-more {
-    @include animate($name: fade-in, $duration: 1.5s, $delay: 1s);
+    @include animate($name: fade-in, $duration: 1.5s, $delay: 1s, $ease: ease-in-out);
     @include flex();
     opacity: 0;
     min-width: 100px;
 
-    &:hover .button {
-      box-shadow: 0px 0px 10px 0px rgba(var(--primary-text-color-rgb), 0.5);
+    .button {
+      &:hover {
+        box-shadow: 0px 0px 10px 0px rgba(var(--primary-text-color-rgb), 0.5);
 
-      .icon {
-        @include transform(scale(1.05) translateX(2px));
+        .icon {
+          @include transform(scale(1.05) translateX(2px));
+        }
       }
     }
   }
-
 }
 
 </style>

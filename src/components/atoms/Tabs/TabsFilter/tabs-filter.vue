@@ -49,7 +49,7 @@
             :value="dropTab.label"
             :icon-left="dropTab.icon"
             @click.native="(event) => handleInputChange(event.target.name, {
-              child: true,
+              child: dropTab,
               parent: 'Languages'
             })"
           >
@@ -86,7 +86,10 @@ export default Vue.extend({
   methods: {
     handleInputChange(tab: string, relation: ITabRelation) {
       this.$emit('tab-selected', {
-        filter: tab,
+        filter: {
+          name: tab,
+          label: tab
+        },
         relation
       } as ITabSelectedFilter)
     }
@@ -98,6 +101,7 @@ export default Vue.extend({
 .tabs-filter {
   &__select {
     color: rgba(var(--primary-text-color-rgb), 0.4) !important;
+    @include flex();
 
     a:first-of-type {
       border: none;

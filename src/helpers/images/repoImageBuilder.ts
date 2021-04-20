@@ -21,7 +21,7 @@ export const $imageBuilder = (name: string, lang?: string, filter?: string) => {
       src: 'https://img.icons8.com/color/96/000000/angularjs.png',
     },
     react: {
-      src: 'https://seeklogo.com/vector-logo/273845/react',
+      src: 'https://img.icons8.com/plasticine/100/000000/react.png',
     },
     yelp: {
       src: 'https://img.icons8.com/color/96/000000/javascript.png',
@@ -75,12 +75,12 @@ export const $imageBuilder = (name: string, lang?: string, filter?: string) => {
     ruby: {
       src:
       // eslint-disable-next-line max-len
-        'https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=160777',
+        'https://cdn.pixabay.com/photo/2014/12/21/23/52/red-576239_1280.png',
     },
     rails: {
       src:
       // eslint-disable-next-line max-len
-        'https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=160777',
+        'https://cdn.pixabay.com/photo/2014/12/21/23/52/red-576239_1280.png',
     },
     java: {
       src: 'https://img.icons8.com/color/96/000000/javascript.png',
@@ -108,7 +108,7 @@ export const $imageBuilder = (name: string, lang?: string, filter?: string) => {
   if (!matchedImage) {
     return {
       // Place holder or random image
-      src: 'https://cdn.pixabay.com/photo/2017/05/12/15/16/hexagon-2307350_1280.png'
+      src: 'https://cdn.pixabay.com/photo/2017/07/08/19/32/symbol-2485367_1280.png'
     } as IImage
   }
 

@@ -74,7 +74,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      selectedFilter: 'Repos',
+      selectedFilter: 'Projects',
       tabList: [
         {
           label: 'Projects',
@@ -111,10 +111,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-
-html {
-  overflow-y: hidden;
-}
 
 .about {
 
@@ -167,9 +163,9 @@ html {
     .tab-content {
       overflow: auto;
       flex-basis: 25%;
-      padding: 2rem;
+      padding: 0;
       margin: 0 5rem;
-      min-height: 486px;
+      min-height: 560px;
     }
 
     .tab-item {

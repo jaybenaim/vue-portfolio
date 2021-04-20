@@ -37,3 +37,5 @@ Icons Used:
 <a href="https://icons8.com/icon/13441/python">Python icon by Icons8</a>
 
 <a href="https://icons8.com/icon/19793/css-filetype">CSS Filetype icon by Icons8</a>
+
+<a href="https://icons8.com/icon/XYJN7GU4RP3j/ruby-programming-language">Ruby Programming Language icon by Icons8</a>

@@ -10,6 +10,16 @@ import {
 
 import { ActionContext } from 'vuex'
 
+// Get url for deployed sites
+
+const getHomePageUrl = (repo: any) => {
+  if (repo.has_pages) {
+    return `https://jaybenaim.github.io/${repo.name}`
+  }
+
+  return undefined
+}
+
 export default {
   state: () => ({
     userInfo: {} as IGithubUser,
@@ -17,7 +27,7 @@ export default {
   }),
   getters: {
     getUserInfo: (state: IGithubState) => state.userInfo,
-    getRepos: (state: IGithubState) => state.repos,
+    getRepos: (state: IGithubState) => [...new Set(state.repos)],
   },
   mutations: {
     setRepos(state: IGithubState, repos: IGithubRepo[]) {
@@ -29,7 +39,7 @@ export default {
       return await $getUserInfo().then(({ data }) => {
         const userData = {
           publicRepos: data.public_repos,
-          htmlUrl: data.html_url
+          gitUrl: data.html_url
         }
 
         state.userInfo = userData
@@ -52,14 +62,22 @@ export default {
         } as IApiError
       })
     },
-    async getRepos({ state, commit }: ActionContext<IGithubState, any>, { startAt, sortBy }: IApiRepoOptions) {
-      return await $getRepos(startAt, sortBy)
-        .then(({ data }) => {
+    async getRepos({ state, commit }: ActionContext<IGithubState, any>,
+      {
+        startAt = 0,
+        limit = 30,
+        page = 1,
+        sortBy = 'created'
+       }: IApiRepoOptions) {
+      return await $getRepos(startAt, limit, page, sortBy)
+        .then((response) => {
+          const { data, request: { responseURL } } = response
+
           const repos = data.map((repo: any) => ({
             id: repo.id,
             name: repo.name,
-            homepage: repo.homepage,
-            htmlUrl: repo.html_url,
+            homepageUrl: getHomePageUrl(repo),
+            gitUrl: repo.html_url,
             cloneUrl: repo.clone_url,
             createdAt: repo.created_at,
             updatedAt: repo.updated_at,
@@ -68,11 +86,19 @@ export default {
             image: $imageBuilder(repo.name, repo.language)
           } as IGithubRepo))
 
-          state.repos = state.repos.concat(repos)
+          state.repos = repos
 
           const results = {
             success: true,
-            repos
+            repos,
+            query: {
+              queryString: responseURL,
+              startAt,
+              sort: sortBy,
+              page,
+              limit
+            },
+            totalCount: state.userInfo.publicRepos,
           } as IApiGithubRepos
 
           return results
@@ -87,19 +113,27 @@ export default {
         })
     },
     async filterRepos(
-      { state, commit }:
+      { commit }:
       ActionContext<IGithubState, any>,
         payload: any
       ) {
-      const { filter: query, addResultsToRepos } = payload
+      const {
+      filter:
+        query,
+        limit = 30,
+        page = 1
+      } = payload
 
-      return await $filterRepos(query)
-      .then(({ data }) => {
+      return await $filterRepos(query, limit, page)
+      .then((response) => {
+        console.log('$filter', query)
+        const { data, request: { responseURL } } = response
+
         const matchedRepos = data.items.map((repo: any) => ({
           id: repo.id,
           name: repo.name,
-          homepage: repo.homepage,
-          htmlUrl: repo.html_url,
+          homepageUrl: getHomePageUrl(repo),
+          gitUrl: repo.html_url,
           cloneUrl: repo.clone_url,
           createdAt: repo.created_at,
           updatedAt: repo.updated_at,
@@ -108,15 +142,22 @@ export default {
           image: $imageBuilder(repo.name, repo.language)
         } as IGithubRepo))
 
-        if (!addResultsToRepos) {
-          state.repos = matchedRepos
-        }
-
         const results = {
           success: true,
-          repos: matchedRepos
+          repos: matchedRepos,
+          totalCount: data.total_count,
+          currentPage: page,
+          query: {
+            queryString: responseURL,
+            limit,
+            page
+          },
         } as IApiGithubRepos
 
+        // console.log(matchedRepos)
+        // state.repos = [...new Set(matchedRepos)] as IGithubRepo[]
+
+        // state.repos = matchedRepos
         return results
       }).catch((error) => {
         commit('error', error)

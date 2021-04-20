@@ -26,10 +26,12 @@ export interface IAnimation {
 }
 
 export interface ITab {
+  name: string
   label: string
   icon?: string
 }
 export interface ITabFilter {
+  name: string
   label: string
   icon?: string
   filterType?: IInputType
@@ -39,11 +41,11 @@ export interface ITabFilter {
 export type IInputType = 'select' | 'boxed'
 
 export interface ITabRelation {
-  child: boolean
+  child: ITabFilter
   parent: string
 }
 
 export interface ITabSelectedFilter {
-  filter: string
+  filter: ITabFilter
   relation: ITabRelation
 }

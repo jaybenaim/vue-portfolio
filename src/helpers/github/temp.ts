@@ -59,27 +59,17 @@ export class GithubData {
     return {} as IGithubUser
   }
 
-  async getRepos(startAt = 0, limit = 30, page = 1, sortBy?: string,) {
+  async getRepos(startAt = 0, sortBy?: string) {
     if (startAt === 0) {
       this.setRepos([])
     }
 
-    const repoResponse: IApiGithubRepos | IApiError = await store.dispatch('getRepos', {
-      startAt,
-      limit,
-      page,
-      sortBy,
-    })
+    const repoResponse: IApiGithubRepos | IApiError = await store.dispatch('getRepos', { startAt, sortBy })
 
     if (repoResponse.success) {
-      if (startAt > 0 && this.repos) {
-        this.repos = [...this.repos, ...repoResponse.repos]
-      } else {
-        this.repos = repoResponse.repos
-      }
-
+      this.repos = repoResponse.repos
+      this.totalRepoCount = this.user?.publicRepos || 0
       this.query = repoResponse.query
-      this.totalRepoCount = repoResponse.totalCount
     }
 
     return this.repos
@@ -88,29 +78,28 @@ export class GithubData {
   async filterRepos(
     query: ITabSelectedFilter,
     addResultsToRepos = false,
-    limit = 30,
-    page = 0
+    limit?: number,
+    page?: number
 ) {
-    if (page === 0) {
-      this.repos = []
+    if (!addResultsToRepos) {
+      this.setRepos([])
+      this.totalRepoCount = 0
     }
 
-    console.log(query.filter.name)
-    if (query.relation.parent === 'Languages' || query.filter.name === 'Languages') {
-      console.log('filteresd lang')
-
+    console.log(query)
+    if (query.relation && query.relation.parent === 'Languages') {
       const repoResponseFromQuery: IApiGithubRepos | IApiError = await store.dispatch('filterRepos', {
         filter: query.relation.child.name.toLowerCase(),
         addResultsToRepos,
         limit,
-        page: page + 1
+        page
       })
 
       const repoResponseFromLang: IApiGithubRepos | IApiError = await store.dispatch('filterRepos', {
         filter: `language:${query.relation.child.name.toLowerCase()}`,
         addResultsToRepos,
         limit,
-        page: page + 1
+        page
       })
 
       let repos1 = [] as IGithubRepo[]
@@ -120,25 +109,31 @@ export class GithubData {
       if (repoResponseFromQuery.success) {
         repos1 = repoResponseFromQuery.repos
         totalCount += repoResponseFromQuery.totalCount
+      } else {
+        repos1 = []
       }
 
       if (repoResponseFromLang.success) {
         repos2 = repoResponseFromLang.repos
         totalCount += repoResponseFromLang.totalCount
+      } else {
+        repos2 = []
       }
 
-      if (this.repos) {
-        this.repos = [...this.repos, ...repos1, ...repos2]
-      } else {
-        this.repos = [...repos1, ...repos2]
+      if (!this.repos) {
+        this.repos = []
+        this.setRepos([])
       }
+
+      // this.setRepos([ ...repos1, ...repos2])
+      this.repos = [...this.repos, ...repos1, ...repos2]
+      // this.setRepos([...this.repos, ...repos1, ...repos2])
 
       this.totalRepoCount = totalCount
       this.query = {
-        page: page + 1
+        page
       }
     } else {
-      console.log('hitting filter as regular filter ')
       const repoResponseFromQuery: IApiGithubRepos | IApiError = await store.dispatch('filterRepos', {
         filter: query.filter.name.toLowerCase(),
         addResultsToRepos,
@@ -152,9 +147,9 @@ export class GithubData {
           this.setRepos([])
         }
 
-        this.totalRepoCount = repoResponseFromQuery.totalCount
-
         this.repos = [...this.repos, ...repoResponseFromQuery.repos]
+
+        // this.setRepos([...this.repos, ...repoResponseFromQuery.repos])
       }
     }
 
@@ -171,12 +166,12 @@ export class GithubData {
 
     const pageLimit = this.query?.limit || 30
 
-    const pageNumber = this.query?.page || 0
+    const pageNumber = this.query?.page || 1
 
     if (typeOfQuery === 'get') {
-      this.getRepos(startAt + 30, 30, pageNumber + 1, 'created')
+      this.getRepos(startAt + 30)
     } else {
-      this.filterRepos(currentFilter, true, pageLimit, pageNumber)
+      this.filterRepos(currentFilter, true, pageLimit, pageNumber + 1)
     }
   }
 }
