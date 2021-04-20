@@ -83,15 +83,15 @@ export default Responsive.extend(Theme).extend({
   },
   data() {
     return {
-      githubData: undefined as any,
-      filterData: undefined as any,
+      githubData: new GithubData(),
+      filterData: new FilterData(),
       selectedFilter: { filter: { name: 'All' } } as ITabSelectedFilter,
       tabProps: {} as ITabProps,
       isLoading: false
     }
   },
   async created() {
-    this.githubData = await new GithubData().init()
+    this.githubData = await this.githubData.init()
 
     this.filterData = new FilterData(repoFilters as IFilter[])
 

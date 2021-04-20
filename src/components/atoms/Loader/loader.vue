@@ -40,13 +40,13 @@ export default Vue.extend({
   width: 100%;
 
   .loading-background {
-    background: transparent;
+    background: transparent !important;
   }
 
   .loading-icon::after {
-    border-color: var(--secondary);
-    border-right-color: transparent;
-    border-top-color: transparent;
+    border-color: #00f070 !important;
+    border-right-color: transparent !important;
+    border-top-color: transparent !important;
   }
 }
 </style>

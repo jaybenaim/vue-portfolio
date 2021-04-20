@@ -91,8 +91,6 @@ export class GithubData {
     limit = 30,
     page = 0
 ) {
-    console.log('hit filter')
-
     if (page === 0) {
       this.repos = []
     }
