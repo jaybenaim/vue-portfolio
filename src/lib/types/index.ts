@@ -6,6 +6,7 @@ export interface IImage {
   alt?: string
   ratio?: string
   rounded?: boolean
+  caption?: string
 }
 
 export interface IApiDeleteResponse {
@@ -48,4 +49,9 @@ export interface ITabRelation {
 export interface ITabSelectedFilter {
   filter: ITabFilter
   relation: ITabRelation
+}
+export interface IGalleryItem {
+    title?: string
+    description?: string
+    image?: IImage
 }

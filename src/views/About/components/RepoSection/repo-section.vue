@@ -6,8 +6,8 @@
       :tabProps="tabProps"
       @filter-changed="handleFilterChange"
     />
-    <div class="container">
 
+    <div class="container">
       <ul class="repo-section__repos columns pt-5 pb-3">
         <Loader
           class="repo-section__loader"
@@ -71,7 +71,7 @@ export default Responsive.extend(Theme).extend({
       return this.$store.getters.getUserInfo
     },
     repos(): IGithubRepo[] {
-      return this.githubData.repos
+      return this.githubData.repos || []
     },
     showLoadMore(): boolean {
       if (this.githubData) {
@@ -107,7 +107,7 @@ export default Responsive.extend(Theme).extend({
       this.isLoading = true
 
       if (this.repos) {
-        let typeOfQuery = ''
+        let typeOfQuery = 'filter' as 'get' | 'filter'
 
         if (this.selectedFilter.filter.name.toLowerCase() === 'all') {
           typeOfQuery = 'get'
@@ -161,7 +161,6 @@ export default Responsive.extend(Theme).extend({
     left: 0;
     z-index: 5;
     min-width: 100%;
-
   }
 
   &__repos {

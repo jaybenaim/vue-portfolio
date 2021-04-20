@@ -59,6 +59,17 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.card-image {
+  overflow: hidden;
+}
 
+.card-image img {
+  transition: transform .6s ease-in-out;
+  object-fit: cover;
+}
+
+.card-image:hover img {
+  transform: scale(1.04);
+}
 </style>

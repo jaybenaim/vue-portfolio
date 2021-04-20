@@ -11,7 +11,7 @@
       </span>
     </div>
 
-    <section class="section pt-3">
+    <section class="section pt-5">
       <div class="about__filters">
         <Tabs
           :tabs="tabList"
@@ -23,7 +23,7 @@
             v-if="selectedFilter === 'Projects'"
             class="about__filter--content"
           >
-            Projects
+            <ProjectSection />
           </div>
 
           <div
@@ -56,8 +56,10 @@
 import Vue from 'vue'
 import Tabs from '@/components/atoms/Tabs/TabsDefault/tabs-default.vue'
 
-import { ITab } from '@/lib/types'
 import RepoSection from './components/RepoSection/repo-section.vue'
+import ProjectSection from './components/ProjectSection/project-section.vue'
+
+import { ITab } from '@/lib/types'
 import { ITabProps } from '@/lib/types/components/tabs'
 
 export default Vue.extend({
@@ -70,7 +72,8 @@ export default Vue.extend({
   },
   components: {
     Tabs,
-    RepoSection
+    RepoSection,
+    ProjectSection
   },
   data() {
     return {
@@ -178,6 +181,7 @@ export default Vue.extend({
     @include animate($name: fade-in, $duration: 0.8s);
     height: 100%;
     width: 100%;
+    padding-top: 50px;
   }
 }
 
