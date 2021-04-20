@@ -165,6 +165,7 @@ export default Vue.extend({
 
     .tab-content {
       overflow: auto;
+      overflow-y: hidden;
       flex-basis: 25%;
       padding: 0;
       margin: 0 5rem;
