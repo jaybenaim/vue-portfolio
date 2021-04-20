@@ -125,13 +125,10 @@ export default Responsive.extend(Theme).extend({
     async handleFilterChange(selectedFilter: ITabSelectedFilter) {
       this.selectedFilter = selectedFilter
       const filter = selectedFilter.filter.name.toLowerCase()
-      console.log('filter')
 
       if (filter === 'all') {
-        console.log('filter all ')
-
         await this.githubData.getRepos()
-      } else if (selectedFilter.filter.name !== 'Languages') {
+      } else if (filter !== 'languages') {
         await this.githubData.filterRepos(selectedFilter)
       }
 
@@ -188,7 +185,6 @@ export default Responsive.extend(Theme).extend({
   .card-repo {
     @include animate($name: tilt-in-tr, $duration: 1s, $delay: var(--delay));
     opacity: 0;
-    margin: 0 20px;
 
     &:first-of-type {
       margin-left: 0;

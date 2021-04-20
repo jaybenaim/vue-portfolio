@@ -91,51 +91,54 @@ export class GithubData {
     limit = 30,
     page = 0
 ) {
+    console.log('hit filter')
+
     if (page === 0) {
       this.repos = []
     }
 
-    console.log(query.filter.name)
-    if (query.relation.parent === 'Languages' || query.filter.name === 'Languages') {
-      console.log('filteresd lang')
+    if (query.relation && query.relation.parent === 'Languages') {
+      const filterName = query.filter.name
+      console.log('hiting lang filters')
+      if (filterName !== 'Languages') {
+        const repoResponseFromQuery: IApiGithubRepos | IApiError = await store.dispatch('filterRepos', {
+          filter: query.relation.child.name.toLowerCase(),
+          addResultsToRepos,
+          limit,
+          page: page + 1
+        })
 
-      const repoResponseFromQuery: IApiGithubRepos | IApiError = await store.dispatch('filterRepos', {
-        filter: query.relation.child.name.toLowerCase(),
-        addResultsToRepos,
-        limit,
-        page: page + 1
-      })
+        const repoResponseFromLang: IApiGithubRepos | IApiError = await store.dispatch('filterRepos', {
+          filter: `language:${query.relation.child.name.toLowerCase()}`,
+          addResultsToRepos,
+          limit,
+          page: page + 1
+        })
 
-      const repoResponseFromLang: IApiGithubRepos | IApiError = await store.dispatch('filterRepos', {
-        filter: `language:${query.relation.child.name.toLowerCase()}`,
-        addResultsToRepos,
-        limit,
-        page: page + 1
-      })
+        let repos1 = [] as IGithubRepo[]
+        let repos2 = [] as IGithubRepo[]
+        let totalCount = 0
 
-      let repos1 = [] as IGithubRepo[]
-      let repos2 = [] as IGithubRepo[]
-      let totalCount = 0
+        if (repoResponseFromQuery.success) {
+          repos1 = repoResponseFromQuery.repos
+          totalCount += repoResponseFromQuery.totalCount
+        }
 
-      if (repoResponseFromQuery.success) {
-        repos1 = repoResponseFromQuery.repos
-        totalCount += repoResponseFromQuery.totalCount
-      }
+        if (repoResponseFromLang.success) {
+          repos2 = repoResponseFromLang.repos
+          totalCount += repoResponseFromLang.totalCount
+        }
 
-      if (repoResponseFromLang.success) {
-        repos2 = repoResponseFromLang.repos
-        totalCount += repoResponseFromLang.totalCount
-      }
+        if (this.repos) {
+          this.repos = [...this.repos, ...repos1, ...repos2]
+        } else {
+          this.repos = [...repos1, ...repos2]
+        }
 
-      if (this.repos) {
-        this.repos = [...this.repos, ...repos1, ...repos2]
-      } else {
-        this.repos = [...repos1, ...repos2]
-      }
-
-      this.totalRepoCount = totalCount
-      this.query = {
-        page: page + 1
+        this.totalRepoCount = totalCount
+        this.query = {
+          page: page + 1
+        }
       }
     } else {
       console.log('hitting filter as regular filter ')

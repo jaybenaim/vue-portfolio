@@ -103,10 +103,16 @@ export default Vue.extend({
     color: rgba(var(--primary-text-color-rgb), 0.4) !important;
     @include flex();
 
+    .dropdown {
+      margin-left: -15px;
+    }
+
     a:first-of-type {
       border: none;
       padding-left: 0;
       justify-content: flex-start;
+      padding: 0.5rem 25px 0.5rem 15px;
+      margin-left: 0px;
 
       &:hover {
         background-color: transparent !important;
@@ -122,6 +128,7 @@ export default Vue.extend({
       border-right: 0;
       border-color: rgba(var(--primary-text-color-rgb), 0.4) !important;
       border-bottom-color: rgba(var(--primary-text-color-rgb), 0.4) !important;
+      border-radius: 4px 4px 0 0;
 
       &:hover {
         background-color: var(--background-color-hover) !important;

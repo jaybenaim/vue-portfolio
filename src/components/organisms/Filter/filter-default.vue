@@ -67,7 +67,6 @@ export default Vue.extend({
     handleFilterChange(filter: ITabSelectedFilter) {
       this.selectedFilter = filter
       this.$emit('filter-changed', filter)
-      console.log('filter chaged')
     },
     generateFilters() {
       if (this.filterData.filters) {

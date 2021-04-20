@@ -126,7 +126,6 @@ export default {
 
       return await $filterRepos(query, limit, page)
       .then((response) => {
-        console.log('$filter', query)
         const { data, request: { responseURL } } = response
 
         const matchedRepos = data.items.map((repo: any) => ({
@@ -154,10 +153,6 @@ export default {
           },
         } as IApiGithubRepos
 
-        // console.log(matchedRepos)
-        // state.repos = [...new Set(matchedRepos)] as IGithubRepo[]
-
-        // state.repos = matchedRepos
         return results
       }).catch((error) => {
         commit('error', error)
