@@ -8,7 +8,7 @@
     />
 
     <div class="container">
-      <ul class="repo-section__repos columns pt-5 pb-3">
+      <ul class="repo-section__repos columns">
         <Loader
           class="repo-section__loader"
           :isLoading="isLoading"
@@ -91,7 +91,11 @@ export default Responsive.extend(Theme).extend({
     }
   },
   async created() {
+    this.isLoading = true
+
     this.githubData = await this.githubData.init()
+
+    this.isLoading = false
 
     this.filterData = new FilterData(repoFilters as IFilter[])
 
@@ -167,7 +171,7 @@ export default Responsive.extend(Theme).extend({
     overflow: auto;
     max-width: 100%;
     margin: 0;
-    min-height: 482px;
+    min-height: 500px;
 
     li:first-of-type {
       padding-left: 0;

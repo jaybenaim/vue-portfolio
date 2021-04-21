@@ -9,6 +9,12 @@ export interface IImage {
   caption?: string
 }
 
+export interface ILink {
+  href: string
+  src: string
+  target: '_blank' | '_self'
+}
+
 export interface IApiDeleteResponse {
   success: boolean,
   error: IApiErrorMessage
@@ -54,4 +60,19 @@ export interface IGalleryItem {
     title?: string
     description?: string
     image?: IImage
+}
+
+export interface IGalleryProps {
+  itemsToShow?: number
+  repeat?: boolean
+  hasDrag?: boolean
+  arrow?: boolean
+  arrowHover?: boolean
+}
+
+export interface ISnippetItem {
+  title: string
+  content: string
+  image?: IImage
+  link?: ILink
 }

@@ -32,7 +32,7 @@ export default Theme.extend({
 <style lang="scss">
 .switch {
   &:hover input[type=checkbox]:checked {
-    background: rgba(var(--secondary-rgb), 0.7) !important;
+    background: rgba(var(--secondary-rgb), 0.6) !important;
   }
 
   input[type=checkbox]:checked {
@@ -40,11 +40,11 @@ export default Theme.extend({
   }
 
   &:hover input[type=checkbox] + .check {
-    background: rgba(var(--secondary-rgb), 0.7) !important;
+    background: rgba(var(--secondary-rgb), 0.6) !important;
   }
 
   input[type=checkbox] + .check {
-    background: var(--secondary) !important;
+    background: rgba(var(--secondary-rgb), 0.7) !important;
   }
 
   .control-label {

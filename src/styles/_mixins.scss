@@ -1,5 +1,3 @@
-@import "./_animations.scss";
-
 @mixin flex($flex: flex, $dir: row, $wrap: nowrap, $justify: center, $align: center) {
   display: -webkit-box;
   display: -moz-box;

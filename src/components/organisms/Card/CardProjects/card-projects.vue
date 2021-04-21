@@ -53,7 +53,7 @@ export default Vue.extend({
   },
   name: 'card-projects',
   props: {
-    project: {
+    dataItem: {
       type: Object as () => IProject,
       required: true
     },
@@ -65,6 +65,14 @@ export default Vue.extend({
         footer: {}
       }))
     }
+  },
+  data() {
+    return {
+      project: {} as IProject
+    }
+  },
+  created() {
+    this.project = this.dataItem
   }
 })
 </script>
@@ -72,7 +80,6 @@ export default Vue.extend({
 <style lang="scss">
 .card-projects {
   background-color: rgba(var(--background-color-flipped-rgb), 0.15);
-  min-height: 475px;
 
   a {
     color: var(--primary-text-color);

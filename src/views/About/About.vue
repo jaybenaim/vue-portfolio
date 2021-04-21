@@ -44,7 +44,7 @@
             v-if="selectedFilter === 'Code Snippets'"
             class="about__filter--content"
           >
-            Code Snippets
+            <SnippetSection />
           </div>
         </Tabs>
       </div>
@@ -61,6 +61,7 @@ import ProjectSection from './components/ProjectSection/project-section.vue'
 
 import { ITab } from '@/lib/types'
 import { ITabProps } from '@/lib/types/components/tabs'
+import SnippetSection from './components/SnippetSection/snippet-section.vue'
 
 export default Vue.extend({
   name: 'About',
@@ -73,7 +74,8 @@ export default Vue.extend({
   components: {
     Tabs,
     RepoSection,
-    ProjectSection
+    ProjectSection,
+    SnippetSection
   },
   data() {
     return {
@@ -167,9 +169,8 @@ export default Vue.extend({
       overflow: auto;
       overflow-y: hidden;
       flex-basis: 25%;
-      padding: 0;
       margin: 0 5rem;
-      min-height: 560px;
+      min-height: 500px;
     }
 
     .tab-item {
@@ -182,7 +183,6 @@ export default Vue.extend({
     @include animate($name: fade-in, $duration: 0.8s);
     height: 100%;
     width: 100%;
-    padding-top: 50px;
   }
 }
 

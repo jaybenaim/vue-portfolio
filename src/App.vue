@@ -63,7 +63,6 @@ export default Auth.extend(Responsive).extend({
     return {
       dbIsReady: false,
       currentRoute: '',
-      showAuth: true,
       open: false
     }
   },
@@ -79,6 +78,9 @@ export default Auth.extend(Responsive).extend({
     },
     isLoading() {
       return this.$store.getters.isLoading
+    },
+    showAuth() {
+      return this.$route.fullPath.includes('/blogs')
     }
   },
   async created() {

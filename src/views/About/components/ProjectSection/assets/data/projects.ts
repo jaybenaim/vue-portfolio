@@ -2,14 +2,6 @@ import { IProject } from '@/lib/types/models/Project'
 
 export const $projects: IProject[] = [
   {
-    title: 'Highly Handy Home Services',
-    description: 'Home Service website with admin, booking and payment capabilities',
-    image: {
-      src: 'https://jacobbenaim.ca/img/highly-handy.jpg'
-    },
-    link: 'https://highlyhandy.com/#/'
-  },
-  {
     title: 'Cookies & Yum',
     description: 'E-commerce site, with SendGrid Api for email checkout. <br />'
     + '<em>(Name changed and branding removed to protect owners identity)</em>',
@@ -17,6 +9,14 @@ export const $projects: IProject[] = [
       src: 'https://jacobbenaim.ca/img/cookiesnyum.jpg'
     },
     link: 'https://jaybenaim.github.io/cookiesnyum/'
+  },
+  {
+    title: 'Highly Handy Home Services',
+    description: 'Home Service website with admin, booking and payment capabilities',
+    image: {
+      src: 'https://jacobbenaim.ca/img/highly-handy.jpg'
+    },
+    link: 'https://highlyhandy.com/#/'
   },
   {
     title: 'Real Estate Landing Page',
