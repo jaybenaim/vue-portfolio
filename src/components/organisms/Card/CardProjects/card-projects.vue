@@ -90,7 +90,7 @@ export default Vue.extend({
   }
 
   &__image img {
-    max-height: 260px;
+    max-height: 320px;
     object-fit: cover;
   }
 
@@ -99,7 +99,7 @@ export default Vue.extend({
   }
 
   .card-content .content {
-    min-height: 120px;
+    min-height: 110px;
   }
 }
 </style>

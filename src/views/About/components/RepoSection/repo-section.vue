@@ -7,7 +7,7 @@
       @filter-changed="handleFilterChange"
     />
 
-    <div class="container">
+    <div class="repo-section__container container">
       <ul class="repo-section__repos columns">
         <Loader
           class="repo-section__loader"
@@ -93,9 +93,12 @@ export default Responsive.extend(Theme).extend({
   async created() {
     this.isLoading = true
 
-    this.githubData = await this.githubData.init()
+    if (this.repos.length < 1) {
+      console.log('init')
+      this.githubData = await this.githubData.init()
 
-    this.isLoading = false
+      this.isLoading = false
+    }
 
     this.filterData = new FilterData(repoFilters as IFilter[])
 
@@ -171,7 +174,7 @@ export default Responsive.extend(Theme).extend({
     overflow: auto;
     max-width: 100%;
     margin: 0;
-    min-height: 500px;
+    height: 477px;
 
     li:first-of-type {
       padding-left: 0;

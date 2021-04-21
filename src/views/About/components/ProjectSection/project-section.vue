@@ -44,7 +44,7 @@ export default Vue.extend({
 
 <style lang="scss">
 .project-section {
-  min-height: 500px;
+  // min-height: 500px;
 
 }
 

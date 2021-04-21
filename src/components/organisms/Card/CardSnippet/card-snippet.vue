@@ -11,9 +11,10 @@
     </template>
 
     <template #default>
-      <h2 class="card-snippet__title">
-        {{ snippet.title }}
-      </h2>
+      <h2
+        class="card-snippet__title"
+        v-html="snippet.title"
+      />
 
       <p
         class="card-snippet__description"
@@ -66,7 +67,6 @@ export default Vue.extend({
 <style lang="scss">
 .card-snippet {
   background-color: rgba(var(--background-color-flipped-rgb), 0.15);
-  min-height: 500px;
 
   &__image img {
     max-height: 260px;
@@ -77,8 +77,10 @@ export default Vue.extend({
     color: var(--primary-text-color);
   }
 
-  .card-content .content {
-    min-height: 120px;
+  .card-content {
+    .content {
+      min-height: 110px;
+    }
   }
 }
 </style>

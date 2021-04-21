@@ -61,7 +61,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-$coloredText: 22px;
+$keywordFontSize: 22px;
+$coloredText: 19px;
+$textFontSize: 18px;
 
 [data-theme="dark"] {
   --alias:  #ffdd57;
@@ -76,7 +78,7 @@ $coloredText: 22px;
 }
 
 .snippet-section {
-  min-height: 500px;
+  // min-height: 500px;
 
   .card-snippet {
 
@@ -92,12 +94,15 @@ $coloredText: 22px;
   &__snippets {
 
     .carousel-arrow {
-      bottom: 50px;
+      bottom: 35px;
       position: relative;
     }
 
     // Text container for snippet line
     .alias-snippet {
+      background: rgba(var(--background-color-rgb), 0.2);
+      border: 1px solid var(--black);
+      padding: 1rem;
 
       &, * {
         -webkit-user-select: text !important;
@@ -109,11 +114,19 @@ $coloredText: 22px;
 
     .alias-heading {
       color: var(--primary-text-color);
+
+      a {
+        color: rgba(var(--primary-text-color-rgb), 0.7);
+
+        &:hover {
+          color: var(--primary-text-color);
+        }
+      }
     }
 
     .alias {
       color: var(--alias);
-      font-size: $coloredText;
+      font-size: $keywordFontSize;
 
       &:after {
         content: ' '
@@ -122,10 +135,11 @@ $coloredText: 22px;
 
     .alias-name {
       color: var(--name);
+      font-size: $coloredText;
     }
 
     .alias-text {
-      font-size: 18px;
+      font-size: $textFontSize;
       color: var(--primary-text-color);
     }
 

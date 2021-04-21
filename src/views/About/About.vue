@@ -90,10 +90,6 @@ export default Vue.extend({
           icon: 'folder-multiple-outline'
         },
         {
-          label: 'Images',
-          icon: 'image-search-outline'
-        },
-        {
           label: 'Code Snippets',
           icon: 'code-tags'
         }
@@ -116,6 +112,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+$minHeight: 550px;
 
 .about {
 
@@ -130,7 +127,32 @@ export default Vue.extend({
     }
   }
 
+  // Main Content
   &__filters {
+    min-height: $minHeight;
+
+    section.tab-content {
+      min-height: $minHeight;
+      padding: 0;
+    }
+
+    // Project Section
+    .project-section,
+    .project-section__projects,
+    .repo-section,
+    .snippet-section,
+    .snippet-section__snippets,
+    .gallery-list,
+    .carousel-list,
+    .carousel-slides,
+    .card {
+      height: 100%;
+    }
+
+    &__side-filters,
+    .tab-content {
+      min-height: $minHeight;
+    }
 
     &, * {
       ::-webkit-scrollbar {
@@ -170,7 +192,7 @@ export default Vue.extend({
       overflow-y: hidden;
       flex-basis: 25%;
       margin: 0 5rem;
-      min-height: 500px;
+      min-height: 100%;
     }
 
     .tab-item {

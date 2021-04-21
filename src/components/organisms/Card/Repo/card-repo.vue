@@ -108,7 +108,7 @@ export default Theme.extend({
 $maxWidth: 280px;
 
 .card-repo {
-  height: 400px;
+  height: 100%;
   width: 323px;
   background-color: rgba(var(--background-color-flipped-rgb), 0.15);
 
