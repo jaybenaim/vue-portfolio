@@ -36,10 +36,10 @@ export class GithubData {
       repos: this.repos,
       totalRepoCount: this.totalRepoCount,
       query: {
-        queryString: 'https://api.github.com/users/jaybenaim/repos?start_at=0&sort=created&per_page=30&page=1',
+        queryString: 'https://api.github.com/users/jaybenaim/repos?start_at=0&sort=created&per_page=10&page=1',
         startAt: 0,
         sort: 'created',
-        limit: 30,
+        limit: 10,
         page: 1
       }
     })
@@ -59,7 +59,7 @@ export class GithubData {
     return {} as IGithubUser
   }
 
-  async getRepos(startAt = 0, limit = 30, page = 1, sortBy?: string,) {
+  async getRepos(startAt = 0, limit = 10, page = 1, sortBy?: string,) {
     if (startAt === 0) {
       this.setRepos([])
     }
@@ -82,13 +82,15 @@ export class GithubData {
       this.totalRepoCount = repoResponse.totalCount
     }
 
+    this.setRepos(this.repos as IGithubRepo[])
+
     return this.repos
   }
 
   async filterRepos(
     query: ITabSelectedFilter,
     addResultsToRepos = false,
-    limit = 30,
+    limit = 10,
     page = 0
 ) {
     if (page === 0) {
@@ -157,6 +159,8 @@ export class GithubData {
       }
     }
 
+    this.setRepos(this.repos as IGithubRepo[])
+
     return this.repos
   }
 
@@ -168,12 +172,12 @@ export class GithubData {
   async loadMore(typeOfQuery: 'get' | 'filter', currentFilter: ITabSelectedFilter) {
     const startAt = this.query?.startAt || 0
 
-    const pageLimit = this.query?.limit || 30
+    const pageLimit = this.query?.limit || 10
 
     const pageNumber = this.query?.page || 0
 
     if (typeOfQuery === 'get') {
-      this.getRepos(startAt + 30, 30, pageNumber + 1, 'created')
+      this.getRepos(startAt + 10, 10, pageNumber + 1, 'created')
     } else {
       this.filterRepos(currentFilter, true, pageLimit, pageNumber)
     }

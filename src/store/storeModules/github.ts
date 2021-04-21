@@ -65,7 +65,7 @@ export default {
     async getRepos({ state, commit }: ActionContext<IGithubState, any>,
       {
         startAt = 0,
-        limit = 30,
+        limit = 10,
         page = 1,
         sortBy = 'created'
        }: IApiRepoOptions) {
@@ -85,8 +85,6 @@ export default {
             language: repo.language,
             image: $imageBuilder(repo.name, repo.language)
           } as IGithubRepo))
-
-          state.repos = repos
 
           const results = {
             success: true,
@@ -120,7 +118,7 @@ export default {
       const {
       filter:
         query,
-        limit = 30,
+        limit = 10,
         page = 1
       } = payload
 

@@ -62,12 +62,11 @@ export default Vue.extend({
 
 <style lang="scss">
 $keywordFontSize: 22px;
-$coloredText: 19px;
 $textFontSize: 18px;
 
 [data-theme="dark"] {
   --alias:  #ffdd57;
-  --option: #73b0f3;
+  --option: #569cd6;
   --name: var(--secondary);
 }
 
@@ -135,7 +134,7 @@ $textFontSize: 18px;
 
     .alias-name {
       color: var(--name);
-      font-size: $coloredText;
+      font-size: $textFontSize;
     }
 
     .alias-text {
@@ -145,7 +144,7 @@ $textFontSize: 18px;
 
     .alias-option {
       color: var(--option);
-      font-size: $coloredText;
+      font-size: $textFontSize;
     }
   }
 }

@@ -39,7 +39,7 @@ export class GithubData {
         queryString: 'https://api.github.com/users/jaybenaim/repos?start_at=0&sort=created&per_page=30&page=1',
         startAt: 0,
         sort: 'created',
-        limit: 30,
+        limit: 10,
         page: 1
       }
     })
@@ -164,12 +164,12 @@ export class GithubData {
   async loadMore(typeOfQuery: 'get' | 'filter', currentFilter: ITabSelectedFilter) {
     const startAt = this.query?.startAt || 0
 
-    const pageLimit = this.query?.limit || 30
+    const pageLimit = this.query?.limit || 10
 
     const pageNumber = this.query?.page || 1
 
     if (typeOfQuery === 'get') {
-      this.getRepos(startAt + 30)
+      this.getRepos(startAt + 10)
     } else {
       this.filterRepos(currentFilter, true, pageLimit, pageNumber + 1)
     }

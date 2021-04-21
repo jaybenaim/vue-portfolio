@@ -71,7 +71,7 @@ export default Responsive.extend(Theme).extend({
       return this.$store.getters.getUserInfo
     },
     repos(): IGithubRepo[] {
-      return this.githubData.repos || []
+      return this.$store.getters.getRepos
     },
     showLoadMore(): boolean {
       if (this.githubData) {
@@ -94,11 +94,10 @@ export default Responsive.extend(Theme).extend({
     this.isLoading = true
 
     if (this.repos.length < 1) {
-      console.log('init')
       this.githubData = await this.githubData.init()
-
-      this.isLoading = false
     }
+
+    this.isLoading = false
 
     this.filterData = new FilterData(repoFilters as IFilter[])
 
@@ -132,11 +131,11 @@ export default Responsive.extend(Theme).extend({
         return 0.01
       }
 
-      if (index % 30 === 0) {
+      if (index % 10 === 0) {
         return 0.01
       }
 
-      if (index > 30) {
+      if (index > 10) {
         return 0.4
       }
 
@@ -150,8 +149,10 @@ export default Responsive.extend(Theme).extend({
 
       if (filter === 'all') {
         await this.githubData.getRepos()
+        this.isLoading = false
       } else if (filter !== 'languages') {
         await this.githubData.filterRepos(selectedFilter)
+        this.isLoading = false
       }
 
       this.isLoading = false
