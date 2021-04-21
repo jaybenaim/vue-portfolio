@@ -76,3 +76,10 @@ export interface ISnippetItem {
   image?: IImage
   link?: ILink
 }
+
+export interface IMessageData {
+  name: string
+  email: string
+  message: string
+  success: boolean
+}

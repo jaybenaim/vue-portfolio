@@ -49,6 +49,7 @@
             type="password"
             placeholder="*********"
             validation-message="Must be at least 6 characters."
+            password-reveal
             required
           />
         </b-field>

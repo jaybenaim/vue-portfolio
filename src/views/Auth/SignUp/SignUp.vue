@@ -64,6 +64,7 @@
             placeholder="*********"
             validation-message="Must be at least 6 characters."
             required
+            password-reveal
           />
         </b-field>
 
