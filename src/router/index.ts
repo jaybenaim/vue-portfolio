@@ -12,12 +12,12 @@ const routes: Array<RouteConfig> = [
   {
     path: '/sign-up',
     name: 'SignUp',
-    component: () => import(/* webpackChunkName: "blogs" */ '../views/SignUp/SignUp.vue')
+    component: () => import(/* webpackChunkName: "blogs" */ '../views/Auth/SignUp/SignUp.vue')
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "blogs" */ '../views/Login/Login.vue')
+    component: () => import(/* webpackChunkName: "blogs" */ '../views/Auth/Login/Login.vue')
   },
   {
     path: '/blogs',
@@ -31,12 +31,17 @@ const routes: Array<RouteConfig> = [
     path: '/blogs/:id',
     name: 'BlogDetails',
     props: true,
-    component: () => import(/* webpackChunkName: "blogs" */ '../views/BlogDetails/BlogDetails.vue'),
+    component: () => import(/* webpackChunkName: "blogs" */ '../views/Blogs/components/BlogDetails/BlogDetails.vue'),
   },
   {
     path: '/about',
     name: 'About',
     component: () => import(/* webpackChunkName: "about" */ '../views/About/About.vue'),
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: () => import(/* webpackChunkName: "contact" */ '../views/Contact/Contact.vue'),
   },
   {
     path: '/account',
