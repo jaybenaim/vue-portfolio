@@ -119,3 +119,11 @@
   -webkit-transform: $transformation;
   transform: $transformation;
 }
+
+@mixin link() {
+  color: var(--primary-text-color);
+
+  &:hover {
+    color: var(--primary-text-color-hover);
+  }
+}

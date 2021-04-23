@@ -58,121 +58,58 @@ export default Vue.extend({
 .social-links {
   &__links {
     @include flex();
-  }
-}
 
-[title='Twitter'] {
+    .icon {
+      color: var(--primary-text-color);
+    }
 
-  &:hover::after {
-    // content: '';
-    // @include animation(animate-twitter-icon 0.35s ease-in-out 1 forwards);
-    // @include keyframes(animate-twitter-icon) {
+    .linked-in {
 
-    //   from {
-    //     height: 0;
-    //     width: 0;
-    //     background: var(--white);
-    //   }
+      &:hover {
+        @include animate(
+          $name: animate-linkedin-icon,
+          $duration: 0.35s,
+          $ease: ease-in-out,
+          $count: 1,
+          $fill: forwards
+          );
 
-    //   to {
-    //     height: 85%;
-    //     width: 85%;
-    //     background: #1da1f2;
-    //   }
-    // }
-  }
-}
+        @keyframes animate-linkedin-icon {
 
-[title='Facebook'] {
+          from {
+            color: var(--primary-text-color);
+          }
 
-  &:hover::after {
-    // content: '';
-    // @include animation(animate-facebook-icon 0.35s ease-in-out 1 forwards);
-    // @include keyframes(animate-facebook-icon) {
+          to {
+            color: #2867b2;
+          }
+        }
+      }
+    }
 
-    //   from {
-    //     height: 0;
-    //     width: 0;
-    //     background: var(--white);
-    //   }
+    .github {
 
-    //   to {
-    //     height: 85%;
-    //     width: 85%;
-    //     background: #1877f2;
-    //   }
-    // }
-  }
-}
+      &:hover {
+        @include animate(
+          $name: animate-github-icon,
+          $duration: 0.35s,
+          $ease: ease-in-out,
+          $count: 1,
+          $fill: forwards
+          );
 
-[title='Instagram'] {
+        @keyframes animate-github-icon {
 
-  &:hover::after {
-    content: '';
-    // @include animation(animate-instagram-icon 0.35s ease-in-out 1 forwards);
-    // @include keyframes(animate-instagram-icon) {
+          from {
+            color: var(--primary-text-color);
+          }
 
-    //   from {
-    //     height: 0;
-    //     width: 0;
-    //     background: var(--white);
-    //   }
-
-    //   to {
-    //     height: 85%;
-    //     width: 85%;
-    //     background: radial-gradient(circle at 30% 107%,
-    //     #fdf497 0%,
-    //     #fdf497 5%,
-    //     #fd5949 45%,
-    //     #d6249f 60%,
-    //     #285aeb 90%);
-    //   }
-    // }
-  }
-}
-
-[title='LinkedIn'] {
-
-  &:hover::after {
-    // content: '';
-    // @include animation(animate-linkedin-icon 0.35s ease-in-out 1 forwards);
-    // @include keyframes(animate-linkedin-icon) {
-
-    //   from {
-    //     height: 0;
-    //     width: 0;
-    //     background: var(--white);
-    //   }
-
-    //   to {
-    //     height: 85%;
-    //     width: 85%;
-    //     background: #2867b2;
-    //   }
-    // }
-  }
-}
-
-[title='YouTube'] {
-
-  &:hover::after {
-    // content: '';
-    // @include animation(animate-youtube-icon 0.35s ease-in-out 1 forwards);
-    // @include keyframes(animate-youtube-icon) {
-
-    //   from {
-    //     height: 0;
-    //     width: 0;
-    //     background: var(--white);
-    //   }
-
-    //   to {
-    //     height: 85%;
-    //     width: 85%;
-    //     background: #ff0000;
-    //   }
-    // }
+          to {
+            color: #bd2c00;
+          }
+        }
+      }
+    }
   }
 }
 </style>

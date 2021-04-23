@@ -13,7 +13,7 @@
         <div class="contact__left-side p-5">
           <div class="contact__phone-number mb-6">
             <p class="contact__link-heading mb-3">
-              For a fast response, send me a text with any website requests.
+              For a fast response, send me a text with any website requests
             </p>
 
             <b-icon
@@ -28,11 +28,13 @@
             </a>
           </div>
 
+          <p>Or</p>
+
           <div
             class="contact__email mb-6"
           >
             <p class="contact__link-heading mb-3">
-              You can also send me an email.
+              Send me an email
             </p>
 
             <b-icon
@@ -47,16 +49,17 @@
             </a>
           </div>
 
+          <p>Or</p>
+
           <div
             class="contact__links mb-6"
           >
             <p class="contact__link-heading mb-3">
-              I can also be reached on any of these platforms:
+              Reach me on any of these platforms:
             </p>
 
             <SocialLinks
               :socialLinks="socialLinks"
-              :asIcons="false"
             />
           </div>
         </div>
@@ -140,7 +143,7 @@ export default Vue.extend({
 
   .contact-link {
     font-size: 20px;
-    color: var(--primary-text-color);
+    @include link()
   }
 }
 </style>

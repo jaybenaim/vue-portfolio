@@ -1,6 +1,10 @@
 <template>
   <div class="contact-form">
     <section>
+      <h2 class="contact-form__heading">
+        Send me a message
+      </h2>
+
       <b-field
         label="Name"
         :type="errors.name ? 'is-danger' : ''"
@@ -154,6 +158,11 @@ export default Theme.extend({
 
 <style lang="scss">
 .contact-form {
+  &__heading {
+    font-size: 24px;
+    font-weight: 500;
+  }
+
   label {
     color: var(--primary-text-color);
     text-align: left;
