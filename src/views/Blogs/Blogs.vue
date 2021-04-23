@@ -154,12 +154,20 @@ export default Auth.extend({
   .card {
     @include animate($duration: .8s, $name: tilt-in-tr, $delay: var(--delay));
     opacity: 0;
+
   }
 
   // Card
   .blog {
     &__publish-date {
       justify-content: flex-start !important;
+    }
+
+    &__content,
+    &__summary {
+      span {
+        @include truncate();
+      }
     }
   }
 }

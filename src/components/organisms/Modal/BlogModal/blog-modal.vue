@@ -65,6 +65,7 @@
                 :type="{ 'is-danger': errors.summary }"
               >
                 <b-input
+                  class="input__summary"
                   v-model="formProps.summary"
                   maxlength="200"
                   type="textarea"
@@ -78,6 +79,7 @@
                 :type="{ 'is-danger': errors.content }"
               >
                 <b-input
+                  class="input__content"
                   v-model="formProps.content"
                   maxlength="5000"
                   type="textarea"
@@ -297,6 +299,9 @@ export default Vue.extend({
 }
 
 .modal-form {
+  .form {
+    width: 800px;
+  }
 
   .field:not(:last-child) {
     margin-top: 20px;
@@ -316,6 +321,12 @@ export default Vue.extend({
   .preview__image {
     height: 250px;
     width: 250px;
+  }
+
+  .input {
+    &__content .textarea {
+      height: 400px;
+    }
   }
 
   @media (max-width: 1200px) {

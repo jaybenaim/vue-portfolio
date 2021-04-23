@@ -154,7 +154,7 @@
         <div class="content">
           <div
             v-if="includeElements.elements.summary"
-            class="blog__summary is-flex mb-3"
+            class="blog__summary mb-3"
           >
             <span
               v-html="blog.summary"
@@ -162,7 +162,7 @@
           </div>
 
           <div
-            class="blog__content is-flex"
+            class="blog__content"
             v-if="includeElements.elements.content"
           >
             <span
@@ -171,7 +171,7 @@
           </div>
 
           <div
-            class="blog__bottom-section columns mt-3"
+            class="blog__bottom-section columns"
           >
             <div
               v-if="includeElements.elements.preview"
@@ -467,12 +467,8 @@ export default Vue.extend({
 
   &__content {
     text-align: left;
-    max-height: 400px;
-    overflow-y: auto;
- 
-    span { 
-     @include truncate(); 
-    }
+    // max-height: 400px;
+    // overflow-y: auto;
   }
 
   ::-webkit-scrollbar {

@@ -1,24 +1,27 @@
 <template>
-  <section
-    class="blog-details section is-medium"
-    v-if="Object.keys(currentBlog).length > 0"
-  >
-    <CardBlog
-      :blog="currentBlog"
-      :withRouterLink="false"
-      :includeElements="includeElements"
-    />
-  </section>
+  <div class="container mt-6">
+    <section
+      class="blog-details section"
+      v-if="Object.keys(currentBlog).length > 0"
+    >
+      <CardBlog
+        :blog="currentBlog"
+        :withRouterLink="false"
+        :includeElements="includeElements"
+      />
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
+import Auth from '@/mixins/Auth'
+
 import CardBlog from '@/components/organisms/Card/Blog/card-blog.vue'
 import { IApiBlogResponseError } from '@/lib/types/errors'
 import { IncludeElements } from '@/lib/types/general/IncludeElements'
 import { Blog, IApiBlogResponse } from '@/lib/types/models/Blog'
-import Vue from 'vue'
 
-export default Vue.extend({
+export default Auth.extend({
   components: { CardBlog },
   name: 'blog-details',
   props: {
@@ -41,7 +44,8 @@ export default Vue.extend({
         image: {},
         imageCaption: {},
         publishDate: {},
-        tags: {}
+        tags: {},
+        optionsToggle: {}
       })
     },
   },
@@ -70,8 +74,22 @@ export default Vue.extend({
 .blog-details {
 
   .card {
-    max-width: 550px;
+    max-width: 1050px;
     margin: 0 auto;
+  }
+
+  .blog {
+    &__image {
+      height: 320px;
+    }
+
+    &__content {
+      @include flex($dir: column, $justify: flex-start, $align: flex-start);
+
+      * {
+        min-height: 100%;
+      }
+    }
   }
 }
 </style>
