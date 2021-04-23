@@ -1,3 +1,4 @@
+import Link from './components/Link'
 import { IApiErrorMessage } from './errors'
 import { IFilter } from './general/FilterList'
 
@@ -68,7 +69,7 @@ export interface ISnippetItem {
   title: string
   content: string
   image?: IImage
-  link?: ILink
+  link?: Link
 }
 
 export interface IMessageData {
