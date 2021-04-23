@@ -6,15 +6,62 @@
           Contact Me
         </h1>
 
-        <em>Contact me for new website builds, programming help and tutoring.</em>
+        <em>Contact me for new website builds, programming help and tutoring</em>
       </div>
 
       <div class="contact__containers mt-6">
-        <div class="contact__left-side">
+        <div class="contact__left-side p-5">
+          <div class="contact__phone-number mb-6">
+            <p class="contact__link-heading mb-3">
+              For a fast response, send me a text with any website requests.
+            </p>
 
+            <b-icon
+              icon="phone"
+            />
+
+            <a
+              href="tel:6476404714"
+              class="phone contact-link"
+            >
+              (647) 640-4714
+            </a>
+          </div>
+
+          <div
+            class="contact__email mb-6"
+          >
+            <p class="contact__link-heading mb-3">
+              You can also send me an email.
+            </p>
+
+            <b-icon
+              icon="mail"
+            />
+
+            <a
+              href="mailto:benaimjacob@gmail.com"
+              class="email contact-link"
+            >
+              benaimjacob@gmail.com
+            </a>
+          </div>
+
+          <div
+            class="contact__links mb-6"
+          >
+            <p class="contact__link-heading mb-3">
+              I can also be reached on any of these platforms:
+            </p>
+
+            <SocialLinks
+              :socialLinks="socialLinks"
+              :asIcons="false"
+            />
+          </div>
         </div>
 
-        <div class="contact__right-side">
+        <div class="contact__right-side p-5">
           <!-- Contact Form -->
           <ContactForm />
         </div>
@@ -25,11 +72,45 @@
 
 <script lang="ts">
 import Vue from 'vue'
+
+import SocialLinks from '@/components/atoms/SocialLinks/social-links.vue'
+import { ISocialLink } from '@/lib/types/components/socialLinks'
 import ContactForm from './components/ContactForm/contact-form.vue'
+import Link from '@/lib/types/components/Link'
 
 export default Vue.extend({
-  components: { ContactForm },
-  name: 'contact'
+  components: { ContactForm, SocialLinks },
+  name: 'contact',
+  data() {
+    return {
+      socialLinks: [
+        {
+          label: 'Linked In',
+          className: 'linked-in',
+          link: new Link({
+            href: 'https://www.linkedin.com/in/jacob-benaim-a64a0818a/'
+          }),
+          icon: {
+            icon: 'linkedin',
+            size: 'is-large'
+          }
+        },
+        {
+          label: 'Github',
+          className: 'github',
+          link: new Link({
+            href: 'https://github.com/jaybenaim'
+          }),
+          icon: {
+            icon: 'github',
+            size: 'is-large'
+          }
+        }
+      ] as ISocialLink[]
+    }
+  },
+  created() {
+  }
 })
 </script>
 
@@ -44,8 +125,22 @@ export default Vue.extend({
   &__right-side {
     background-color: rgba(var(--background-color-flipped-rgb), 0.15);
     border: 1px solid var(--primary-text-color-flipped);
-    height: 530px;
+    min-height: 500px;
     width: 40%;
+  }
+
+  .icon {
+    font-size: 20px;
+
+    &::after {
+      content: ' ';
+      min-width: 5px;
+    }
+  }
+
+  .contact-link {
+    font-size: 20px;
+    color: var(--primary-text-color);
   }
 }
 </style>

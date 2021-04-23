@@ -9,12 +9,6 @@ export interface IImage {
   caption?: string
 }
 
-export interface ILink {
-  href: string
-  src: string
-  target: '_blank' | '_self'
-}
-
 export interface IApiDeleteResponse {
   success: boolean,
   error: IApiErrorMessage

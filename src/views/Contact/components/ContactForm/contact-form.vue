@@ -1,5 +1,5 @@
 <template>
-  <div class="contact-form p-5">
+  <div class="contact-form">
     <section>
       <b-field
         label="Name"
