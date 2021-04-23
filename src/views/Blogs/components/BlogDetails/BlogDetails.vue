@@ -8,6 +8,7 @@
         :blog="currentBlog"
         :withRouterLink="false"
         :includeElements="includeElements"
+        @blog-updated="getBlog"
       />
     </section>
   </div>
@@ -55,15 +56,20 @@ export default Auth.extend({
     }
   },
   async created() {
-    const blogId = this.$route.params.id
+    await this.getBlog()
+  },
+  methods: {
+    async getBlog() {
+      const blogId = this.$route.params.id
 
-    if (this.blog) {
-      this.currentBlog = this.blog
-    } else {
-      const blogResponse: IApiBlogResponse | IApiBlogResponseError = await this.$store.dispatch('getBlogById', blogId)
+      if (this.blog) {
+        this.currentBlog = this.blog
+      } else {
+        const blogResponse: IApiBlogResponse | IApiBlogResponseError = await this.$store.dispatch('getBlogById', blogId)
 
-      if (blogResponse.success) {
-        this.currentBlog = blogResponse.blog
+        if (blogResponse.success) {
+          this.currentBlog = blogResponse.blog
+        }
       }
     }
   }

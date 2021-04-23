@@ -132,7 +132,7 @@
             <CardBlog
               :blog="blog"
               includeFooter
-              :clickable="false"
+              clickable
               @blog-updated="getBlogs"
               @blog-deleted="getBlogs"
               :includeElements="includedElements"

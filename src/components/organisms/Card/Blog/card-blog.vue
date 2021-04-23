@@ -415,18 +415,18 @@ export default Vue.extend({
     color: var(--primary-text-color);
   }
 
-  // .card-image { 
-  //   overflow: hidden; 
-  // }
+  .card-image { 
+    overflow: hidden; 
+  }
 
-  // .card-image img { 
-  //   transition: transform .5s ease-in-out;
-  //   object-fit: cover;
-  // }
+  .card-image img { 
+    transition: transform .5s ease-in-out;
+    object-fit: cover;
+  }
 
-  // .card-image:hover img { 
-  //   transform: scale(1.1); 
-  // }
+  .card-image:hover img { 
+    transform: scale(1.1); 
+  }
 
   .title { 
     &:hover {
@@ -444,6 +444,7 @@ export default Vue.extend({
 
     &:hover { 
       color: var(--primary-text-color-hover); 
+      cursor: pointer;
     }
 
     .dropdown-menu { 

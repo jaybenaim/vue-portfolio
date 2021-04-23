@@ -203,7 +203,9 @@ export default Auth.extend({
 <style lang="scss">
 .navbar {
   background-color: transparent !important;
+  position: relative;
   z-index: unset;
+  z-index: 30;
 
   .navbar-brand {
     background-color: transparent !important;
