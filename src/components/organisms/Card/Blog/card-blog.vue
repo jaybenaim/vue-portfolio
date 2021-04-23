@@ -400,10 +400,10 @@ export default Vue.extend({
     background-color: rgba(var(--background-color-flipped-rgb), 0.15);
     @include animate($name: fade-in, $duration: 0.7s); 
 
-    & { 
-      position: relative;
-      z-index: 1;
-    }
+    // & { 
+    //   position: relative;
+    //   z-index: 1;
+    // }
   }
 
   p,

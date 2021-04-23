@@ -203,6 +203,7 @@ export default Auth.extend({
 <style lang="scss">
 .navbar {
   background-color: transparent !important;
+  z-index: unset;
 
   .navbar-brand {
     background-color: transparent !important;
@@ -239,8 +240,6 @@ export default Auth.extend({
     }
 
     a {
-      // color: var(--primary-text-color) !important;
-
       &:hover,
       &:active,
       &:focus {

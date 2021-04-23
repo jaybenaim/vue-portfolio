@@ -89,6 +89,9 @@ export default Theme.extend({
 
 <style lang="scss">
 .modal-default {
+  position: relative;
+  z-index: 25;
+
   .label {
     text-align: left;
     color: var(--primary-text-color);
@@ -104,6 +107,9 @@ export default Theme.extend({
   }
 
   .modal {
+    position: relative;
+    z-index: 9999999;
+
     &__close {
       @include flex($justify: flex-end);
       width: 100%;
