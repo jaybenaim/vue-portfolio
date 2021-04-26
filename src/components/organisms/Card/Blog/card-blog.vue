@@ -8,7 +8,10 @@
         v-if="includeElements.elements.image"
         class="blog__image card-image"
       >
-        <figure class="image is-2by1">
+        <figure
+          class="image is-2by1"
+          :class="`image-${blog.title.split(' ')[0].toLowerCase()}`"
+        >
           <router-link
             v-if="clickable"
             :to="{
@@ -415,6 +418,7 @@ export default Vue.extend({
     color: var(--primary-text-color);
   }
 
+  // Image 
   .card-image { 
     overflow: hidden; 
   }
@@ -428,6 +432,12 @@ export default Vue.extend({
     transform: scale(1.1); 
   }
 
+  .image-regex img { 
+    background-position: -50px 0;
+    object-position: center -180px;
+  }
+
+  // Title 
   .title { 
     &:hover {
       color: var(--primary-text-color-hover) !important;
