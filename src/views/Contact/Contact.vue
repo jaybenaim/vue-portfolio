@@ -10,7 +10,7 @@
       </div>
 
       <div class="contact__containers mt-6">
-        <div class="contact__left-side p-5">
+        <div class="contact__left-side p-5 pt-6">
           <div class="contact__phone-number mb-6">
             <p class="contact__link-heading mb-3">
               For a fast response, send me a text with any website requests
