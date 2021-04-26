@@ -28,12 +28,20 @@
       />
     </div>
 
+    <!-- Loader -->
     <div
       v-if="isLoading"
       class="app__loader"
     >
       <Loader :isLoading="isLoading"/>
     </div>
+
+    <!-- Notifications -->
+    <NotificationDefault
+      :isActive="Object.keys(notification).length > 0"
+      :notification="notification"
+    />
+
     <!-- Routes -->
     <router-view />
   </div>
@@ -49,9 +57,11 @@ import Responsive from '@mixins/Responsive'
 import MenuMobile from '@layout/MenuMobile/menu-mobile.vue'
 import Navbar from '@/components/layout/Navbar/navbar-default.vue'
 import Loader from '@atoms/Loader/loader.vue'
+import NotificationDefault from '@atoms/Notification/notification-default.vue'
 
 import { IApiResponse, IApiTokenResponse } from './lib/types/api'
 import { IApiError, IApiTokenError } from './lib/types/errors'
+import { INotification } from './lib/types'
 
 export default Auth.extend(Responsive).extend({
   name: 'App',
@@ -81,6 +91,9 @@ export default Auth.extend(Responsive).extend({
     },
     showAuth() {
       return this.$route.fullPath.includes('/blogs')
+    },
+    notification(): INotification {
+      return this.$store.getters.getNotification
     }
   },
   async created() {
@@ -94,6 +107,12 @@ export default Auth.extend(Responsive).extend({
     }
 
     this.dbIsReady = statusResponse
+
+    this.$store.commit('setNotification', {
+      message: 'success',
+      type: 'is-success',
+      autoClose: true
+    } as INotification)
   },
   async mounted() {
     // Set Theme
@@ -133,7 +152,8 @@ export default Auth.extend(Responsive).extend({
   components: {
     MenuMobile,
     Navbar,
-    Loader
+    Loader,
+    NotificationDefault
   }
 })
 </script>

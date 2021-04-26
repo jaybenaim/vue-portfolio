@@ -134,6 +134,14 @@ export default Theme.extend({
         // this.messageSuccess = true
         console.log('message sent successfully')
         // toggle alert popup from buefy
+        // const notif = this.$buefy.notification.open({
+        //   message: 'message sent succesfully!',
+        //   type: 'is-success'
+        // } as INotification)
+
+        // notif.$on('close', () => {
+        //   this.$emit('close')
+        // })
       } else {
         console.log(messageResponse.data)
         if (messageResponse.data === undefined) {

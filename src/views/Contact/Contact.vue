@@ -65,7 +65,6 @@
         </div>
 
         <div class="contact__right-side p-5">
-          <!-- Contact Form -->
           <ContactForm />
         </div>
       </div>
@@ -111,8 +110,6 @@ export default Vue.extend({
         }
       ] as ISocialLink[]
     }
-  },
-  created() {
   }
 })
 </script>

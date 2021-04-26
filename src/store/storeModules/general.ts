@@ -1,4 +1,5 @@
 import { $getDbStatus } from '@/helpers/api/get'
+import { INotification } from '@/lib/types'
 import { IApiResponse, IApiStatusResponse } from '@/lib/types/api'
 import { IApiError } from '@/lib/types/errors'
 import { AxiosError } from 'axios'
@@ -7,11 +8,13 @@ import { ActionContext } from 'vuex'
 export default {
   state: () => ({
     dbIsReady: false,
-    isLoading: false
+    isLoading: false,
+    notification: {} as INotification
   }),
   getters: {
     getDbStatus: (state: GeneralState) => state.dbIsReady,
-    isLoading: (state: GeneralState) => state.isLoading
+    isLoading: (state: GeneralState) => state.isLoading,
+    getNotification: (state: GeneralState) => state.notification
   },
   mutations: {
     setDbStatus(state: GeneralState, status: boolean) {
@@ -19,6 +22,9 @@ export default {
     },
     isLoading(state: GeneralState, status: boolean) {
       state.isLoading = status
+    },
+    setNotification(state: GeneralState, notification: INotification) {
+      state.notification = notification
     }
   },
   actions: {
@@ -47,4 +53,5 @@ export default {
 interface GeneralState {
   dbIsReady: boolean
   isLoading: boolean
+  notification: INotification
 }

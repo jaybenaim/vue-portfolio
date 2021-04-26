@@ -2,6 +2,8 @@ import Link from './components/Link'
 import { IApiErrorMessage } from './errors'
 import { IFilter } from './general/FilterList'
 
+import { TStyle } from '@/lib/types/components/socialLinks'
+
 export interface IImage {
   src: string
   alt?: string
@@ -78,3 +80,15 @@ export interface IMessageData {
   message: string
   success: boolean
 }
+
+export interface INotification {
+  message: string
+  type?: TStyle
+  duration?: number
+  position?: TPosition
+  hasIcon?: boolean
+  autoClose?: boolean
+  closeLabel?: string
+}
+
+export type TPosition = 'is-top-right' | 'is-top'| 'is-top-left'| 'is-bottom-right' | 'is-bottom' | 'is-bottom-left'
