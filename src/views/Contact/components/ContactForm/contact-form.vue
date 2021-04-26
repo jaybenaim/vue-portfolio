@@ -5,6 +5,12 @@
         Send me a message
       </h2>
 
+      <Loader
+        class="repo-section__loader"
+        :isLoading="isLoading"
+        :isFullPage="false"
+      />
+
       <b-field
         label="Name"
         :type="errors.name ? 'is-danger' : ''"
@@ -66,17 +72,20 @@ import Theme from '@/mixins/Theme'
 import {
  $sendEmail, IApiMessageDataResponse, TMessageField
 } from '@/helpers/email/email'
-import { IMessageData } from '@/lib/types'
+import { IMessageData, INotification } from '@/lib/types'
 import ButtonDefault from '@/components/atoms/ButtonDefault/button-default.vue'
+import Loader from '@atoms/Loader/loader.vue'
 
 export default Theme.extend({
   name: 'contact-form',
   components: {
-    ButtonDefault
+    ButtonDefault,
+    Loader
   },
   data() {
     return {
       isBtnDisabled: true,
+      isLoading: false,
       formProps: {
         name: '',
         email: '',
@@ -128,22 +137,21 @@ export default Theme.extend({
       return isDisabled.includes(true)
     },
     async sendEmail() {
+      this.isLoading = true
+
       const messageResponse: IApiMessageDataResponse = await $sendEmail(this.formProps)
 
       if (messageResponse.success) {
-        // this.messageSuccess = true
-        console.log('message sent successfully')
-        // toggle alert popup from buefy
-        // const notif = this.$buefy.notification.open({
-        //   message: 'message sent succesfully!',
-        //   type: 'is-success'
-        // } as INotification)
+        this.isLoading = false
 
-        // notif.$on('close', () => {
-        //   this.$emit('close')
-        // })
+        this.$store.commit('setNotification', {
+          message: 'Message sent successfully!',
+          type: 'is-success',
+          autoClose: true
+        } as INotification)
       } else {
-        console.log(messageResponse.data)
+        this.isLoading = false
+
         if (messageResponse.data === undefined) {
           this.errors.unknown = 'Something unexpected occurred, please try again later.'
 
