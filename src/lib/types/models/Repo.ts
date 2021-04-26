@@ -47,7 +47,7 @@ export interface IGithubRepo {
   [index: string]: any
   id: number
   name: string
-  homepage?: string
+  homepageUrl?: string
   gitUrl?: string
   cloneUrl?: string
   createdAt?: string

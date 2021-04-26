@@ -126,18 +126,38 @@ export default {
       .then((response) => {
         const { data, request: { responseURL } } = response
 
-        const matchedRepos = data.items.map((repo: any) => ({
-          id: repo.id,
-          name: repo.name,
-          homepageUrl: getHomePageUrl(repo),
-          gitUrl: repo.html_url,
-          cloneUrl: repo.clone_url,
-          createdAt: repo.created_at,
-          updatedAt: repo.updated_at,
-          description: repo.description,
-          language: repo.language,
-          image: $imageBuilder(repo.name, repo.language)
-        } as IGithubRepo))
+        const matchedRepos = [] as IGithubRepo[]
+        for (const repo of data.items) {
+          if (query !== 'deployed') {
+            matchedRepos.push({
+              id: repo.id,
+              name: repo.name,
+              homepageUrl: getHomePageUrl(repo),
+              gitUrl: repo.html_url,
+              cloneUrl: repo.clone_url,
+              createdAt: repo.created_at,
+              updatedAt: repo.updated_at,
+              description: repo.description,
+              language: repo.language,
+              image: $imageBuilder(repo.name, repo.language)
+            } as IGithubRepo)
+          }
+
+          if (repo.has_pages) {
+            matchedRepos.push({
+              id: repo.id,
+              name: repo.name,
+              homepageUrl: getHomePageUrl(repo),
+              gitUrl: repo.html_url,
+              cloneUrl: repo.clone_url,
+              createdAt: repo.created_at,
+              updatedAt: repo.updated_at,
+              description: repo.description,
+              language: repo.language,
+              image: $imageBuilder(repo.name, repo.language)
+            } as IGithubRepo)
+          }
+        }
 
         const results = {
           success: true,

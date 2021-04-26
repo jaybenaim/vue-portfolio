@@ -61,6 +61,7 @@ export class GithubData {
 
   async getRepos(startAt = 0, limit = 10, page = 1, sortBy?: string,) {
     if (startAt === 0) {
+      this.repos = []
       this.setRepos([])
     }
 

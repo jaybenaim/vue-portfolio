@@ -89,6 +89,7 @@
                   class="blog__options-toggle"
                 >
                   <b-dropdown
+                    v-if="user.id === blog.uid.id"
                     aria-role="list"
                     class="is-pulled-right"
                     position="is-bottom-left"
@@ -97,7 +98,7 @@
                       <b-icon icon="dots-vertical"></b-icon>
                     </template>
 
-                    <span v-if="user.id === blog.uid.id">
+                    <span>
                       <b-dropdown-item
                         aria-role="listitem"
                         @click.native="handleEdit"
@@ -114,16 +115,17 @@
                         <b-icon icon="trash-can-outline"></b-icon>
                       </b-dropdown-item>
                     </span>
-
-                    <span v-else>
-                      <b-dropdown-item aria-role="listitem">
-                        <b-icon
-                          icon="heart-outline"
-                          type="is-danger"
-                        ></b-icon>
-                      </b-dropdown-item>
-                    </span>
                   </b-dropdown>
+
+                  <span
+                    v-else
+                    class="pr-2"
+                  >
+                    <b-icon
+                      icon="heart-outline"
+                      type="is-danger"
+                    ></b-icon>
+                  </span>
                 </div>
               </div>
             </div>
@@ -430,11 +432,6 @@ export default Vue.extend({
 
   .card-image:hover img { 
     transform: scale(1.1); 
-  }
-
-  .image-regex img { 
-    background-position: -50px 0;
-    object-position: center -180px;
   }
 
   // Title 

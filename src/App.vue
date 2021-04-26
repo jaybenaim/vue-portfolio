@@ -107,12 +107,6 @@ export default Auth.extend(Responsive).extend({
     }
 
     this.dbIsReady = statusResponse
-
-    this.$store.commit('setNotification', {
-      message: 'success',
-      type: 'is-success',
-      autoClose: true
-    } as INotification)
   },
   async mounted() {
     // Set Theme

@@ -192,6 +192,10 @@ export default Responsive.extend(Theme).extend({
     }
   }
 
+  .card-content {
+    min-height: 200px;
+  }
+
   &__load-more {
     @include animate($name: fade-in, $duration: 1.5s, $delay: 1s, $ease: ease-in-out);
     @include flex();

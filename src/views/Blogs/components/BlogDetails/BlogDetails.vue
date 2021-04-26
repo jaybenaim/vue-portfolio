@@ -89,6 +89,11 @@ export default Auth.extend({
       height: 320px;
     }
 
+    .image-regex img {
+      background-position: -50px 0;
+      object-position: center -180px;
+    }
+
     &__content {
       @include flex($dir: column, $justify: flex-start, $align: flex-start);
 

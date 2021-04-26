@@ -51,6 +51,7 @@
             validation-message="Must be at least 6 characters."
             password-reveal
             required
+            @keyup.enter.native="handleLogin"
           />
         </b-field>
 
@@ -125,6 +126,7 @@ export default Auth.extend({
   },
   methods: {
     async handleLogin() {
+      console.log('logging in ')
       const user = this.formData as ILoginData
 
       const userResponse: IApiLoginResponse | IApiLoginError = await this.$store.dispatch('login', user)

@@ -34,7 +34,7 @@ export default Vue.extend({
     },
     isActive: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   created() {

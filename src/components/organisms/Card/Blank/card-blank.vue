@@ -30,13 +30,17 @@
       >
         <slot></slot>
       </div>
+    </div>
 
-      <div
-        v-if="includeElements.elements.footer"
-        class="card-footer"
-      >
-        <slot name="footer"></slot>
-      </div>
+    <div
+      v-if="includeElements.elements.footer"
+      class="card-footer ml-5 mr-5"
+      :class="includeElements.elements.footer.className
+        ? includeElements.elements.footer.className
+        : ''
+      "
+    >
+      <slot name="footer"></slot>
     </div>
   </div>
 </template>

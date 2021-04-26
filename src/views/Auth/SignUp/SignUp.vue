@@ -65,6 +65,7 @@
             validation-message="Must be at least 6 characters."
             required
             password-reveal
+            @keyup.enter.native="handleLogin"
           />
         </b-field>
 
