@@ -82,31 +82,6 @@ export default Responsive.extend(Theme).extend({
 
 <style lang="scss">
 
-@keyframes text-pop-up-tr {
-  0% {
-    -webkit-transform:translateY(0) translateX(0);
-    transform:translateY(0) translateX(0);
-    -webkit-transform-origin:50% 50%;
-    transform-origin:50% 50%;
-    text-shadow:none;
-    letter-spacing: 0.5em;
-    opacity:0;
-  }
-
-  40% {
-    opacity:.6;
-  }
-
-  100% {
-    -webkit-transform:translateY(80px) translateX(50px);
-    transform:translateY(80px) translateX(50px);
-    -webkit-transform-origin:50% 50%;
-    transform-origin:50% 50%;
-    letter-spacing: normal;
-    opacity:1;
-  }
-}
-
  [data-theme="light"] {
    .hero h1 {
       text-shadow:0 1px 0 #ccc,0 2px 0 #ccc,0 3px 0 #ccc,0 4px 0 #ccc,0 5px 0 #ccc,0 6px 0 #ccc,0 7px 0 #ccc,0 8px 0 #ccc,0 9px 0 #ccc,0 50px 30px rgba(0,0,0,.3);
@@ -120,18 +95,14 @@ export default Responsive.extend(Theme).extend({
   }
 
 .hero {
-  @include transition();
 
   h1 {
     color: var(--primary-text-color);
-    position: absolute;
-    top: 40px;
     font-size: 52px;
     z-index: 6;
-    animation-name: text-pop-up-tr;
-    animation-duration: 2s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
+    @include animate($name: text-pop-up-tr, $duration: 2s, $count: 1, $fill: forwards); 
+    opacity: 0;
+    max-width: 80%; 
   }
 
   &__particles {
@@ -141,17 +112,6 @@ export default Responsive.extend(Theme).extend({
 
   &__head {
     background: var(--background-url)
-  }
-
-  &__body {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-
-    .button {
-      position: relative;
-      z-index: 6;
-    }
   }
 }
 </style>

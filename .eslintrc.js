@@ -43,7 +43,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 2,
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/member-delimiter-style': 'off',
-    '@typescript-eslint/no-explicit-any': 1,
+    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/interface-name-prefix': 0,
     'no-sequences': 0,
     'no-unused-expressions': 0,

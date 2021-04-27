@@ -29,6 +29,7 @@
 
           <BMenuItem
             label="Blogs"
+            icon="post-outline"
             tag="router-link"
             to="/blogs"
             @click.native="$emit('close')"
@@ -37,6 +38,7 @@
 
           <BMenuItem
             label="About"
+            icon="information-outline"
             tag="router-link"
             to="/about"
             @click.native="$emit('close')"
@@ -45,6 +47,7 @@
 
           <BMenuItem
             label="Contact"
+            icon="phone"
             tag="router-link"
             to="/contact"
             @click.native="$emit('close')"
@@ -219,6 +222,13 @@ export default Auth.extend({
 
 <style lang="scss">
 .menu-mobile {
+  max-width: 100%;
+  overflow-x: hidden;
+
+  .navbar .navbar-brand {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
 
   .sidebar-content {
     @include theme();
@@ -233,6 +243,12 @@ export default Auth.extend({
   }
 
   .menu-list {
+
+    .account-label .is-active {
+      background: var(--secondary) !important;
+      color: var(--black) !important;
+    }
+
     a {
       color: var(--primary-text-color);
     }

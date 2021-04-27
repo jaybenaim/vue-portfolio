@@ -21,11 +21,11 @@
     </div>
 
     <div class="container pt-5">
-      <ul class="blogs__list columns is-flex is-flex-wrap-wrap">
+      <ul class="blogs__list columns is-flex is-flex-wrap-wrap is-mobile">
         <li
           v-for="(blog, index) in blogs"
           :key="index"
-          class="column is-one-third-tablet is-one-quarter-desktop"
+          class="column is-full-mobile is-one-third-tablet is-one-quarter-desktop"
         >
           <CardBlog
             :blog="blog"
@@ -34,7 +34,7 @@
             @blog-updated="refreshBlogs"
             @blog-deleted="refreshBlogs"
             :animation="{
-              delay: index
+              delay: index / 2
             }"
             :includeElements="includeElements"
           />
@@ -151,14 +151,19 @@ export default Auth.extend({
     right: 25px;
   }
 
-  .card {
-    @include animate($duration: .8s, $name: tilt-in-tr, $delay: var(--delay));
-    opacity: 0;
-
-  }
-
-  // Card
   .blog {
+
+    @media (min-width: 992px) {
+      .card {
+        @include animate($duration: .6s, $name: tilt-in-tr, $delay: var(--delay));
+        opacity: 0;
+      }
+    }
+
+    .media-content {
+      overflow-x: hidden;
+    }
+
     &__publish-date {
       justify-content: flex-start !important;
     }
