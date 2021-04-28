@@ -225,19 +225,33 @@
 
         <footer
           class="card-footer"
-          v-if="showFooter"
+          v-if="includeElements.elements.footer"
         >
-          <ButtonDefault
-            label="Edit"
-            class="card-footer-item is-warning m-2"
-            @click.native="handleEdit"
-          />
+          <div
+            v-if="includeElements.elements.footer.element"
+            :class="includeElements.elements.footer.className"
+            :is="includeElements.elements.footer.as || 'div'"
+          >
+            <time
+              v-if="includeElements.elements.footer.element === 'publishDate'"
+              :datetime="blog.publishDate"
+            >{{ formatDate(blog.publishDate) }}
+            </time>
+          </div>
 
-          <ButtonDefault
-            label="Delete"
-            class="card-footer-item is-danger m-2"
-            @click.native="handleDelete"
-          />
+          <div v-if="includeElements.elements.footer.element === 'edit/delete'">
+            <ButtonDefault
+              label="Edit"
+              class="card-footer-item is-warning m-2"
+              @click.native="handleEdit"
+            />
+
+            <ButtonDefault
+              label="Delete"
+              class="card-footer-item is-danger m-2"
+              @click.native="handleDelete"
+            />
+          </div>
         </footer>
       </div>
     </div>
@@ -282,10 +296,6 @@ export default Vue.extend({
   props: {
     blog: {
       type: Object as () => Blog
-    },
-    includeFooter: {
-      type: Boolean,
-      default: false
     },
     clickable: {
       type: Boolean,
@@ -339,7 +349,7 @@ export default Vue.extend({
     }
   },
   created() {
-    if (this.includeFooter) {
+    if (this.includeElements.elements?.footer) {
       this.showFooter = this.checkUserId()
     }
   },
@@ -404,11 +414,6 @@ export default Vue.extend({
   .card {
     background-color: rgba(var(--background-color-flipped-rgb), 0.15);
     @include animate($name: fade-in, $duration: 0.7s); 
-
-    // & { 
-    //   position: relative;
-    //   z-index: 1;
-    // }
   }
 
   p,
@@ -447,7 +452,7 @@ export default Vue.extend({
 
   &__options-toggle { 
     color: var(--primary-text-color); 
-    margin-right: -1rem !important; 
+    margin-right: -9px !important; 
 
     &:hover { 
       color: var(--primary-text-color-hover); 
@@ -456,6 +461,7 @@ export default Vue.extend({
 
     .dropdown-menu { 
       min-width: 100%; 
+      margin: 5px 10px 0 -9px; 
 
       .dropdown-item { 
         text-align: right;

@@ -29,7 +29,6 @@
         >
           <CardBlog
             :blog="blog"
-            :includeFooter="false"
             clickable
             @blog-updated="refreshBlogs"
             @blog-deleted="refreshBlogs"
@@ -83,11 +82,11 @@ export default Auth.extend({
         title: {},
         author: {},
         summary: {},
+        publishDate: {},
         image: {},
         imageCaption: {},
-        publishDate: {},
         tags: {},
-        optionsToggle: {}
+        optionsToggle: {},
       })
     },
   },
@@ -152,6 +151,11 @@ export default Auth.extend({
   }
 
   .blog {
+    height: 100%;
+
+    .card {
+      height: 100%;
+    }
 
     @media (min-width: 992px) {
       .card {
