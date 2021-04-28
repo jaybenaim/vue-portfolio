@@ -236,6 +236,10 @@ export default Auth.extend({
   .navbar-brand {
     background-color: transparent !important;
 
+    a {
+      @include animate($name: fade-in, $duration: 0.3s);
+    }
+
     @media (max-width: 992px) {
 
       @include flex($justify: space-between);
