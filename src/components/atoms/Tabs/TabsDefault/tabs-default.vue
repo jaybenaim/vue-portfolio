@@ -11,7 +11,7 @@
       :key="index"
       :label="tab.label"
       :value="tab.label"
-      :icon="tab.icon"
+      :icon="tab.icon.icon"
     >
       <slot></slot>
     </b-tab-item>

@@ -2,7 +2,7 @@ import Link from './components/Link'
 import { IApiErrorMessage } from './errors'
 import { IFilter } from './general/FilterList'
 
-import { TStyle } from '@/lib/types/components/socialLinks'
+import { IIcon, TStyle } from '@/lib/types/components/socialLinks'
 
 export interface IImage {
   src: string
@@ -32,7 +32,7 @@ export interface IAnimation {
 export interface ITab {
   name: string
   label: string
-  icon?: string
+  icon?: IIcon
 }
 export interface ITabFilter {
   name: string

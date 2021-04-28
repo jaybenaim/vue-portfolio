@@ -5,4 +5,5 @@ export interface ITabProps {
   destroyOnHide?: boolean
   size?: 'is-small' | 'is-medium' | 'is-large'
   type: 'is-boxed' | 'is-toggle-rounded'
+  multiline: boolean
 }

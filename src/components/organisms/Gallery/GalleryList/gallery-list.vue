@@ -24,14 +24,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Responsive from '@/mixins/Responsive'
 
 import { IGalleryItem, IGalleryProps } from '@/lib/types'
 import { IncludeElements } from '@/lib/types/general/IncludeElements'
 import { DynamicComponent, IPropsObject } from '@/lib/types/general/DynamicComponent'
 
-export default Vue.extend({
+export default Responsive.extend({
   name: 'gallery-list',
+  mixins: [Responsive],
   props: {
     items: {
       type: Array as () => IGalleryItem[],
@@ -60,12 +61,12 @@ export default Vue.extend({
     return {
       componentData: undefined as any,
       galleryProps: {
-        itemsToShow: this.limit,
-        repeat: true,
-        hasDrag: true,
-        arrow: this.items.length > this.limit,
-        arrowHover: this.items.length > this.limit,
       } as IGalleryProps
+    }
+  },
+  watch: {
+    screen() {
+      this.setGalleryProps()
     }
   },
   computed: {
@@ -74,15 +75,26 @@ export default Vue.extend({
     },
   },
   created() {
-    if (this.customGalleryProps) {
-      this.galleryProps = this.customGalleryProps
-    }
+    this.setGalleryProps()
 
     this.componentData = this.dynamicComponent.getData()
   },
   methods: {
     getComponentData(dataToAdd: IPropsObject) {
       this.dynamicComponent.data = { ...dataToAdd, ...this.componentData }
+    },
+    setGalleryProps() {
+      if (this.customGalleryProps) {
+        this.galleryProps = this.customGalleryProps
+      } else {
+        this.galleryProps = {
+          itemsToShow: this.limit,
+          repeat: true,
+          hasDrag: true,
+          arrow: this.items.length > this.limit,
+          arrowHover: this.isMobile ? false : (this.items.length > this.limit),
+        } as IGalleryProps
+      }
     }
   }
 })

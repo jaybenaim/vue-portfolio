@@ -1,6 +1,9 @@
 <template>
   <div class="about section is-small">
-    <div class="about__title mt-6">
+    <div
+      class="about__title"
+      :class="isMobile ? 'mt-5 mb-4' : 'mt-6'"
+    >
       <span
         class="letter"
         v-for="(letter, index) of title"
@@ -11,7 +14,10 @@
       </span>
     </div>
 
-    <section class="section pt-5">
+    <section
+      class="section"
+      :class="!isMobile ? 'pt-5' : 'p-0'"
+    >
       <div class="about__filters">
         <Tabs
           :tabs="tabList"
@@ -53,7 +59,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import Tabs from '@/components/atoms/Tabs/TabsDefault/tabs-default.vue'
 
 import RepoSection from './components/RepoSection/repo-section.vue'
@@ -62,9 +67,11 @@ import ProjectSection from './components/ProjectSection/project-section.vue'
 import { ITab } from '@/lib/types'
 import { ITabProps } from '@/lib/types/components/tabs'
 import SnippetSection from './components/SnippetSection/snippet-section.vue'
+import Responsive from '@/mixins/Responsive'
 
-export default Vue.extend({
+export default Responsive.extend({
   name: 'About',
+  mixins: [Responsive],
   props: {
     title: {
       type: String,
@@ -80,32 +87,64 @@ export default Vue.extend({
   data() {
     return {
       selectedFilter: 'Projects',
-      tabList: [
-        {
-          label: 'Projects',
-          icon: 'presentation-play'
-        },
-        {
-          label: 'Repos',
-          icon: 'folder-multiple-outline'
-        },
-        {
-          label: 'Code Snippets',
-          icon: 'code-tags'
-        }
-      ] as ITab[],
-      tabProps: {
-        vertical: true,
-        destroyOnHide: true,
-        expanded: true,
-        animated: false,
-        size: 'is-large'
-      } as ITabProps
+      tabList: [] as ITab[],
+      tabProps: {} as ITabProps
     }
+  },
+  watch: {
+    screen() {
+      this.assignTabProps()
+    }
+  },
+  created() {
+    this.assignTabProps()
+    this.setTabList()
   },
   methods: {
     handleFilterChange(filter: string) {
       this.selectedFilter = filter
+    },
+    assignTabProps() {
+      this.tabProps = {
+        vertical: !this.isMobile,
+        destroyOnHide: true,
+        expanded: true,
+        animated: false,
+        size: this.getTabSize(),
+        multiline: this.isMobile
+      } as ITabProps
+    },
+    getTabSize() {
+      if (this.screen === 'sm-phone') {
+        return 'is-small'
+      } if (this.screen === 'phone' || this.screen === 'tablet') {
+        return 'is-medium'
+      }
+
+      return 'is-large'
+    },
+    setTabList() {
+      this.tabList = [{
+        label: 'Projects',
+        icon: {
+          icon: 'presentation-play',
+          size: this.getTabSize()
+        }
+      },
+      {
+        label: 'Repos',
+        icon: {
+          icon: 'folder-multiple-outline',
+          size: this.getTabSize()
+        }
+      },
+      {
+        label: 'Code Snippets',
+        icon: {
+          icon: 'code-tags',
+          size: this.getTabSize()
+        }
+      }] as ITab[]
     }
   }
 })
@@ -163,6 +202,10 @@ $minHeight: 550px;
     .tabs {
       flex-basis: 20%;
       overflow-x: hidden;
+
+      @media (max-width: 993px) {
+        margin-bottom: 1.5rem;
+      }
     }
 
     .tabs ul {
@@ -177,6 +220,10 @@ $minHeight: 550px;
         &:hover {
           color: rgba(var(--primary-text-color-rgb), 1);
           border-bottom-color: rgba(var(--primary-text-color-rgb), 1);
+        }
+
+        @media (max-width: 482px) {
+          font-size: 18px;
         }
       }
 
@@ -193,6 +240,10 @@ $minHeight: 550px;
       flex-basis: 25%;
       margin: 0 5rem;
       min-height: 100%;
+
+      @media (max-width: 993px) {
+        margin: 0 auto;
+      }
     }
 
     .tab-item {

@@ -44,8 +44,16 @@ export default Vue.extend({
 
 <style lang="scss">
 .project-section {
-  // min-height: 500px;
 
+  .carousel-arrow {
+    position: relative;
+    bottom: 40px;
+  }
+
+  .card-footer {
+    padding-bottom: 40px;
+    @include flex();
+  }
 }
 
 </style>

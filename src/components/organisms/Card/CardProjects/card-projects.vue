@@ -28,7 +28,7 @@
 
     <template #footer>
       <a
-        class="mt-4"
+        class="mt-4 mb-4"
         :href="project.link"
         target="_blank"
       >
