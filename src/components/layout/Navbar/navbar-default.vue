@@ -3,7 +3,10 @@
     class="navbar"
     v-bind="$attrs"
   >
-    <template #brand>
+    <template
+      v-if="showLogo"
+      #brand
+    >
       <b-navbar-item
         tag="router-link"
         :to="{ path: '/' }"
@@ -191,6 +194,29 @@ export default Auth.extend({
   data() {
     return {
       isOpen: false,
+      showLogo: true
+    }
+  },
+  created() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
+  methods: {
+    handleScroll() {
+      const body = document.querySelector('html')
+      const navbarBrand = document.querySelector('.navbar-brand')
+
+      const scrollTop = body?.scrollTop
+
+      if (!scrollTop || scrollTop <= 10) {
+        this.showLogo = true
+        navbarBrand?.classList.remove('logo-hidden')
+      } else {
+        this.showLogo = false
+        navbarBrand?.classList.add('logo-hidden')
+      }
     }
   },
   components: {
@@ -209,6 +235,16 @@ export default Auth.extend({
 
   .navbar-brand {
     background-color: transparent !important;
+
+    @media (max-width: 992px) {
+
+      @include flex($justify: space-between);
+
+      &.logo-hidden {
+        width: 100%;
+        @include flex($justify: flex-end);
+      }
+    }
   }
 
   &__toggle {
@@ -281,13 +317,6 @@ export default Auth.extend({
 
   .button {
     color: var(--primary-text-color-flipped) !important;
-  }
-
-  @media (max-width: 992px) {
-    .navbar-brand {
-      width: 100%;
-      @include flex($justify: space-between);
-    }
   }
 }
 

@@ -215,7 +215,23 @@ export default Auth.extend({
   methods: {
     toggleDropdown() {
       this.showAccountDropdown = !this.showAccountDropdown
+    },
+    handleScroll() {
+      const body = document.querySelector('html')
+
+      const scrollTop = body?.scrollTop
+
+      console.log(scrollTop)
+      if (scrollTop === 0) {
+        console.log('scrolled to the top of the page')
+      }
     }
+  },
+  created() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll)
   }
 })
 </script>
