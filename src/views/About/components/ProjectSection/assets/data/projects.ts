@@ -1,4 +1,6 @@
 import { IProject } from '@/lib/types/models/Project'
+import cookiesnyum from "@images/cookienyum.png"
+import highlyHandy from "@images/highly-handy.png"
 
 export const $projects: IProject[] = [
   {
@@ -6,7 +8,7 @@ export const $projects: IProject[] = [
     description: 'E-commerce site, with SendGrid Api for email checkout. <br />'
     + '<em>(Name changed and branding removed to protect owners identity)</em>',
     image: {
-      src: 'https://jacobbenaim.ca/img/cookiesnyum.jpg'
+      src: cookiesnyum
     },
     link: 'https://jaybenaim.github.io/cookiesnyum/'
   },
