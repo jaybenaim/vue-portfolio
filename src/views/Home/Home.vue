@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="section is-large mt-4">
+    <section class="section">
       <Hero />
     </section>
 

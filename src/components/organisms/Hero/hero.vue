@@ -12,15 +12,14 @@
           v-if="loadParticles"
           class="hero__particles"
         />
-
-        <h1 class="title">
-          Jacob Benaim
-        </h1>
       </div>
     </slot>
 
     <slot name="body">
       <div class="hero-body hero__body">
+        <h1 class="title">
+          Jacob Benaim
+        </h1>
       </div>
     </slot>
   </div>
@@ -67,7 +66,7 @@ export default Responsive.extend(Theme).extend({
       const route: Location = window.location
 
       if (route.host.includes('localhost')) {
-        this.loadParticles = false
+        this.loadParticles = true
       } else {
         this.loadParticles = true
       }
@@ -95,14 +94,13 @@ export default Responsive.extend(Theme).extend({
   }
 
 .hero {
-
   h1 {
     color: var(--primary-text-color);
     font-size: 52px;
     z-index: 6;
-    @include animate($name: text-pop-up-tr, $duration: 2s, $count: 1, $fill: forwards); 
+    @include animate($name: text-pop-up-tr, $duration: 2s, $count: 1, $fill: forwards);
     opacity: 0;
-    max-width: 80%; 
+    max-width: 80%;
   }
 
   &__particles {
@@ -111,7 +109,14 @@ export default Responsive.extend(Theme).extend({
   }
 
   &__head {
-    background: var(--background-url)
+    background: var(--background-url);
+  }
+
+  &__body {
+    position: absolute;
+    top: 85vh;
+    width: 100%;
+    padding: 0;
   }
 }
 </style>

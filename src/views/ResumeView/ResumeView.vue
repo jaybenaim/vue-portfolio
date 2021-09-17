@@ -31,6 +31,5 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .resume {
-  margin-top: 500px !important;
 }
 </style>
