@@ -203,7 +203,7 @@ export default Auth.extend({
   data() {
     return {
       isOpen: false,
-      showLogo: true
+      showLogo: false
     }
   },
   created() {
@@ -220,7 +220,7 @@ export default Auth.extend({
       const scrollTop = body?.scrollTop
 
       if (!scrollTop || scrollTop <= 10) {
-        this.showLogo = true
+        this.showLogo = false
         navbarBrand?.classList.remove('logo-hidden')
       } else {
         this.showLogo = false

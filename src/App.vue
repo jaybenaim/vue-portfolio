@@ -8,6 +8,7 @@
       :theme="`is-${theme}`"
       @close="open = false"
       :withAuth="showAuth"
+      :includeLogo="false"
     />
 
     <div id="nav">
