@@ -31,7 +31,7 @@ export default {
   },
   mutations: {
     setRepos(state: IGithubState, repos: IGithubRepo[]) {
-      state.repos = repos
+      state.repos = [...new Set(repos)]
     }
   },
   actions: {
@@ -126,10 +126,11 @@ export default {
       .then((response) => {
         const { data, request: { responseURL } } = response
 
+        console.log(data.items)
         const matchedRepos = [] as IGithubRepo[]
         for (const repo of data.items) {
           if (query !== 'deployed') {
-            matchedRepos.push({
+            const newRepo = {
               id: repo.id,
               name: repo.name,
               homepageUrl: getHomePageUrl(repo),
@@ -140,11 +141,13 @@ export default {
               description: repo.description,
               language: repo.language,
               image: $imageBuilder(repo.name, repo.language)
-            } as IGithubRepo)
-          }
+            } as IGithubRepo
 
-          if (repo.has_pages) {
-            matchedRepos.push({
+            if (!matchedRepos.includes(newRepo)) {
+              matchedRepos.push(newRepo)
+            }
+          } else if (repo.has_pages) {
+            const newRepo = {
               id: repo.id,
               name: repo.name,
               homepageUrl: getHomePageUrl(repo),
@@ -155,7 +158,11 @@ export default {
               description: repo.description,
               language: repo.language,
               image: $imageBuilder(repo.name, repo.language)
-            } as IGithubRepo)
+            } as IGithubRepo
+
+            if (!matchedRepos.includes(newRepo)) {
+              matchedRepos.push(newRepo)
+            }
           }
         }
 

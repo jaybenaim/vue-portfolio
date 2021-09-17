@@ -156,7 +156,8 @@ export class GithubData {
 
         this.totalRepoCount = repoResponseFromQuery.totalCount
 
-        this.repos = [...this.repos, ...repoResponseFromQuery.repos]
+        this.repos = repoResponseFromQuery.repos
+        console.log(repoResponseFromQuery.repos)
       }
     }
 
