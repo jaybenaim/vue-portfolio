@@ -28,8 +28,6 @@
             </a>
           </div>
 
-          <p>Or</p>
-
           <div
             class="contact__email mb-6"
           >
@@ -48,8 +46,6 @@
               benaimjacob@gmail.com
             </a>
           </div>
-
-          <p>Or</p>
 
           <div
             class="contact__links mb-6"

@@ -54,6 +54,16 @@
             class="menu-mobile__link menu-mobile__link__contact"
           />
 
+          <BMenuItem
+            label="Resume"
+            icon="note-text-outline"
+            tag="a"
+            href="./resume.pdf"
+            target="_blank"
+            @click.native="$emit('close')"
+            class="menu-mobile__link menu-mobile__link__contact"
+          />
+
           <b-menu-list
             v-if="withAuth"
             class="menu-mobile__auth p-4"
@@ -209,7 +219,7 @@ export default Auth.extend({
   },
   data() {
     return {
-      showAccountDropdown: false
+      showAccountDropdown: false,
     }
   },
   methods: {

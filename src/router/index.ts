@@ -49,6 +49,11 @@ const routes: Array<RouteConfig> = [
     component: () => import(/* webpackChunkName: "account" */ '../views/Account/Account.vue'),
   },
   {
+    path: '/resume',
+    name: 'Resume',
+    component: () => import(/* webpackChunkName: "resume" */ '../views/ResumeView/ResumeView.vue'),
+  },
+  {
     path: '*',
     component: () => import(/* wepackChunkName: "Home" */ '../views/Home/Home.vue'),
   }

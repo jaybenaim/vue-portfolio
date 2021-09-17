@@ -49,6 +49,15 @@
       >
         Contact
       </b-navbar-item>
+
+      <b-navbar-item
+        href="./resume.pdf"
+        tag="a"
+        class="navbar__item"
+        target="_blank"
+      >
+        Resume
+      </b-navbar-item>
     </template>
 
     <template #end>
