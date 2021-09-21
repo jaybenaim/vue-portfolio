@@ -89,7 +89,7 @@ export default Responsive.extend(Theme).extend({
 
   [data-theme="dark"] {
    .hero h1 {
-      text-shadow: -2px 45px 18px rgba(250, 247, 247, 0.3);
+      text-shadow: -2px 20px 18px rgba(250, 247, 247, 0.3);
     }
   }
 
@@ -97,26 +97,54 @@ export default Responsive.extend(Theme).extend({
   h1 {
     color: var(--primary-text-color);
     font-size: 52px;
+    font-weight: 400;
     z-index: 6;
-    @include animate($name: text-pop-up-tr, $duration: 2s, $count: 1, $fill: forwards);
     opacity: 0;
-    max-width: 80%;
+    @include animate($name: text-pop-up-tr, $duration: 2s, $count: 1, $fill: forwards);
   }
 
   &__particles {
     background-color: var(--background-color);
+    background-position: center;
     color: var(--primary-text-color);
+
+    @media (max-width: 992px) {
+      height: 110vh;
+      width: 200vw;
+    }
   }
 
   &__head {
     background: var(--background-url);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    @media (max-width: 992px) {
+      width: 130vw;
+      top: -110px;
+      left: -110px;
+      overflow-x: hidden;
+    }
   }
 
   &__body {
-    position: absolute;
-    top: 85vh;
-    width: 100%;
-    padding: 0;
+    align-items: flex-end !important;
+
+    @media (max-width: 992px) {
+      position: relative;
+      align-items: flex-end !important;
+      padding: 0;
+    }
+
+    h1 {
+      justify-content: flex-start;
+      font-size: 2rem;
+
+      @media (max-width: 992px) {
+        justify-content: flex-end;
+      }
+    }
   }
 }
 </style>

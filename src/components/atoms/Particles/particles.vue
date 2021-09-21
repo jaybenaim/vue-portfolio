@@ -84,7 +84,7 @@ export default Theme.extend({
   },
   data() {
     return {
-      config: new Particles(),
+      config: undefined as any,
       cmpKey: 0
     }
   },
