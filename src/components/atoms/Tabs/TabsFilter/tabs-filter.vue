@@ -24,17 +24,21 @@
           :triggers="['click']"
           aria-role="list"
           class="tabs-filter__dropdown"
-          position="is-bottom-left"
+          :position="!isMobile ? 'is-bottom-left' : ''"
+          append-to-body
+          mobile-modal
+          can-close
         >
           <template #trigger>
             <b-tabs
               v-bind="tabProps"
               :destroy-on-hide="tabProps.destroyOnHide"
+              class="dropdown__languages"
             >
               <b-tab-item
                 class="tab-item"
-                :name="tab.name"
-                :label="tab.label"
+                name="Languages"
+                label="Languages"
                 icon="menu-down"
               />
             </b-tabs>
@@ -103,8 +107,27 @@ export default Vue.extend({
     color: rgba(var(--primary-text-color-rgb), 0.4) !important;
     @include flex();
 
+    @media (max-width: 768px) {
+      border: 1px solid #dbdbdb;
+      border-left: 1px solid #dbdbdb;
+      border-radius: 4px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    a {
+     @media (max-width: 768px) {
+        padding: 0 0 0 .9em !important;
+      }
+    }
+
     .dropdown {
       margin-left: -15px;
+
+      @media (min-width: 768px) {
+        position: absolute;
+        z-index: 6;
+      }
     }
 
     a:first-of-type {
@@ -136,11 +159,6 @@ export default Vue.extend({
         border-bottom-color: rgba(var(--primary-text-color-rgb), 1) !important;
         pointer-events: all;
       }
-    }
-
-    .dropdown {
-      position: absolute;
-      z-index: 6;
     }
 
     .dropdown-content {

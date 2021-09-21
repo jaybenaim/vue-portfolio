@@ -91,7 +91,11 @@ $maxHeight: 70px !important;
 .filter-default__filters {
   .tabs {
     min-width: 100%;
-    height: $maxHeight;
+    height: 200px;
+
+    @media (min-width: 768px) {
+      height: $maxHeight;
+    }
   }
 
   ul {
@@ -119,7 +123,6 @@ $maxHeight: 70px !important;
 
   .dropdown-menu {
     height: 0;
-
   }
 }
 </style>

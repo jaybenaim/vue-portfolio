@@ -102,7 +102,7 @@ export default Responsive.extend(Theme).extend({
     this.filterData = new FilterData(repoFilters as IFilter[])
 
     this.tabProps = {
-      vertical: false,
+      vertical: this.isMobile,
       expanded: true,
       type: this.isMobile ? 'is-toggle-rounded' : 'is-boxed',
       destroyOnHide: false
@@ -147,10 +147,11 @@ export default Responsive.extend(Theme).extend({
       this.selectedFilter = selectedFilter
       const filter = selectedFilter.filter.name.toLowerCase()
 
+      console.log(selectedFilter)
       if (filter === 'all') {
         await this.githubData.getRepos()
         this.isLoading = false
-      } else if (filter !== 'languages') {
+      } else if (filter !== '180') {
         await this.githubData.filterRepos(selectedFilter)
         this.isLoading = false
       }
@@ -169,6 +170,10 @@ export default Responsive.extend(Theme).extend({
     left: 0;
     z-index: 5;
     min-width: 100%;
+
+    @media (max-width: 768px) {
+      // position: relative;
+    }
   }
 
   &__repos {
@@ -177,8 +182,14 @@ export default Responsive.extend(Theme).extend({
     margin: 0;
     height: 477px;
 
-    li:first-of-type {
-      padding-left: 0;
+    @media (max-width: 768px) {
+      overflow-x: hidden;
+    }
+
+    @media (min-width: 768px) {
+      li:first-of-type {
+        padding-left: 0;
+      }
     }
   }
 
@@ -186,9 +197,11 @@ export default Responsive.extend(Theme).extend({
     @include animate($name: tilt-in-tr, $duration: 1s, $delay: var(--delay));
     opacity: 0;
 
-    &:first-of-type {
-      margin-left: 0;
-      padding-left: 0;
+    @media (min-width: 768px) {
+      &:first-of-type {
+        margin-left: 0;
+        padding-left: 0;
+      }
     }
   }
 

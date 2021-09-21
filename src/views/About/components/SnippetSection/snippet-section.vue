@@ -12,17 +12,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-
 import GalleryList from '@organisms/Gallery/GalleryList/gallery-list.vue'
 import CardSnippet from '@organisms/Card/CardSnippet/card-snippet.vue'
 
 import { IGalleryProps, ISnippetItem } from '@/lib/types'
 import { DynamicComponent } from '@/lib/types/general/DynamicComponent'
 import { $snippets } from './assets/data/snippets'
+import Responsive from '@/mixins/Responsive'
 
-export default Vue.extend({
+export default Responsive.extend({
   name: 'snippet-section',
+  mixins: [Responsive],
   components: {
     GalleryList
   },
@@ -43,9 +43,9 @@ export default Vue.extend({
     this.galleryProps = {
       itemsToShow: this.limit,
       repeat: true,
-      hasDrag: false,
+      hasDrag: true,
       arrow: this.snippets.length > this.limit,
-      arrowHover: this.snippets.length > this.limit,
+      arrowHover: !this.isMobile && this.snippets.length > this.limit,
     }
   },
   methods: {
@@ -87,6 +87,12 @@ $textFontSize: 18px;
 
     &__description {
       text-align: left;
+    }
+
+    .card-content {
+      @media (max-width: 992px) {
+        padding-bottom: 5em;
+      }
     }
   }
 
