@@ -151,7 +151,7 @@ export default Responsive.extend(Theme).extend({
       if (filter === 'all') {
         await this.githubData.getRepos()
         this.isLoading = false
-      } else if (filter !== '180') {
+      } else if (filter !== 'languages') {
         await this.githubData.filterRepos(selectedFilter)
         this.isLoading = false
       }
@@ -202,6 +202,10 @@ export default Responsive.extend(Theme).extend({
         margin-left: 0;
         padding-left: 0;
       }
+    }
+
+    @media (max-width: 768px) {
+      padding-bottom: 2em;
     }
   }
 

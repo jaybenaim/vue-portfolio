@@ -24,7 +24,7 @@
           :triggers="['click']"
           aria-role="list"
           class="tabs-filter__dropdown"
-          :position="!isMobile ? 'is-bottom-left' : ''"
+          position="is-bottom-left"
           append-to-body
           mobile-modal
           can-close
@@ -117,7 +117,7 @@ export default Vue.extend({
 
     a {
      @media (max-width: 768px) {
-        padding: 0 0 0 .9em !important;
+        padding: 0.2em 1em !important;
       }
     }
 
@@ -127,6 +127,11 @@ export default Vue.extend({
       @media (min-width: 768px) {
         position: absolute;
         z-index: 6;
+        max-height: 70px;
+      }
+
+      li a span {
+        color: rgba(var(--primary-text-color-rgb), 0.5);
       }
     }
 
@@ -160,29 +165,27 @@ export default Vue.extend({
         pointer-events: all;
       }
     }
-
-    .dropdown-content {
-      width: 100%;
-      @include theme();
-
-      .dropdown-item {
-        @include flex($justify: flex-start);
-        color: rgba(var(--primary-text-color-rgb), 0.4) !important;
-        position: relative;
-        z-index: auto;
-        border: none;
-        padding-left: initial;
-
-        &:hover {
-          background-color: var(--background-color-hover) !important;
-          color: rgba(var(--primary-text-color-rgb), 1) !important;
-        }
-      }
-    }
   }
 }
 
 // Overrides
+.dropdown .tabs {
+  all: revert !important;
+}
+
+.dropdown-content {
+  @include theme();
+
+  .dropdown-item {
+    color: rgba(var(--primary-text-color-rgb), 8) !important;
+
+    &:hover {
+      background-color: var(--background-color-hover) !important;
+      color: rgba(var(--primary-text-color-rgb), 1) !important;
+    }
+  }
+}
+
 .b-tabs .tabs li.is-disabled {
   opacity: 1;
   cursor: pointer;
