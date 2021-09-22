@@ -151,7 +151,11 @@ export default Responsive.extend({
 </script>
 
 <style lang="scss">
-$minHeight: 550px;
+$minHeight: 580px;
+
+html {
+  overflow-y: hidden;
+}
 
 .about {
 

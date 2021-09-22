@@ -7,6 +7,7 @@
         @tab-selected="(filter) => handleFilterChange(filter)"
         key="filter-tabs"
         :tabProps="tabProps"
+        class="filter-default__filters__main-tabs"
       >
         <!-- <div v-if="useFilteredData"> -->
         <!-- <li
@@ -86,20 +87,20 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-$maxHeight: 70px !important;
+$desktopTabHeight: 70px;
 
 .filter-default__filters {
   .tabs {
     min-width: 100%;
-    height: 220px;
+    height: 200px;
 
     @media (min-width: 768px) {
-      height: $maxHeight;
+      height: $desktopTabHeight;
     }
   }
 
   ul {
-    max-height: $maxHeight;
+    max-height: $desktopTabHeight;
   }
 
   .tab-content {
