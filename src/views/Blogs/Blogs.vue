@@ -139,6 +139,10 @@ export default Auth.extend({
 </script>
 
 <style lang="scss">
+html {
+  overflow-y: auto;
+}
+
 .blogs {
   .title {
     color: var(--primary-text-color);

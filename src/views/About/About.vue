@@ -153,14 +153,8 @@ export default Responsive.extend({
 <style lang="scss">
 $minHeight: 580px;
 
-html {
-
-  @media (min-width: 768px) {
-    overflow-y: hidden;
-  }
-}
-
 .about {
+  overflow-y: hidden;
 
   &__title {
     @include flex($justify: flex-start);
