@@ -28,7 +28,7 @@ export const $projects: IProject[] = [
     image: {
       src: kinsale
     },
-    link: 'https://kinsaleroad.ca/'
+    link: 'https://jaybenaim.github.io/greathomes/'
   },
   {
     title: 'Hacker Hunter',
