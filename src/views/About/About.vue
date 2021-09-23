@@ -154,7 +154,10 @@ export default Responsive.extend({
 $minHeight: 580px;
 
 html {
-  overflow-y: hidden;
+
+  @media (min-width: 768px) {
+    overflow-y: hidden;
+  }
 }
 
 .about {

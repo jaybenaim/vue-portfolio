@@ -165,6 +165,12 @@ export default Responsive.extend(Theme).extend({
 <style lang="scss">
 .repo-section {
 
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    display: initial;
+  }
+
   .filter-default {
     position: sticky;
     left: 0;
