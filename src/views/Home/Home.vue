@@ -1,8 +1,6 @@
 <template>
-  <div>
+  <div class="home">
     <Hero />
-
-    <Blogs />
 
     <About />
 
@@ -15,8 +13,6 @@
 import Hero from '@organisms/Hero/hero.vue'
 import Contact from '../Contact/Contact.vue'
 import About from '../About/About.vue'
-// import Blogs from '../Blogs/Blogs.vue'
-// import BlogSection from '@sections/BlogSection/blog-section.vue'
 
 export default {
   name: 'home',
@@ -29,14 +25,27 @@ export default {
     Hero,
     Contact,
     About,
-    // Blogs
   }
 }
 </script>
 
-<style>
+<style lang="scss">
 .container {
   height: 300px;
   width: 100%;
+}
+
+.home {
+
+  .about-filters__side-filters {
+    @media (min-width: 768px) {
+      padding-left: 4em;
+    }
+  }
+
+  .contact .title {
+    font-size: 3em;
+    font-weight: 300;
+  }
 }
 </style>

@@ -175,6 +175,7 @@ $minHeight: 580px;
     section.tab-content {
       min-height: $minHeight;
       padding: 0;
+      overflow-x: hidden;
     }
 
     // Project Section
@@ -195,11 +196,11 @@ $minHeight: 580px;
       min-height: $minHeight;
     }
 
-    &, * {
-      ::-webkit-scrollbar {
-        height: 22px;
-      }
-    }
+    // &, * {
+    //   ::-webkit-scrollbar {
+    //     height: 22px;
+    //   }
+    // }
 
     .tabs {
       flex-basis: 20%;
