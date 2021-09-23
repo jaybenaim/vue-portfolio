@@ -1,17 +1,22 @@
 <template>
   <div>
-    <section class="section">
-      <Hero />
-    </section>
+    <Hero />
 
-    <BlogSection />
+    <Blogs />
+
+    <About />
+
+    <Contact />
   </div>
 </template>
 
 <script>
 
 import Hero from '@organisms/Hero/hero.vue'
-import BlogSection from '@sections/BlogSection/blog-section.vue'
+import Contact from '../Contact/Contact.vue'
+import About from '../About/About.vue'
+// import Blogs from '../Blogs/Blogs.vue'
+// import BlogSection from '@sections/BlogSection/blog-section.vue'
 
 export default {
   name: 'home',
@@ -22,7 +27,9 @@ export default {
   },
   components: {
     Hero,
-    BlogSection
+    Contact,
+    About,
+    // Blogs
   }
 }
 </script>

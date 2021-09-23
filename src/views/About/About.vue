@@ -1,5 +1,5 @@
 <template>
-  <div class="about section is-small">
+  <section class="about section is-small">
     <div
       class="about__title"
       :class="isMobile ? 'mt-5 mb-4' : 'mt-6'"
@@ -14,8 +14,7 @@
       </span>
     </div>
 
-    <section
-      class="section"
+    <div
       :class="!isMobile ? 'pt-5' : 'p-0'"
     >
       <div class="about__filters">
@@ -54,8 +53,8 @@
           </div>
         </Tabs>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -170,6 +169,8 @@ $minHeight: 580px;
   // Main Content
   &__filters {
     min-height: $minHeight;
+    display: flex;
+    justify-content: center;
 
     section.tab-content {
       min-height: $minHeight;
