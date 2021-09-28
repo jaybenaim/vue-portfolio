@@ -30,10 +30,10 @@ export default {
 </script>
 
 <style lang="scss">
-.container {
-  height: 300px;
-  width: 100%;
-}
+// .container {
+//   height: 300px;
+//   width: 100%;
+// }
 
 .home {
 

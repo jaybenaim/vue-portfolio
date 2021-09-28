@@ -260,6 +260,10 @@ export default Auth.extend({
     }
   }
 
+  .navbar-menu {
+    background-color: var(--background-color) !important;
+  }
+
   &__toggle {
     @include flex($align: center);
 
