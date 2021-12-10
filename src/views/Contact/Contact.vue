@@ -1,71 +1,55 @@
 <template>
-  <div class="contact container">
-    <section class="section mt-6">
-      <div class="contact__title-container">
-        <h1 class="title primary-text">
-          Contact Me
-        </h1>
+  <section class="contact section">
+    <div class="contact__title-container">
+      <h1 class="title primary-text">
+        Contact Me
+      </h1>
 
-        <em>Contact me for new website builds, programming help and tutoring</em>
-      </div>
+      <em>Contact me for new website builds, programming help and tutoring</em>
+    </div>
 
-      <div class="contact__containers mt-6">
-        <div class="contact__left-side p-5 pt-6">
-          <div class="contact__phone-number mb-6">
-            <p class="contact__link-heading mb-3">
-              For a fast response, send me a text with any website requests
-            </p>
+    <div class="contact__containers mt-6">
+      <div class="contact__left-side p-5 pt-6">
+        <p class="contact__link-heading mb-3 is-hidden-mobile">
+          For a faster response, call or text me
+        </p>
 
-            <b-icon
-              icon="phone"
-            />
+        <div class="contact__phone-number mb-6 is-flex is-align-items-center">
+          <b-icon icon="phone" />
 
-            <a
-              href="tel:6476404714"
-              class="phone contact-link"
-            >
-              (647) 640-4714
-            </a>
-          </div>
-
-          <div
-            class="contact__email mb-6"
+          <a
+            href="tel:6476404714"
+            class="phone contact-link"
           >
-            <p class="contact__link-heading mb-3">
-              Send me an email
-            </p>
-
-            <b-icon
-              icon="mail"
-            />
-
-            <a
-              href="mailto:benaimjacob@gmail.com"
-              class="email contact-link"
-            >
-              benaimjacob@gmail.com
-            </a>
-          </div>
-
-          <div
-            class="contact__links mb-6"
-          >
-            <p class="contact__link-heading mb-3">
-              Reach me on any of these platforms:
-            </p>
-
-            <SocialLinks
-              :socialLinks="socialLinks"
-            />
-          </div>
+            (647) 640-4714
+          </a>
         </div>
 
-        <div class="contact__right-side p-5">
-          <ContactForm />
+        <div class="contact__email mb-6 is-flex is-align-items-center">
+          <b-icon icon="mail" />
+
+          <a
+            href="mailto:benaimjacob@gmail.com"
+            class="email contact-link"
+          >
+            benaimjacob@gmail.com
+          </a>
+        </div>
+
+        <div class="contact__links mb-6">
+          <p class="contact__link-heading mb-3 is-hidden-mobile">
+            Reach me on any of these platforms:
+          </p>
+
+          <SocialLinks :socialLinks="socialLinks" />
         </div>
       </div>
-    </section>
-  </div>
+
+      <div class="contact__right-side p-5">
+        <ContactForm />
+      </div>
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -112,8 +96,14 @@ export default Vue.extend({
 
 <style lang="scss">
 .contact {
+  width: 100%;
 
-  &__containers {
+ &__containers {
+
+    @media (max-width: 992px) {
+      @include flex($dir: column, $justify: center);
+    }
+
     @include flex($dir: row, $justify: space-evenly);
   }
 
@@ -121,8 +111,36 @@ export default Vue.extend({
   &__right-side {
     background-color: rgba(var(--background-color-flipped-rgb), 0.15);
     border: 1px solid var(--primary-text-color-flipped);
+    @include b-radius();
     min-height: 500px;
     width: 40%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    @media (max-width: 992px) {
+      width: 80%;
+      min-height: 200px;
+    }
+  }
+
+ &__left-side {
+    @media (max-width: 992px) {
+      font-size: 1.2em;
+    }
+
+    .email {
+      @media (max-width: 992px) {
+        font-size: 0.7em;
+      }
+    }
+  }
+
+  &__right-side {
+    @media (max-width: 992px) {
+      margin-top: 3em;
+    }
   }
 
   .icon {
@@ -135,8 +153,7 @@ export default Vue.extend({
   }
 
   .contact-link {
-    font-size: 20px;
-    @include link()
+    @include link();
   }
 }
 </style>

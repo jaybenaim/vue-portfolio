@@ -1,7 +1,7 @@
 <template>
   <section class="about section is-small">
     <div
-      class="about__title"
+      class="about__title p-4"
       :class="isMobile ? 'mt-5 mb-4' : 'mt-6'"
     >
       <span
@@ -189,6 +189,7 @@ $minHeight: 580px;
     .carousel-slides,
     .card {
       height: 100%;
+      @include b-radius();
     }
 
     &__side-filters,

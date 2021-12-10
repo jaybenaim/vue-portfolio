@@ -174,9 +174,13 @@ export default Theme.extend({
 
 <style lang="scss">
 .contact-form {
+
+  width: 100%;
+
   &__heading {
-    font-size: 24px;
-    font-weight: 500;
+    font-size: 1.2em;
+    font-weight: 800;
+    margin-bottom: 2em;
   }
 
   label {

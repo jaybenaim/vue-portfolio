@@ -38,7 +38,7 @@ export default {
 .home {
 
   .about-filters__side-filters {
-    @media (min-width: 768px) {
+    @media (min-width: 992px) {
       padding-left: 4em;
     }
   }

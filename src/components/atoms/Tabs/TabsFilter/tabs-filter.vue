@@ -110,9 +110,9 @@ export default Vue.extend({
     @media (max-width: 768px) {
       border: 1px solid #dbdbdb;
       border-left: 1px solid #dbdbdb;
-      border-radius: 4px;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
+      border-radius: 4px;
     }
 
     a {

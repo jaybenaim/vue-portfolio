@@ -127,3 +127,7 @@
     color: var(--primary-text-color-hover);
   }
 }
+
+@mixin b-radius {
+  border-radius: $borderRadius;
+}
