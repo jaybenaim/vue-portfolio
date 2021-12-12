@@ -17,7 +17,7 @@
 
     <slot name="body">
       <div class="hero-body hero__body">
-        <h1 class="title">
+        <h1 class="title p-4">
           Jacob Benaim
         </h1>
       </div>
@@ -66,7 +66,7 @@ export default Responsive.extend(Theme).extend({
       const route: Location = window.location
 
       if (route.host.includes('localhost')) {
-        this.loadParticles = true
+        this.loadParticles = false
       } else {
         this.loadParticles = true
       }
@@ -94,6 +94,11 @@ export default Responsive.extend(Theme).extend({
   }
 
 .hero {
+
+  &, * {
+    overflow: hidden;
+  }
+
   h1 {
     color: var(--primary-text-color);
     font-size: 52px;
@@ -108,9 +113,11 @@ export default Responsive.extend(Theme).extend({
     background-position: center;
     color: var(--primary-text-color);
 
+
     @media (max-width: 992px) {
       height: 110vh;
       width: 200vw;
+      overflow: hidden;
     }
   }
 
@@ -120,6 +127,7 @@ export default Responsive.extend(Theme).extend({
     width: 100%;
     height: 100vh;
     z-index: 1;
+
 
     @media (max-width: 992px) {
       width: 130vw;
