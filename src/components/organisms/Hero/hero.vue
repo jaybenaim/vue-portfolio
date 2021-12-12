@@ -66,7 +66,7 @@ export default Responsive.extend(Theme).extend({
       const route: Location = window.location
 
       if (route.host.includes('localhost')) {
-        this.loadParticles = false
+        this.loadParticles = true
       } else {
         this.loadParticles = true
       }
@@ -89,11 +89,13 @@ export default Responsive.extend(Theme).extend({
 
   [data-theme="dark"] {
    .hero h1 {
-      text-shadow: -2px 20px 18px rgba(250, 247, 247, 0.3);
+      text-shadow: -2px 13px 18px rgba(250, 247, 247, 0.3);
     }
   }
 
 .hero {
+  position: relative;
+  height: 100vh;
 
   &, * {
     overflow: hidden;
@@ -105,13 +107,16 @@ export default Responsive.extend(Theme).extend({
     font-weight: 400;
     z-index: 6;
     opacity: 0;
+    font-size: 2rem;
+    align-items: center;
     @include animate($name: text-pop-up-tr, $duration: 2s, $count: 1, $fill: forwards);
-  }
+    }
 
   &__particles {
     background-color: var(--background-color);
     background-position: center;
     color: var(--primary-text-color);
+    height: 100vh;
 
 
     @media (max-width: 992px) {
@@ -138,22 +143,22 @@ export default Responsive.extend(Theme).extend({
   }
 
   &__body {
-    align-items: flex-end !important;
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    text-align: left;
+    margin: 0 auto;
+    display: flex;
+    top: -5em;
+    font-size: 3em;
 
     @media (max-width: 992px) {
-      position: relative;
+      justify-content: center;
       align-items: flex-end !important;
       padding: 0;
+      top: -6em;
     }
 
-    h1 {
-      justify-content: flex-start;
-      font-size: 2rem;
-
-      @media (max-width: 992px) {
-        justify-content: flex-end;
-      }
-    }
   }
 }
 </style>
