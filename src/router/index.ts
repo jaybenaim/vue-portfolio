@@ -7,7 +7,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: () => import(/* wepackChunkName: "Home" */ '../views/Home/Home.vue'),
+    component: () => import(/* wepackChunkName: "Home" */ '../views/Home/Home.vue')
   },
   {
     path: '/sign-up',
@@ -31,31 +31,34 @@ const routes: Array<RouteConfig> = [
     path: '/blogs/:id',
     name: 'BlogDetails',
     props: true,
-    component: () => import(/* webpackChunkName: "blogs" */ '../views/Blogs/components/BlogDetails/BlogDetails.vue'),
+    component: () =>
+      import(
+        /* webpackChunkName: "blogs" */ '../views/Blogs/components/BlogDetails/BlogDetails.vue'
+      )
   },
   {
     path: '/about',
     name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About/About.vue'),
+    component: () => import(/* webpackChunkName: "about" */ '../views/About/About.vue')
   },
   {
     path: '/contact',
     name: 'Contact',
-    component: () => import(/* webpackChunkName: "contact" */ '../views/Contact/Contact.vue'),
+    component: () => import(/* webpackChunkName: "contact" */ '../views/Contact/Contact.vue')
   },
   {
     path: '/account',
     name: 'Account',
-    component: () => import(/* webpackChunkName: "account" */ '../views/Account/Account.vue'),
+    component: () => import(/* webpackChunkName: "account" */ '../views/Account/Account.vue')
   },
-  {
-    path: '/resume',
-    name: 'Resume',
-    component: () => import(/* webpackChunkName: "resume" */ '../views/ResumeView/ResumeView.vue'),
-  },
+  // {
+  //   path: '/resume',
+  //   name: 'Resume',
+  //   component: () => import(/* webpackChunkName: "resume" */ '../views/ResumeView/ResumeView.vue'),
+  // },
   {
     path: '*',
-    component: () => import(/* wepackChunkName: "Home" */ '../views/Home/Home.vue'),
+    component: () => import(/* wepackChunkName: "Home" */ '../views/Home/Home.vue')
   }
 ]
 
