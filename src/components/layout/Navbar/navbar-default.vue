@@ -27,14 +27,6 @@
       </b-navbar-item>
 
       <b-navbar-item
-        to="/blogs"
-        tag="router-link"
-        class="navbar__item"
-      >
-        Blogs
-      </b-navbar-item>
-
-      <b-navbar-item
         to="/about"
         tag="router-link"
         class="navbar__item"

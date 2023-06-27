@@ -19,23 +19,23 @@ const routes: Array<RouteConfig> = [
     name: 'Login',
     component: () => import(/* webpackChunkName: "blogs" */ '../views/Auth/Login/Login.vue')
   },
-  {
-    path: '/blogs',
-    name: 'Blogs',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "blogs" */ '../views/Blogs/Blogs.vue')
-  },
-  {
-    path: '/blogs/:id',
-    name: 'BlogDetails',
-    props: true,
-    component: () =>
-      import(
-        /* webpackChunkName: "blogs" */ '../views/Blogs/components/BlogDetails/BlogDetails.vue'
-      )
-  },
+  // {
+  //   path: '/blogs',
+  //   name: 'Blogs',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "blogs" */ '../views/Blogs/Blogs.vue')
+  // },
+  // {
+  //   path: '/blogs/:id',
+  //   name: 'BlogDetails',
+  //   props: true,
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "blogs" */ '../views/Blogs/components/BlogDetails/BlogDetails.vue'
+  //     )
+  // },
   {
     path: '/about',
     name: 'About',

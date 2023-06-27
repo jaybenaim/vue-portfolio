@@ -45,9 +45,6 @@
         </div>
       </div>
 
-      <div class="contact__right-side p-5">
-        <ContactForm />
-      </div>
     </div>
   </section>
 </template>
@@ -57,11 +54,10 @@ import Vue from 'vue'
 
 import SocialLinks from '@/components/atoms/SocialLinks/social-links.vue'
 import { ISocialLink } from '@/lib/types/components/socialLinks'
-import ContactForm from './components/ContactForm/contact-form.vue'
 import Link from '@/lib/types/components/Link'
 
 export default Vue.extend({
-  components: { ContactForm, SocialLinks },
+  components: { SocialLinks },
   name: 'contact',
   data() {
     return {

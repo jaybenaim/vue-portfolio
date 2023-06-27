@@ -28,15 +28,6 @@
           />
 
           <BMenuItem
-            label="Blogs"
-            icon="post-outline"
-            tag="router-link"
-            to="/blogs"
-            @click.native="$emit('close')"
-            class="menu-mobile__link"
-          />
-
-          <BMenuItem
             label="About"
             icon="information-outline"
             tag="router-link"
